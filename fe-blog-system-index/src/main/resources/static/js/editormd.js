@@ -175,7 +175,7 @@ function findAllField() {
             let data = res.data;
             let field = [];
             for (let i = 0; i < data.length; i++) {
-                let element = `<option value="${data[i]['name']}" class="${data[i]['fielId']}">${data[i]['name']}</option>`;
+                let element = `<option value="${data[i]['name']}" class="${data[i]['fieldId']}">${data[i]['name']}</option>`;
                 field.push(element);
             }
             console.log(field);
