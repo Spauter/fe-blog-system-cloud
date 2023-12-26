@@ -57,11 +57,9 @@ function content_load() {
 
 function commentAdd(blogId) {
     $('.comment_btn').on('click', function () {
-        let commentator = parseInt(100000 * Math.random());
         let data = {
             'blog_id': blogId,
             'content': $('#comment').val(),
-            'commentator': commentator
         }
         $.ajax({
             type: 'POST',
@@ -114,7 +112,9 @@ function findAllComment(blogId) {
                         let data = res.data;
                         let comment_list = [];
                         for (let i = 0; i < data.length; i++) {
-                            let element = `<li class="comment_item" id='comment_${data[i]['id']}'> <span>${data[i]['account']}：</span> ${data[i]['content']}</li>`;
+                            let element = `<li class="comment_item" id='comment_${data[i]['id']}'> <span>${data[i]['account']}：</span> ${data[i]['content']}`;
+                            //TODO
+// <!--                                      <button type="button" class="layui-btn layui-btn-primary" onclick="reply()" lay-on="test-offset-l">从左往右</button></li>
                             comment_list.push(element);
                         }
                         $('.comment_list').empty().append(comment_list.join(''));
@@ -123,6 +123,27 @@ function findAllComment(blogId) {
             }
         })
     })
-
-
+}
+//TODO
+function reply() {
+    layui.use(function() {
+        var layer = layui.layer;
+        var util = layui.util;
+        var $ = layui.$;
+        // 事件
+        util.on('lay-on', {
+            'test-offset-l': function () {
+                layer.open({
+                    type: 1,
+                    offset: 'l',
+                    anim: 'slideRight', // 从左往右
+                    area: ['320px', '100%'],
+                    shade: 0.1,
+                    shadeClose: true,
+                    id: 'ID-demo-layer-direction-l',
+                    content: '<div style="padding: 16px;">任意 HTML 内容</div>'
+                });
+            }
+        })
+    })
 }
