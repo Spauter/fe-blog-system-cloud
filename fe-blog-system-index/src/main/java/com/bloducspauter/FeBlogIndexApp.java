@@ -6,10 +6,8 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-public class GateWayApp {
+public class FeBlogIndexApp {
     public static void main(String[] args) {
-        SpringApplication springApplication = new SpringApplication(GateWayApp.class);
-        springApplication.setAllowBeanDefinitionOverriding(true);
-        springApplication.run(args);
+        SpringApplication.run(FeBlogIndexApp.class);
     }
 }

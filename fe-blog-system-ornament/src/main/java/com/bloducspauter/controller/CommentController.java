@@ -31,9 +31,7 @@ public class CommentController {
         JSONObject json = GetRequestJson.getRequestJsonObject(request);
         int blogId = json.getIntValue("blog_id");
         String content = json.getString("content");
-        int commentator = json.getIntValue("commentator");
         Comment comment = new Comment();
-        comment.setAccount(commentator+"");
         comment.setContent(content);
         comment.setBlogId(blogId);
         return comment;

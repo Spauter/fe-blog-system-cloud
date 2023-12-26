@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link href="http://cdn.staticfile.org/layui/2.8.2/css/layui.css" rel="stylesheet">
+
+</head>
+<body>
+
+<div class="layui-btn-container">
+    <button class="layui-btn" lay-on="test-offset-b">事件 1</button>
+
+</div>
+
+<script src="http://cdn.staticfile.org/layui/2.8.2/layui.js"></script>
+
+
+<script>
+    layui.use(function(){
+        var layer = layui.layer;
+        var util = layui.util;
+        var $ = layui.$;
+        //事件
+        util.on('lay-on',{
+            'test-offset-b':function(){
+                layer.open({
+                    type: 1,
+                    offset:"b",
+                    anim:'slideUp',// 从下往上
+                    area: ['100%','160px'],
+                    shade: 0.1,
+                    shadeClose: true,
+                    id: 'ID-demo-layer-direction-b',
+                    content:"<div style=\"padding: 16px;\">任意 HTML 内容</div>"
+                });
+            }
+        })
+    });
+</script>
+</body>
+</html>

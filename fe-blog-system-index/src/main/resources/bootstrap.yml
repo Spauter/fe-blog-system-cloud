@@ -6,7 +6,7 @@ spring:
         namespace: 192099489
         username: nacos
         password: nacos
-        prefix: fe-blog-gateway
+        prefix: fe-blog-index.yml
         file-extension: yml
         group: FE_BLOG
         shared-configs:
@@ -14,5 +14,5 @@ spring:
       discovery:
         namespace: 192099489
         group: FE_BLOG
-        service: fe-gateway
+        service: fe-index
 
