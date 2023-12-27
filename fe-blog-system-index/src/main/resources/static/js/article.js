@@ -84,18 +84,31 @@ function commentAdd(blogId) {
     })
 }
 
-//TODO 语音输入部分
-function inputByMicrophone() {
-    console.log("点到了话筒")
-    layui.use('layer', function () {
-        layer.msg("请在article.js中第88行完善", {
-            icon: 6,
-            time: 1000
-        })
-    })
+
+var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+var recognition = new SpeechRecognition();
+recognition.lang = 'zh-CN';
+recognition.interimResults = false;
+recognition.maxAlternatives = 1;
+
+recognition.onresult = function (event) {
+    var yourComment = event.results[0][0].transcript
+    console.log(event.results[0][0].transcript)
     //把结果显示在输入框上
-    let yourComment = "语音输入结果"
     $('#comment').val(yourComment);
+}
+function inputByMicrophone() {
+    console.log("开始输入")
+    layui.use('layer', function () {
+        recognition.start();
+    })
+
+}
+function stopinputByMicrophone() {
+    console.log("停止输入")
+    layui.use('layer', function () {
+        recognition.stop();
+    })
 }
 
 function findAllComment(blogId) {
