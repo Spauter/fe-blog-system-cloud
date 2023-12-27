@@ -84,7 +84,7 @@ function commentAdd(blogId) {
     })
 }
 
-//TODO 语音输入部分
+
 var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 var recognition = new SpeechRecognition();
 recognition.lang = 'zh-CN';
