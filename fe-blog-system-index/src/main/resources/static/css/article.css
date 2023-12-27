@@ -327,6 +327,20 @@ li {
   cursor: pointer;
 }
 
+.article_frame .article_comment .article_comment_frame .comment_record {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 15rem;
+  height: 13rem;
+  background: transparent;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  overflow: auto;
+}
+
+
 .article_frame .article_comment .comment_list {
   padding-left: 0;
   padding: 2rem;

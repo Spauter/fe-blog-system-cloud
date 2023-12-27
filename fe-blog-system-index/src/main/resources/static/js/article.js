@@ -55,6 +55,7 @@ function content_load() {
 
 }
 
+
 function commentAdd(blogId) {
     $('.comment_btn').on('click', function () {
         let data = {
@@ -81,6 +82,20 @@ function commentAdd(blogId) {
             }
         })
     })
+}
+
+//TODO 语音输入部分
+function inputByMicrophone() {
+    console.log("点到了话筒")
+    layui.use('layer', function () {
+        layer.msg("请在article.js中第88行完善", {
+            icon: 6,
+            time: 1000
+        })
+    })
+    //把结果显示在输入框上
+    let yourComment = "语音输入结果"
+    $('#comment').val(yourComment);
 }
 
 function findAllComment(blogId) {
@@ -113,7 +128,7 @@ function findAllComment(blogId) {
                         let comment_list = [];
                         for (let i = 0; i < data.length; i++) {
                             let element = `<li class="comment_item" id='comment_${data[i]['id']}'> <span>${data[i]['account']}：</span> ${data[i]['content']}`;
-                            //TODO
+                            //TODO（回复按钮）
 // <!--                                      <button type="button" class="layui-btn layui-btn-primary" onclick="reply()" lay-on="test-offset-l">从左往右</button></li>
                             comment_list.push(element);
                         }
@@ -124,9 +139,10 @@ function findAllComment(blogId) {
         })
     })
 }
-//TODO
+
+//TODO 回复部分
 function reply() {
-    layui.use(function() {
+    layui.use(function () {
         var layer = layui.layer;
         var util = layui.util;
         var $ = layui.$;

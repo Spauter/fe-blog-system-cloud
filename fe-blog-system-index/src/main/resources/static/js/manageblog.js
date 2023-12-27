@@ -98,7 +98,7 @@ function edit(){
                     success: function(res){
                         session = window.sessionStorage;
                         session.setItem('data',JSON.stringify(res.data));
-                        window.location.href = 'newblog.html';
+                        window.location.href = '../pages/newblog.html';
                     },
                     error: function(){
                         console.log('请求出错');

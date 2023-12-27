@@ -9,6 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
     <meta name="renderer" content="ie-stand">
     <title>韬韬的个人博客-文章页面</title>
+    <link rel="stylesheet" href="./js/layui/css/layui.css">
     <link rel="stylesheet" href="./css/article.css">
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="./js/editor.md/css/editormd.preview.min.css">
@@ -75,6 +76,9 @@
                     <h4>评论</h4>
                    <div class="article_comment_frame">
                      <textarea name="comment_content" placeholder="在此处发表评论，请注意遵守道德与法律，网络不是法外之地" required id="comment"></textarea>
+                       <div class="comment_record">
+                           <i class="layui-icon layui-icon-mike" style="font-size: 35px" onclick="inputByMicrophone()"></i>
+                       </div>
                      <div class="comment_btn">
                          点击发表
                      </div>
