@@ -140,9 +140,8 @@ function findAllComment(blogId) {
                         let data = res.data;
                         let comment_list = [];
                         for (let i = 0; i < data.length; i++) {
-                            let element = `<li class="comment_item" id='comment_${data[i]['id']}'> <span>${data[i]['account']}：</span> ${data[i]['content']}`;
-                            //TODO（回复按钮）
-// <!--                                      <button type="button" class="layui-btn layui-btn-primary" onclick="reply()" lay-on="test-offset-l">从左往右</button></li>
+                            let element = `<span class="comment_item" id='comment_${data[i]['id']}'> <span>${data[i]['account']}：</span> ${data[i]['content']}
+                                  <span  class="layui-btn layui-btn-primary" onclick="reply()" lay-on="test-offset-r">回复</span>`;
                             comment_list.push(element);
                         }
                         $('.comment_list').empty().append(comment_list.join(''));
@@ -163,14 +162,14 @@ function reply() {
         util.on('lay-on', {
             'test-offset-l': function () {
                 layer.open({
-                    type: 1,
-                    offset: 'l',
-                    anim: 'slideRight', // 从左往右
-                    area: ['320px', '100%'],
+                    type: false,
+                    offset: 'r',
+                    anim: 'slideLeft', // 从左往右
+                    area: ['560px', '100%'],
                     shade: 0.1,
                     shadeClose: true,
-                    id: 'ID-demo-layer-direction-l',
-                    content: '<div style="padding: 16px;">任意 HTML 内容</div>'
+                    id: 'ID-demo-layer-direction-r',
+                    content: ['../reply.html','yes']
                 });
             }
         })

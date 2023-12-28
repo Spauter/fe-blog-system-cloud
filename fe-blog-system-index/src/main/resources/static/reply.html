@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="韬韬的个人博客">
+    <meta name="description" content="韬韬的个人博客客-可定制的个人博客系统">
+    <meta name="author" content="AzriKxs,995586226@qq.com China">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="ie-stand">
+    <title>韬韬的个人博客-回复列表</title>
+    <link rel="stylesheet" href="./js/layui/css/layui.css">
+    <link rel="stylesheet" href="./css/reply.css">
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="./js/editor.md/css/editormd.preview.min.css">
+    <link rel="stylesheet" href="./font/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--    添加垂直滚动条-->
+    <style>
+        .layui-layer-content {
+            overflow-x: auto;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+<div>
+
+</div>
+<div class="article_comment">
+        <div id="commentPage"></div>
+        <h5 style=" font-size: 1.6rem;color: #00B894;">回复</h5>
+        <div class="article_comment_frame">
+                    <textarea class="textarea" name="comment_content" placeholder="在此处发表评论，请注意遵守道德与法律"
+                              required id="comment"></textarea>
+            <div class="comment-reply">
+                <i class="layui-icon layui-icon-mike" style="font-size: 2rem; color: #00B894;" onclick="inputByMicrophone()"></i>
+            </div>
+
+            <div class="reply_btn">
+                点击回复
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="./js/jquery.min.js"></script>
+<script src="./js/layui/layui.js"></script>
+<script src="./js/article.js"></script>
+</body>
+</html>
