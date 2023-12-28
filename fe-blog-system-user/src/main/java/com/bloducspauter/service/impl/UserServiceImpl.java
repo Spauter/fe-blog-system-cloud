@@ -33,11 +33,12 @@ public class UserServiceImpl implements UserService {
         user.setEmail(email);
         user.setNick(account);
         user.setProfile("系统的默认签名，送给每一个小可爱");
+        user.setStatus("注册用户");
         if (System.getProperty("os.name").startsWith("Windows")) {
             user.setAvatar("/"+DEFAULT_AVATAR.get(2));
         } else {
             //默认图片
-            user.setAvatar("/group1/M00/00/00/rBIAA2V5roGAYUbRAADmKe992_s254.jpg");
+            user.setAvatar("/"+DEFAULT_AVATAR.get(3));
         }
         int result = userMapper.insert(user);
         return result == 1 ? user : null;
