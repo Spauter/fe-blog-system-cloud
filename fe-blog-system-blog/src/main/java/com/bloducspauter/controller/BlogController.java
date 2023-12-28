@@ -358,13 +358,18 @@ public class BlogController {
             //查询博客的领域
             String field = fieldService.SelectFieldNameById(blog.getFieldId());
             HashMap<String, Object> map = new HashMap<>(2);
-            map.put("blog", blog);
             map.put("tags", taglist);
             map.put("field", field);
+            int clicks=blog.getClicks();
+            clicks++;
+            blog.setClicks(clicks);
+            blogService.modifyBlog(blog);
+            map.put("blog", blog);
             resultMap.put("code", 200);
             resultMap.put("data", map);
         } catch (Exception e) {
-            resultMap.put("code", e.getCause());
+            resultMap.put("code", 200);
+            resultMap.put("msg",e.getCause());
         }
         return resultMap;
     }

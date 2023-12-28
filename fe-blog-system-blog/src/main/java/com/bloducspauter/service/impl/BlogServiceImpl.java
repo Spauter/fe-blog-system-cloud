@@ -36,6 +36,7 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public boolean addBlog(Blog blog) {
+        blog.setClicks(0);
         boolean flag = false;
         int row = blogMapper.insert(blog);
         if (row > 0) {
@@ -46,29 +47,21 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public boolean deleteBlog(int blogId) {
-        boolean flag = false;
         QueryWrapper<Blog> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("blog_id", blogId);
         Blog blog = selectInBlog(blogId);
         blog.setDeleted(1);
         blog.setStatus(3);
         int row = blogMapper.update(blog, queryWrapper);
-        if (row > 0) {
-            flag = true;
-        }
-        return flag;
+       return row>0;
     }
 
     @Override
     public boolean modifyBlog(Blog blog) {
-        boolean flag = false;
         QueryWrapper<Blog> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("blog_id", blog.getBlogId());
         int row = blogMapper.update(blog, queryWrapper);
-        if (row > 0) {
-            flag = true;
-        }
-        return flag;
+        return row > 0;
     }
 
 
@@ -131,10 +124,10 @@ public class BlogServiceImpl implements BlogService {
         QueryWrapper<TagRelation> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("blog_id", blogId);
         List<TagRelation> tagRelation = tagRelationMapper.selectList(queryWrapper);
-        int result=0;
-        for(TagRelation t:tagRelation){
-        t.setDeleted(1);
-        result=tagRelationMapper.update(t,queryWrapper);
+        int result = 0;
+        for (TagRelation t : tagRelation) {
+            t.setDeleted(1);
+            result = tagRelationMapper.update(t, queryWrapper);
         }
         return result;
     }
@@ -168,7 +161,6 @@ public class BlogServiceImpl implements BlogService {
     public List<Tag> selectByTag(List<String> tag) {
         return blogMapper.selectByTag(tag);
     }
-
 
 
     @Override

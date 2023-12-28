@@ -16,8 +16,6 @@ function load() {
             })
         })
     }, 200)
-
-
 }
 
 function content_load() {
@@ -38,6 +36,7 @@ function content_load() {
             $('.article_content').empty().append(element);
             $('.author').text(blog.author);
             $('.field').text(res.data.field);
+            $('.clicks').text(blog.clicks)
             let tags = [];
             for (let i = 0; i < msg.tags.length; i++) {
                 tags.push(msg.tags[i]['name']);

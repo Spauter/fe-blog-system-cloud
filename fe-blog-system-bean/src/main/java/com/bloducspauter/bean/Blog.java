@@ -32,4 +32,5 @@ public class Blog implements Serializable {
     private Date createTime;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date updateTime;
+    private Integer clicks;
 }
