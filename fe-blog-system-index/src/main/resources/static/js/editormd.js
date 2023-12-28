@@ -1,6 +1,41 @@
 $(function () {
+    userInfoLoad();
     getSession();
 })
+//防止跳转单独拿出来
+function userInfoLoad() {
+    $.ajax({
+        type: 'GET',
+        url: '/fe-blog/SelectUserServlet',
+        data: {},
+        dataType: 'json',
+        success: function (res) {
+            let code = res.code;
+            console.log(res);
+            if (code === 200) {
+                loginUser = res.data; // 将值赋给全局变量
+                $('#user_avatar').attr("src", loginUser.avatar);
+                $('.user_avatar>img').attr("src", loginUser.avatar);
+            } else {
+             $('.aside').empty();
+             $('#save_btn').text("点击投稿")
+                changeBar()
+            }
+        }
+    })
+}
+
+function changeBar(){
+    let element=`
+    <div class="nav_content">
+        <div class="nav_content_title">
+            <h1><a href="index.html">FE小组博客</a></h1>
+        </div>
+    </div>
+`
+
+    $('.nav').empty().append(element);
+}
 
 function media_layer() {
     layui.use(['layer'], function () {
@@ -23,12 +58,11 @@ function media_layer() {
                 console.log(res);
                 let data=res.data
                 for (let i = 0; i < data.length; i++) {
-                    let temp = parseInt(10000 * Math.random());
                     let element = `
                     <label for="${data[i]['image']}" class="layer_content_frame">
                     <input type="radio" class="media_layer_input" id="${data[i]['image']}" name="img_radio" value="${data[i]['image']}">
                     <div class="img_frame">
-                        <img src="../images/media/${data[i]['image']}?temp=${temp}" alt="${data[i]['image']}">
+                        <img src="/${data[i]['image']}" alt="${data[i]['image']}">
                     </div>
                      </label>
                     `
@@ -63,7 +97,7 @@ function media_layer() {
                     e.preventDefault();
                     let data = $('#media_layer_form').serializeArray();
                     console.log(data[0].value);
-                    let img = `<img src= "../images/media/${data[0].value}" id="img_set" name="${data[0].value}">`;
+                    let img = `<img src= "/${data[0].value}" id="img_set" name="${data[0].value}">`;
                     $('.media_check_frame').empty().append(img);
                     parent.layer.closeAll();
                 })
