@@ -29,7 +29,7 @@ function changeBar(){
     let element=`
     <div class="nav_content">
         <div class="nav_content_title">
-            <h1><a href="index.html">FE小组博客</a></h1>
+            <h1><a href="../index.html">韬韬的博客</a></h1>
         </div>
     </div>
 `
