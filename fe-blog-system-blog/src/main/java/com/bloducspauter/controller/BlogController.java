@@ -139,6 +139,7 @@ public class BlogController {
         String description = json.getString("description");
         String type = json.getString("type");
         String field = json.getString("field");
+        String audited=json.getString("audited");
         Field field1 = fieldService.selectByField(field);
         int userId = Integer.parseInt(user.getUserId());
         String author = user.getAccount();
@@ -153,6 +154,7 @@ public class BlogController {
         blog.setFieldId(field1.getFieldId());
         blog.setUserId(userId);
         blog.setAuthor(author);
+        blog.setAudited(audited);
         return blog;
     }
 

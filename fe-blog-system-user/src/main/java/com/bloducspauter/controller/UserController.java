@@ -112,6 +112,7 @@ public class UserController {
         if (user != null) {
             map.put("code", 200);
             map.put("msg", "已经登录");
+            map.put("data",user);
         } else {
             map.put("code", 404);
             map.put("msg", "没有登录");

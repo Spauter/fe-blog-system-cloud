@@ -1,3 +1,5 @@
+let loginUser=null;
+
 $(function () {
     userInfoLoad();
     getSession();
@@ -12,7 +14,7 @@ function userInfoLoad() {
         success: function (res) {
             let code = res.code;
             console.log(res);
-            if (code === 200) {
+            if (res.data.status!=="注册用户") {
                 loginUser = res.data; // 将值赋给全局变量
                 $('#user_avatar').attr("src", loginUser.avatar);
                 $('.user_avatar>img').attr("src", loginUser.avatar);
@@ -24,7 +26,7 @@ function userInfoLoad() {
         }
     })
 }
-
+//游客登录下移除左边导航栏，添加头部导航栏
 function changeBar(){
     let element=`
     <div class="nav_content">
@@ -33,7 +35,6 @@ function changeBar(){
         </div>
     </div>
 `
-
     $('.nav').empty().append(element);
 }
 
@@ -109,11 +110,22 @@ function media_layer() {
 }
 
 
+
+
+//添加博客
 function blog_add(editormd) {
-    $('#save_btn').text('发布博客');
     $('#blog_add').on('submit', function (e) {
+        if (loginUser==null){
+            layer.msg("请留下您的大名后在提交哦", {
+                icon: 6,
+                time: 1000
+            });
+            // 关闭加载
+            layer.closeAll('loading');
+            return;
+        }
         let layer;
-        layui.use(['layer'],function(){
+        layui.use(['layer'], function () {
             layer = layui.layer;
             layer.load(1);
         })
@@ -139,40 +151,100 @@ function blog_add(editormd) {
             "userId": 1,
             "author": "admin",
             "tag": tagData,
-            "field": $("option:selected").val()
+            "field": $("option:selected").val(),
+            "audited":'待审核'
         }
         console.log(JSON.stringify(test));
+        const str = Math.random().toString(36).slice(2);
+        // 审核博客
         $.ajax({
             type: 'POST',
-            url: '/fe-blog/AddBlogController',
-            data: JSON.stringify(test),
-            dataType: 'json',
-            success: function (res) {
-                console.log(res.msg);
-                if (res.code !== 200) {
-                    layer.msg(res.msg, {
-                        icon: 2,
-                        time: 1000
-                    });
-                    // 关闭加载图标
-                    layer.closeAll('loading');
-                    return;
-                }
-                parent.layer.closeAll();
-                layer.msg('发布成功！');
-                setTimeout(function () {
-                    parent.layer.closeAll();
-                    window.location.href = 'newblog.html';
-                }, 2000)
+            url: 'https://gtf.ai.xingzheai.cn/v2.0/game_chat_ban/detect_text',
+            data: {
+                'token':'LUJGYW0SB7KHIOZN',
+                'data_id': str,
+                'context_type':'post',
+                'context': test.content,
+                'suggestion': '',
+                'label': ''
             },
-            error: function () {
-                console.log("错误");
+            dataType: 'json',
+            success: function(data){
+                console.log(data);
+                let sug = data.data.suggestion;
+                if(sug === "review"){
+                    layui.use('layer',function(){
+                        let layer=layui.layer;
+                        layer.msg(data.data.msg,{
+                            icon:6,
+                            time: 2000
+                        })
+                        test.audited="待审核";
+                        add(test)
+                    })
+                }else if (sug ==="block"){
+                    layui.use('layer',function(){
+                        let layer=layui.layer;
+                        layer.msg("含有敏感词汇,审核不通过",{
+                            icon:2,
+                            time: 1000
+                        })
+                        test.audited="未通过";
+                    })
+                }else {
+                    test.audited="已通过";
+                    add(test)
+                }
                 // 关闭加载图标
                 layer.closeAll('loading');
+            },
+            error :function(){
+                layui.use('layer',function(){
+                    let layer=layui.layer;
+                    layer.msg('自动审核失败，将移交给人工审核!',{
+                        icon:2,
+                        time: 1000
+                    })
+                })
+                add(test)
             }
-        });
+        })
     })
 }
+
+//添加博客
+function add(test){
+    $.ajax({
+        type: 'POST',
+        url: '/fe-blog/AddBlogController',
+        data: JSON.stringify(test),
+        dataType: 'json',
+        success: function (res) {
+            console.log(res.msg);
+            if (res.code !== 200) {
+                layer.msg(res.msg, {
+                    icon: 2,
+                    time: 1000
+                });
+                // 关闭加载图标
+                layer.closeAll('loading');
+                return;
+            }
+            parent.layer.closeAll();
+            layer.msg('发布成功！');
+            setTimeout(function () {
+                parent.layer.closeAll();
+                window.location.href = 'newblog.html';
+            }, 2000)
+        },
+        error: function () {
+            console.log("错误");
+            // 关闭加载图标
+            layer.closeAll('loading');
+        }
+    });
+}
+
 
 //加载标签类型
 function findAllTags() {

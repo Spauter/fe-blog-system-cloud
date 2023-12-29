@@ -20,7 +20,7 @@ function indexTextLoad() {
         size: 2048,
         success: function (res) {
             console.log(res);
-            let data=res.data
+            let data = res.data
             $('#index_title').text(data[0]['title']);
             $('#index_welcome').text(data[0]['welcome']);
             $('#index_description').text(data[0]['description']);
@@ -52,14 +52,16 @@ function isLogin() {
         success: function (res) {
             console.log(res);
             //跳转登录界面
-            if (res.code===404) {
+            if (res.code === 404) {
                 $('.user_img_frame').on('click', function () {
                     window.open('../login.html');
                 })
 
                 $('.user_func').empty();
             } else {
-                let element = `
+                let element;
+                if (res.data.status !== "注册用户") {
+                    element = `
                 <a class="user_func_box" href="./pages/newblog.html">
                 <i class="fa fa-pencil"></i>
                 <span>新建博客</span>
@@ -75,8 +77,14 @@ function isLogin() {
             <a class="user_func_box" href="./pages/userinfo.html">
                 <i class="fa fa-tachometer"></i>
                 <span>进入后台</span>
-            </a>
-                `
+            </a>`;
+                }else {
+                 element=`            
+            <a class="user_func_box" href="./pages/userinfo.html">
+                <i class="fa fa-user"></i>
+                <span>我的信息</span>
+            </a>`;
+                }
                 $('.user_func').empty().append(element);
                 userInfoLoad();
             }
@@ -217,7 +225,7 @@ function load() {
 
 //博客的封面，就是从image选取的
 function fm() {
-    let imgList = ['fm0.jpg', 'fm1.jpg', 'fm2.jpg', 'fm3.jpg', 'fm4.jpg', 'fm5.jpg', 'fm6.jpg', 'fm7.jpg', 'fm8.jpg', 'fm9.jpg', 'fm10.jpg', 'fm11.jpg', 'fm11.jpg','HT.jpg'];
+    let imgList = ['fm0.jpg', 'fm1.jpg', 'fm2.jpg', 'fm3.jpg', 'fm4.jpg', 'fm5.jpg', 'fm6.jpg', 'fm7.jpg', 'fm8.jpg', 'fm9.jpg', 'fm10.jpg', 'fm11.jpg', 'fm11.jpg', 'HT.jpg'];
     $('.blog_fm').each(function () {
         let index = Math.floor(Math.random() * 13);
         $(this).attr('src', '' + imgList[index]);
@@ -232,7 +240,7 @@ function userInfoLoad() {
         dataType: 'json',
         // 在 jQuery 中，.val() 通常用于表单元素，而对于非表单元素（如 div），使用 .text() 来设置文本内容
         success: function (res) {
-            let data=res.data;
+            let data = res.data;
             if (data != null) {
                 $('.avatar_img').attr("src", data.avatar)
                 $('.setNickname').text(data.nick);  // 使用 .text() 设置文本内容
