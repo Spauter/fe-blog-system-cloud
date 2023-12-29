@@ -8,6 +8,7 @@ $(function () {
         let method='GET'
         let requestUrl='/fe-blog/SelectLimitBlogController'
         loadTable(table,laypage,allCount,curr,method,getUrl,requestUrl);
+
     })
 })
 
@@ -72,6 +73,7 @@ function auditBlog(){
         let method='GET'
         let requestUrl='/fe-blog/auditBlog/'
         loadTable(table,laypage,allCount,curr,method,getUrl,requestUrl);
+
     })
 }
 

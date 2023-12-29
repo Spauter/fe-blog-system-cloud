@@ -94,7 +94,7 @@ recognition.onresult = function (event) {
     var yourComment = event.results[0][0].transcript
     console.log(event.results[0][0].transcript)
     //把结果显示在输入框上
-    $('#comment').val(yourComment);
+    $('#comment').append(yourComment);
 }
 function inputByMicrophone() {
     console.log("开始输入")
