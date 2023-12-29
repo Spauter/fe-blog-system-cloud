@@ -1,4 +1,4 @@
-let loginUser=null;
+
 
 $(function () {
     userInfoLoad();
@@ -70,7 +70,6 @@ function media_layer() {
                     img_list.push(element);
 
                 }
-
                 img_list_string = img_list.join('');
                 console.log(img_list);
                 console.log(img_list_string);

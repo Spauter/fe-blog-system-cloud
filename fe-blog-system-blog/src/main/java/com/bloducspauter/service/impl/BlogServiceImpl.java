@@ -168,5 +168,12 @@ public class BlogServiceImpl implements BlogService {
         return blogMapper.selectblogbytag(tagname);
     }
 
+    @Override
+    public List<Blog> selectAuditingBlog() {
+        QueryWrapper<Blog>queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("audited","待审核");
+        return blogMapper.selectList(queryWrapper);
+    }
+
 
 }

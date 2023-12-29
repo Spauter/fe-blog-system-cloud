@@ -125,4 +125,5 @@ public interface BlogService {
     List<Blog> selectblogbytag(String tagname);
 
 
+    List<Blog>selectAuditingBlog();
 }

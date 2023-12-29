@@ -280,6 +280,24 @@ public class BlogController {
         return map;
     }
 
+    @RequestMapping("auditBlog")
+    public Map<String,Object>auditBlog(){
+        Map<String,Object>map=new HashMap<>();
+        List<Blog> blogs;
+        try{
+            blogs=  blogService.selectAuditingBlog();
+            Map<String, Object> allMap = allMap(blogs);
+            map.put("code", 200);
+            map.put("msg", "获取博客列表成功");
+            map.put("data", allMap);
+        }catch (Exception e){
+            e.printStackTrace();
+            map.put("code", 500);
+            map.put("msg", e.getCause());
+        }
+        return map;
+    }
+
     @RequestMapping("AddBlogController")
     public Map<String, Object> addBlog(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
         Map<String, Object> resultMap = new HashMap<>();
@@ -426,4 +444,6 @@ public class BlogController {
         }
         return resultMap;
     }
+
+
 }

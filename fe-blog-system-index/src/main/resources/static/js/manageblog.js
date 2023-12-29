@@ -6,7 +6,8 @@ $(function () {
         let curr = 1;
         let getUrl='/fe-blog/AllBlogCountServlet'
         let method='GET'
-        loadTable(table,laypage,allCount,curr,method,getUrl);
+        let requestUrl='/fe-blog/SelectLimitBlogController'
+        loadTable(table,laypage,allCount,curr,method,getUrl,requestUrl);
     })
 })
 
@@ -69,12 +70,13 @@ function auditBlog(){
         let curr = 1;
         let getUrl='/fe-blog/AllBlogCountServlet'
         let method='GET'
-        loadTable(table,laypage,allCount,curr,method,getUrl);
+        let requestUrl='/fe-blog/auditBlog/'
+        loadTable(table,laypage,allCount,curr,method,getUrl,requestUrl);
     })
 }
 
 
-function loadTable(table,laypage,allCount,curr,method,getUrl) {
+function loadTable(table,laypage,allCount,curr,method,getUrl,requestUrl) {
     $.ajax({
         type: method ,
         url: getUrl,
@@ -100,7 +102,7 @@ function loadTable(table,laypage,allCount,curr,method,getUrl) {
                     table.render({
                         elem: "#blog",
                         title: "管理博客",
-                        url: "/fe-blog/SelectLimitBlogController",
+                        url: requestUrl,
                         where: {
                             'page': (curr - 1) * 14,
                             'size': 14
