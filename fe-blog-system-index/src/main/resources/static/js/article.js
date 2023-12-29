@@ -100,6 +100,10 @@ recognition.onresult = function (event) {
 function inputByMicrophone() {
     console.log("开始输入")
     layui.use('layer', function () {
+        layer.msg("开始语音输入", {
+            icon: 6,
+            time: 1000
+        })
         recognition.start();
     })
 
@@ -107,6 +111,10 @@ function inputByMicrophone() {
 function stopinputByMicrophone() {
     console.log("停止输入")
     layui.use('layer', function () {
+        layer.msg("停止语音输入", {
+            icon: 6,
+            time: 1000
+        })
         recognition.stop();
     })
 }
