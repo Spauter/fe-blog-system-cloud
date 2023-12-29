@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 @FeignClient(name = "fe-user")
-public interface FeBlogUserApi {
+public interface   FeBlogUserApi {
     @PostMapping("/fe-user/UserLoginController")
     Map<String, Object> login(HttpServletRequest req, HttpSession session);
 
