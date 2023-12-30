@@ -2,22 +2,24 @@ package com.bloducspauter.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.management.Attribute;
 import javax.management.AttributeList;
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
+import java.io.File;
 import java.lang.management.ManagementFactory;
 import java.util.HashMap;
 import java.util.Map;
 
-@RestController("fe-ornament")
+@RestController
+@RequestMapping("fe-ornament")
 @Slf4j
 public class GetInfoController {
 
-    @GetMapping("CPUUsage")
+    @RequestMapping("/CPUUsage")
     public Map<String,Object> getCPUUsage() {
         double cpuUsage = 0;
         Map<String,Object>map=new HashMap<>();
@@ -37,24 +39,26 @@ public class GetInfoController {
             // value为-1表示无法获取CPU使用情况
             if (value == -1) {
                 map.put("code",500);
-                map.put("cpuUsage",0);
+                map.put("cpuUsage",-1);
                 return map;
             }
 
-            cpuUsage = ((int) (value * 1000) / 10.0);
+            cpuUsage =  ((value * 1000) / 10.0);
             map.put("code",200);
-            map.put("cpuUsage",cpuUsage);
+            map.put("cpuUsage",String.format("%.2f",cpuUsage*100));
+            map.put("cpuFree",String.format("%.2f",100-cpuUsage*100));
         } catch (Exception e) {
             map.put("code",500);
             map.put("msg",e.getCause());
             map.put("cpuUsage",0);
+            map.put("cpuFree",0);
             e.printStackTrace();
         }
         return map;
     }
 
 
-    @GetMapping("RAMUsage")
+    @RequestMapping("/RAMUsage")
     public Map<String, Object> getRAMUsage() {
         Map<String, Object> map = new HashMap<>();
         try {
@@ -84,11 +88,12 @@ public class GetInfoController {
             e.printStackTrace();
             map.put("totoalMemory", 0);
             map.put("freeMemory", 0);
+            map.put("usagMemory", 0);
         }
         return map;
     }
 
-    @GetMapping("JVMUsage")
+    @RequestMapping("/JVMUsage")
     public Map<String,Object> getJVMUsage() {
         Map<String,Object>map=new HashMap<>();
         try {
@@ -111,10 +116,28 @@ public class GetInfoController {
         return map;
     }
 
+    @RequestMapping("/DiskUsage")
+    public Map<String,Object> getDiskUsed() {
+        File win = new File("/");
+        Map<String,Object>map=new HashMap<>();
+        if (win.exists()) {
+            long total = win.getTotalSpace();
+            long freeSpace = win.getFreeSpace();
+            System.out.println("磁盘总量：" + total / 1024 / 1024 / 1024);
+            System.out.println("磁盘剩余总量：" + freeSpace / 1024 / 1024 / 1024);
+            System.out.println("磁盘已用总量：" + (total - freeSpace) / 1024 / 1024 / 1024);
+            map.put("total",total/ 1024 / 1024 / 1024);
+            map.put("freeSpace",freeSpace/ 1024 / 1024 / 1024);
+            map.put("usage",(total-freeSpace) / 1024 / 1024 / 1024);
+        }
+        return map;
+    }
+
     @Test
-    public void Test1() {
-        log.info("CPU" + getCPUUsage());
-        log.info("RAM" + getRAMUsage());
-        log.info("JVM" + getJVMUsage());
+    public void v(){
+        log.info(getCPUUsage()+"");
+        log.info(getJVMUsage()+"");
+        log.info(getRAMUsage()+"");
+        log.info(getDiskUsed()+"");
     }
 }

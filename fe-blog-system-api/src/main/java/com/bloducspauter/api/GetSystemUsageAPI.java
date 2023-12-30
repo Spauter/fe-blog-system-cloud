@@ -1,18 +1,21 @@
 package com.bloducspauter.api;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Map;
 
 @FeignClient(name = "fe-ornament")
 public interface GetSystemUsageAPI {
-    @GetMapping("CPUUsage")
+    @RequestMapping("/fe-ornament/CPUUsage")
     Map<String, Object> getCPUUsage();
 
-    @GetMapping("RAMUsage")
+    @RequestMapping("/fe-ornament/RAMUsage")
     Map<String, Object> getRAMUsage();
 
-    @GetMapping("JVMUsage")
+    @RequestMapping("/fe-ornament/JVMUsage")
     Map<String,Object> getJVMUsage();
+
+    @RequestMapping("/DiskUsage")
+    Map<String,Object> getDiskUsed();
 }
