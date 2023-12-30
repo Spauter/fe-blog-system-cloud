@@ -147,8 +147,8 @@ function findAllComment(blogId) {
                         let data = res.data;
                         let comment_list = [];
                         for (let i = 0; i < data.length; i++) {
-                            let element = `<li class="comment_item" id='comment_${data[i]['id']}'> <span>${data[i]['account']}：</span> ${data[i]['content']}
-                                       <button type="button" class="layui-btn layui-btn-primary " lay-on="test-offset-r" onclick="reply()">回复</button>`
+                            let element = `<li class="comment_item" id='comment_${data[i]['id']}'> <span>${data[i]['account']}：</span> ${data[i]['content']}`
+                                       // <button type="button" class="layui-btn layui-btn-primary " lay-on="test-offset-r" onclick="reply()">回复</button>`
                             comment_list.push(element);
                         }
                         $('.comment_list').empty().append(comment_list.join(''));

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-
+<html lang="en">
 <head>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/echarts.js"></script>
     <meta charset="UTF-8">
     <meta name="keywords" content="韬韬的个人博客后台">
     <meta name="description" content="韬韬的个人博客-可定制的个人博客系统后台">
@@ -15,7 +16,6 @@
     <link rel="stylesheet" href="../font/font-awesome-4.7.0/css/font-awesome.min.css">
 
 </head>
-
 <body>
 <!-- S 侧边导航 -->
 <div class="aside">
@@ -69,29 +69,60 @@
         </div>
     </nav>
 </div>
-<!-- E 导航区域 -->
-
-<!-- S 内容区域 -->
 <div class="content_container">
-    <div class="content_container_title">
-        <h2>账户管理</h2>
-    </div>
-    <div class="account_show">
-        <p>用户名：<span class="username_show">admin</span></p>
-        <p>密码：<span>**********</span></p>
-
-        <button class="layui-btn" id="pwd_change_btn">更改密码</button>
-
-
-    </div>
+    <div id="main" style="width: 600px;height:400px;"></div>
 </div>
-<!-- E 内容区域 -->
-<script src="../js/jquery.min.js"></script>
-<script src="../js/getLoginUser.js"></script>
-<script src="../js/layui/layui.js"></script>
-<script src="../js/common.js"></script>
-<script src="../js/account.js"></script>
-<script src="../js/logout.js"></script>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+
+    // 指定图表的配置项和数据
+    function makeRandomData() {
+        let CPUusage;
+        $.ajax({
+            type: 'GET',
+            url: '../fe-ornament/CPUUsage',
+            dataType: 'json',
+            success: function (res) {
+                CPUusage=res.cpuUsage;
+            },
+            error :function () {
+            }
+        });
+        return [
+            {
+                value: CPUusage,
+                name: '已使用'
+            },
+            {
+                value: 100-CPUusage,
+                name: '空闲'
+            },
+        ];
+    }
+    option = {
+        series: [
+            {
+                type: 'pie',
+                radius: [0, '50%'],
+                data: makeRandomData()
+            }
+        ]
+    };
+
+    setInterval(() => {
+        myChart.setOption({
+            series: {
+                data: makeRandomData()
+            }
+        });
+    }, 2000);
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+
+
+</script>
 </body>
 
 </html>
