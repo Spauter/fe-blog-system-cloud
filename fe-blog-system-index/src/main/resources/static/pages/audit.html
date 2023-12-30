@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="../js/jquery.min.js"></script>
     <script src="../js/echarts.js"></script>
     <meta charset="UTF-8">
     <meta name="keywords" content="韬韬的个人博客后台">
@@ -57,6 +56,12 @@
                     <dd><a href="manageindex.html">首页管理</a></dd>
                 </dl>
             </li>
+            <li class="layui-nav-item layui-nav-itemed">
+                <a href="javascript:;">审核管理</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="audit.html">审核大厅</a></dd>
+                </dl>
+            </li>
         </ul>
     </div>
 </div>
@@ -83,6 +88,8 @@
     <div id="RAM" class="chart" style="width: 400px;height:400px;"></div>
     <div id="Disk" class="chart" style="width: 400px;height:400px;"></div>
 </div>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/layui/layui.js"></script>
 <script type="text/javascript">
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('RAM'));
@@ -188,6 +195,10 @@
             success: function (res) {
                 let cpuUsage = res.cpuUsage;
                 let cpuFree=res.cpuFree
+                if (cpuUsage>100){
+                    cpuUsage=100;
+                    cpuFree=0;
+                }
                 // 更新图表数据
                 CPUChart.setOption({
                     series: [{
