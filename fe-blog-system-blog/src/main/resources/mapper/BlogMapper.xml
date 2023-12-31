@@ -67,7 +67,7 @@
         SELECT blog_id,title,clicks FROM db_mybatis.blog
                  where audited='已通过'
         ORDER BY clicks DESC
-        LIMIT 10;
+        LIMIT 6;
     </select>
 
 </mapper>
