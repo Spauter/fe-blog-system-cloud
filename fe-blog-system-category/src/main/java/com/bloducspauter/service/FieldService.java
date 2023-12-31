@@ -4,6 +4,7 @@ package com.bloducspauter.service;
 
 import com.bloducspauter.bean.Blog;
 import com.bloducspauter.bean.Field;
+import com.bloducspauter.statistics.FieldStatistics;
 
 import java.util.List;
 
@@ -77,5 +78,7 @@ public interface FieldService {
     List<Blog> selectBlogbytitle(int fieldid, int userid, String blogtitle, int page, int size);
 
     String SelectFieldNameById(int fieldID);
+
+    List<FieldStatistics>seeHotSubmittedFields();
 
 }

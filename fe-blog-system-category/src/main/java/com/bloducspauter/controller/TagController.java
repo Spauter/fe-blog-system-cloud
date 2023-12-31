@@ -3,6 +3,8 @@ package com.bloducspauter.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.bloducspauter.service.MediaService;
 import com.bloducspauter.service.TagService;
+import com.bloducspauter.statistics.FieldStatistics;
+import com.bloducspauter.statistics.TagStatistics;
 import com.bloducspauter.utils.GetRequestJson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +93,21 @@ public class TagController {
         }
         return map;
     }
-
+    @RequestMapping("hotTags")
+    public Map<String, Object> seeDistributionOfBlogsByTag() {
+        Map<String, Object> map = new HashMap<>();
+        List<TagStatistics> tagStatistics;
+        try {
+            tagStatistics = tagService.seeHotSubmittedTags();
+            map.put("code",200);
+            map.put("msg","查询成功");
+            map.put("data",tagStatistics);
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("code", 500);
+            map.put("msg", e.getMessage());
+        }
+        return map;
+    }
 
 }

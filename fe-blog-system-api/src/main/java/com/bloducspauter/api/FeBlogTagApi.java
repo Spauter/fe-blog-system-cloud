@@ -18,4 +18,7 @@ public interface FeBlogTagApi {
     @RequestMapping("/fe-category/SelectAllTagController")
     Map<String, Object> findAllTag();
 
+    @RequestMapping("/fe-category/hotTags")
+    Map<String, Object> seeDistributionOfBlogsByTag();
+
 }

@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bloducspauter.bean.Blog;
 import com.bloducspauter.bean.Field;
 import com.bloducspauter.mapper.FieldMapper;
+import com.bloducspauter.mapper.FieldStatisticsMapper;
 import com.bloducspauter.service.FieldService;
+import com.bloducspauter.statistics.FieldStatistics;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +21,8 @@ public class FieldServiceImpl implements FieldService {
     @Autowired
     private FieldMapper fieldMapper;
 
-
+    @Autowired
+    private FieldStatisticsMapper fieldStatisticsMapper;
 
     @Override
     public List<Field> selectALL() {
@@ -62,6 +65,11 @@ public class FieldServiceImpl implements FieldService {
     public String SelectFieldNameById(int fieldID) {
        Field field=fieldMapper.selectById(fieldID);
       return field.getName();
+    }
+
+    @Override
+    public List<FieldStatistics> seeHotSubmittedFields() {
+        return fieldStatisticsMapper.getFieldStatistics();
     }
 
 

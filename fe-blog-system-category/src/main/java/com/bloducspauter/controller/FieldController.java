@@ -3,17 +3,23 @@ package com.bloducspauter.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bloducspauter.bean.Field;
+import com.bloducspauter.mapper.FieldStatisticsMapper;
+import com.bloducspauter.mapper.TagStatisticsMapper;
 import com.bloducspauter.service.FieldService;
+import com.bloducspauter.statistics.FieldStatistics;
+import com.bloducspauter.statistics.TagStatistics;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +31,7 @@ public class FieldController {
 
     @Autowired
     private FieldService fieldService;
+
 
     private static String getString(HttpServletRequest req) throws IOException {
         ServletInputStream inputStream = req.getInputStream();
@@ -72,8 +79,6 @@ public class FieldController {
     }
 
 
-
-
     @RequestMapping("FindAllField")
     public Map<String, Object> findAllFeild() {
         Map<String, Object> map = new HashMap<>();
@@ -91,6 +96,23 @@ public class FieldController {
             log.error(e.getLocalizedMessage());
             map.put("code", 500);
             map.put("msg", e.getCause());
+        }
+        return map;
+    }
+
+    @RequestMapping("hotFields")
+    public Map<String, Object> seeDistributionOfBlogsByField() {
+        Map<String, Object> map = new HashMap<>();
+        List<FieldStatistics> fieldStatistics;
+        try {
+            fieldStatistics = fieldService.seeHotSubmittedFields();
+            map.put("code",200);
+            map.put("msg","查询成功");
+            map.put("data",fieldStatistics);
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("code", 500);
+            map.put("msg", e.getMessage());
         }
         return map;
     }

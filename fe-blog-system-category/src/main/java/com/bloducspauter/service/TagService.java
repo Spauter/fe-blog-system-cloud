@@ -2,8 +2,8 @@ package com.bloducspauter.service;
 
 
 
-import com.bloducspauter.bean.Blog;
 import com.bloducspauter.bean.Tag;
+import com.bloducspauter.statistics.TagStatistics;
 
 import java.util.List;
 
@@ -40,4 +40,5 @@ public interface TagService {
     boolean delete(String tag);
 
 
+    List<TagStatistics> seeHotSubmittedTags();
 }

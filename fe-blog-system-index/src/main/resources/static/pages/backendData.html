@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-
+<html lang="en">
 <head>
+    <script src="../js/echarts.js"></script>
     <meta charset="UTF-8">
     <meta name="keywords" content="韬韬的个人博客后台">
     <meta name="description" content="韬韬的个人博客-可定制的个人博客系统后台">
@@ -13,9 +13,17 @@
     <link rel="stylesheet" href="../js/layui/css/layui.css">
     <link rel="stylesheet" href="../css/backstage.css">
     <link rel="stylesheet" href="../font/font-awesome-4.7.0/css/font-awesome.min.css">
-
+    <style>
+        .content_container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .chart {
+            width: 48%; /* 设置每个图表的宽度，留有一些间距 */
+            box-sizing: border-box;
+        }
+    </style>
 </head>
-
 <body>
 <!-- S 侧边导航 -->
 <div class="aside">
@@ -67,7 +75,7 @@
         </div>
         <div class="nav_user">
             <div class="user_avatar">
-                <img src="../fe_blog/images/avatar/avatar.jpg" alt="头像">
+                <img src="./avatar.png" alt="头像">
             </div>
             <div class="user_cancel">
                 <a href="javascript:;"><i class="fa fa-sign-out"></i>注销</a>
@@ -75,29 +83,21 @@
         </div>
     </nav>
 </div>
-<!-- E 导航区域 -->
-
-<!-- S 内容区域 -->
-<div class="content_container">
-    <div class="content_container_title">
-        <h2>账户管理</h2>
-    </div>
-    <div class="account_show">
-        <p>用户名：<span class="username_show">admin</span></p>
-        <p>密码：<span>**********</span></p>
-
-        <button class="layui-btn" id="pwd_change_btn">更改密码</button>
-
-
-    </div>
+<div class="content_container" type="">
+    <div id="CPU" class="chart" style="width: 400px;height:300px;"></div>
+    <div id="RAM" class="chart" style="width: 400px;height:300px;"></div>
+    <div id="Disk" class="chart" style="width: 400px;height:300px;"></div>
 </div>
-<!-- E 内容区域 -->
+<div class="content_container">
+    <div id="Clicks" class="chart" style="width: 1400px;height:400px;"></div>
+</div>
+<div class="content_container">
+    <div id="hotTags" class="chart" style="width: 500px;height: 500px"></div>
+    <div id="hotFields" class="chart" style="width: 500px;height: 500px"></div>
+</div>
 <script src="../js/jquery.min.js"></script>
 <script src="../js/getLoginUser.js"></script>
 <script src="../js/layui/layui.js"></script>
-<script src="../js/common.js"></script>
-<script src="../js/account.js"></script>
-<script src="../js/logout.js"></script>
+<script src="../js/backendData.js"></script>
 </body>
-
 </html>

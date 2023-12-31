@@ -2,7 +2,9 @@ package com.bloducspauter.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bloducspauter.bean.Tag;
 import com.bloducspauter.mapper.TagMapper;
+import com.bloducspauter.mapper.TagStatisticsMapper;
 import com.bloducspauter.service.TagService;
+import com.bloducspauter.statistics.TagStatistics;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,8 @@ public class TagServiceImpl implements TagService {
     @Autowired
     private TagMapper tagMapper;
 
+    @Autowired
+    private TagStatisticsMapper tagStatisticsMapper;
 
     /**
      * 查询所有标签
@@ -41,15 +45,10 @@ public class TagServiceImpl implements TagService {
      */
     @Override
     public boolean add(String name) {
-        boolean flag = false;
         Tag tag = new Tag();
         tag.setName(name);
         int row = tagMapper.insert(tag);
-
-        if (row > 0) {
-            flag = true;
-        }
-        return flag;
+        return row>0;
     }
 
     /**
@@ -62,19 +61,15 @@ public class TagServiceImpl implements TagService {
      */
     @Override
     public boolean delete(String tag) {
-        boolean flag = false;
         QueryWrapper<Tag>queryWrapper=new QueryWrapper<>();
         queryWrapper.eq("name",tag);
         int row = tagMapper.delete(queryWrapper);
-
-        if (row > 0) {
-            flag = true;
-        }
-
-        return flag;
+        return row>0;
     }
 
-
-
+    @Override
+    public List<TagStatistics> seeHotSubmittedTags() {
+        return tagStatisticsMapper.getTagStatistics();
+    }
 
 }

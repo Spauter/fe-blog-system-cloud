@@ -18,4 +18,7 @@ public interface FeBlogFieldApi {
 
     @RequestMapping("/fe-category/FindAllField")
     Map<String, Object> findAllFeild();
+
+    @RequestMapping("/fe-category/hotFields")
+    Map<String, Object> seeDistributionOfBlogsByField();
 }

@@ -29,6 +29,7 @@ import java.util.Map;
 @RequestMapping("fe-blog")
 @Slf4j
 public class BlogController {
+
     @Autowired
     private BlogService blogService;
 
