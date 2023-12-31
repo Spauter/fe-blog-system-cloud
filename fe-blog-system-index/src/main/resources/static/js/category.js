@@ -19,9 +19,6 @@ function load() {
             })
         })
     }, 200)
-
-
-
 }
 
 function blog_list_load() {

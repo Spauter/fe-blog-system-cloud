@@ -3,11 +3,12 @@ $(function () {
     updateClickData();
     updateCPUData();
     updateDiskData();
+    updateHotTagAndField();
 })
 
 
 // 基于准备好的dom，初始化echarts实例
-var myChart = echarts.init(document.getElementById('RAM'));
+const myChart = echarts.init(document.getElementById('RAM'));
 // 指定图表的配置项和数据
 option = {
     color: ["#A2505D", "#BB9795"],
@@ -40,7 +41,7 @@ option = {
 function updateRAMData() {
     $.ajax({
         type: 'GET',
-        url: '../fe-ornament/RAMUsage',
+        url: '/fe-ornament/RAMUsage',
         dataType: 'json',
         success: function (res) {
             let freeMemory = res.freeMemory;
@@ -73,7 +74,7 @@ function updateRAMData() {
 }
 
 
-var CPUChart = echarts.init(document.getElementById('CPU'));
+const CPUChart = echarts.init(document.getElementById('CPU'));
 // 指定图表的配置项和数据
 CPUoption = {
     color: ["#6D9E64", "#EBE7E7"],
@@ -106,7 +107,7 @@ CPUoption = {
 function updateCPUData() {
     $.ajax({
         type: 'GET',
-        url: '../fe-ornament/CPUUsage',
+        url: '/fe-ornament/CPUUsage',
         dataType: 'json',
         success: function (res) {
             let cpuUsage = res.cpuUsage;
@@ -141,7 +142,7 @@ function updateCPUData() {
     });
 }
 
-var ClicksChart = echarts.init(document.getElementById('Clicks'));
+const ClicksChart = echarts.init(document.getElementById('Clicks'));
 Clicksoption = {
     xAxis: {
         data: ['A', 'B', 'C', 'D', 'E'],
@@ -168,7 +169,7 @@ Clicksoption = {
 function updateClickData() {
     $.ajax({
         type: 'GET',
-        url: '../fe-blog/hotBlogs',
+        url: '/fe-blog/hotBlogs',
         dataType: 'json',
         success: function (res) {
             let data = res.data;
@@ -210,7 +211,7 @@ function updateClickData() {
     });
 }
 
-var DiskChart = echarts.init(document.getElementById('Disk'));
+const DiskChart = echarts.init(document.getElementById('Disk'));
 
 // 指定图表的配置项和数据
 Diskoption = {
@@ -242,7 +243,7 @@ Diskoption = {
 function updateDiskData() {
     $.ajax({
         type: 'GET',
-        url: '../fe-ornament/DiskUsage',
+        url: '/fe-ornament/DiskUsage',
         dataType: 'json',
         success: function (res) {
             let freeSpace = res.freeSpace;
@@ -275,10 +276,126 @@ function updateDiskData() {
     });
 }
 
-// var HotTagChart=echarts.init(document.getElementById('hotTags'))
-// var hotFieldChart=echarts.init(document.getElementById('hotFields'))
+const HotTagChart = echarts.init(document.getElementById('hotTags'));
+const HotFieldChart = echarts.init(document.getElementById('hotFields'));
 
+tagOption = {
+    series: [
+        {
+            type: 'pie',
+            data: [
+                {
+                    value: 100,
+                    name: 'A'
+                },
+                {
+                    value: 200,
+                    name: 'B'
+                },
+                {
+                    value: 300,
+                    name: 'C'
+                },
+                {
+                    value: 400,
+                    name: 'D'
+                },
+                {
+                    value: 500,
+                    name: 'E'
+                }
+            ],
+            roseType: 'area'
+        },
+    ],
+};
 
+FieldOption = {
+    series: [
+        {
+            type: 'pie',
+            data: [
+                {
+                    value: 100,
+                    name: 'A'
+                },
+                {
+                    value: 200,
+                    name: 'B'
+                },
+                {
+                    value: 300,
+                    name: 'C'
+                },
+                {
+                    value: 400,
+                    name: 'D'
+                },
+                {
+                    value: 500,
+                    name: 'E'
+                }
+            ],
+            roseType: 'area'
+        },
+    ],
+};
+function updateHotTagAndField() {
+    $.ajax({
+        type: 'Get',
+        url: '/fe-category/hotTags',
+        dataType: 'json',
+        success: function (res) {
+            let data = res.data;
+            let tags = []
+            for (let i = 0; i < data.length; i++) {
+                tags[i] = {name: data[i].tagName, value: data[i].tagCount};
+            }
+            HotTagChart.setOption({
+                series: [{
+                    data: tags,
+                }],
+                title: {
+                    show: true,
+                    text: "标签分布",
+                    subtext: "其中分布最多的标签是"+data[0].tagName+";共有"+data[0].tagCount+"条"
+                },
+            })
+        },
+        error: function () {
+            console.log("获取失败");
+        }
+    });
+    $.ajax({
+        type: 'GET',
+        url: '/fe-category/hotFields',
+        dataType: 'json',
+        success: function (res) {
+            let data = res.data;
+            let fields = []
+            for (let i = 0; i < data.length; i++) {
+                fields[i] = {name: data[i].fieldName, value: data[i].fieldCount};
+            }
+            HotFieldChart.setOption({
+                series: [{
+                    data: fields,
+                }],
+                title: {
+                    show: true,
+                    text: "Field分布",
+                    subtext: "其中分布最多的是"+data[0].fieldName+";共有"+data[0].fieldCount+"条"
+                },
+            })
+        },
+        error: function () {
+            console.log("获取失败");
+        }
+    })
+}
+
+//修改统计图的数据
+HotTagChart.setOption(tagOption);
+HotFieldChart.setOption(FieldOption);
 myChart.setOption(option);
 ClicksChart.setOption(Clicksoption);
 CPUChart.setOption(CPUoption);
