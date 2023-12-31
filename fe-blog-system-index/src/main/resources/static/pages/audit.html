@@ -59,7 +59,7 @@
             <li class="layui-nav-item layui-nav-itemed">
                 <a href="javascript:;">审核管理</a>
                 <dl class="layui-nav-child">
-                    <dd><a href="audit.html">审核大厅</a></dd>
+                    <dd><a href="audit.html">后台数据</a></dd>
                 </dl>
             </li>
         </ul>
@@ -98,10 +98,11 @@
     var myChart = echarts.init(document.getElementById('RAM'));
     // 指定图表的配置项和数据
     option = {
+        color:["#A2505D","#BB9795"],
         series: [
             {
                 type: 'pie',
-                radius: [0, '50%'],
+                radius: ['30%', '50%'],
                 data: [
                     {
                         value: 10,
@@ -165,10 +166,11 @@
     var CPUChart = echarts.init(document.getElementById('CPU'));
     // 指定图表的配置项和数据
     CPUoption = {
+        color:["#6D9E64","#EBE7E7"],
         series: [
             {
                 type: 'pie',
-                radius: [0, '50%'],
+                radius: ['30%', '50%'],
                 data: [
                     {
                         value: 10,
@@ -235,10 +237,11 @@
     updateDiskData();
     // 指定图表的配置项和数据
     Diskoption = {
+        color:["#26A0DA","#E6E6E6"],
         series: [
             {
                 type: 'pie',
-                radius: [0, '50%'],
+                radius: ['30%', '50%'],
                 data: [
                     {
                         value: 10,
@@ -258,7 +261,7 @@
         },
     }
     // 使用刚指定的配置项和数据显示图表。
-    DiskChart.setOption(CPUoption);
+    DiskChart.setOption(Diskoption);
 
     function updateDiskData() {
         $.ajax({
@@ -271,6 +274,7 @@
                 let total=res.total
                 // 更新图表数据
                 DiskChart.setOption({
+                    color:["#26A0DA","#E6E6E6"],
                     series: [{
                         data: [
                             {
