@@ -15,39 +15,41 @@ public interface BlogService {
     /**
      * 增加博客
      *
-     * @time   8-9
-     * @version
      * @param blog
      * @return boolean
+     * @time 8-9
+     * @version
      */
     boolean addBlog(Blog blog);
 
     /**
      * 删除博客
      *
-     * @time   8-9
-     * @version
      * @param blogId
      * @return boolean
+     * @time 8-9
+     * @version
      */
     boolean deleteBlog(int blogId);
 
     /**
      * 修改博客
-     * @time   8-9
-     * @version
+     *
      * @param blog
      * @return boolean
+     * @time 8-9
+     * @version
      */
     boolean modifyBlog(@Param("blog") Blog blog);
 
 
     /**
      * 分页查询博客管理页面
+     *
      * @param page
+     * @return
      * @time 2021/8/9
      * @version 1.0
-     * @return
      */
     List<Blog> selectByBlogLimit(@Param("userId") int userId, @Param("page") int page, @Param("size") int size);
 
@@ -81,6 +83,7 @@ public interface BlogService {
 
     /**
      * 查询博客id
+     *
      * @param title
      * @return
      */
@@ -88,10 +91,12 @@ public interface BlogService {
 
     /**
      * 详细查询
+     *
      * @param blogId
      * @return
      */
     Blog selectInBlog(int blogId);
+
     /**
      * 删除某一博客的对应关系
      *
@@ -119,11 +124,15 @@ public interface BlogService {
 
     /**
      * 查询该标签下所有的博客信息
+     *
      * @param tagname
      * @return
      */
     List<Blog> selectblogbytag(String tagname);
 
 
-    List<Blog>selectAuditingBlog();
+    List<Blog> selectAuditingBlog();
+
+    List<Blog> popularBlogs();
+
 }

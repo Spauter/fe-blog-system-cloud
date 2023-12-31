@@ -62,4 +62,12 @@
             where tag_id in
             (select tag_id from tag where name = #{tagname}) and deleted = 0 )
     </select>
+
+    <select id="selectHotBlogs" resultType="com.bloducspauter.bean.Blog">
+        SELECT blog_id,title,clicks FROM db_mybatis.blog
+                 where audited='已通过'
+        ORDER BY clicks DESC
+        LIMIT 10;
+    </select>
+
 </mapper>

@@ -44,4 +44,7 @@ public interface FeBlogApi {
 
     @RequestMapping("/fe-blog/ModifyBlogController")
     Map<String, Object> modifyBlog(HttpServletRequest request, HttpServletResponse response, HttpSession session);
+
+    @RequestMapping("/fe-blog/hotBlogs")
+    Map<String,Object>hotBlogs();
 }

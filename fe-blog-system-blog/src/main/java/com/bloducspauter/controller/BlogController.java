@@ -445,5 +445,21 @@ public class BlogController {
         return resultMap;
     }
 
+    @RequestMapping("/hotBlogs")
+    public Map<String,Object>hotBlogs(){
+        Map<String,Object>map=new HashMap<>();
+        List<Blog>blogs;
+        try{
+            blogs=blogService.popularBlogs();
+            map.put("code",200);
+            map.put("data",blogs);
+            map.put("count",blogs.size());
+        }catch (Exception e){
+            e.printStackTrace();
+            map.put("code",500);
+            map.put("msg",e.getCause());
+        }
+        return map;
+    }
 
 }

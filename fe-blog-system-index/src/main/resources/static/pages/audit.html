@@ -75,7 +75,7 @@
         </div>
         <div class="nav_user">
             <div class="user_avatar">
-                <img src="../fe_blog/images/avatar/avatar.jpg" alt="头像">
+                <img src="./avatar.jpg" alt="头像">
             </div>
             <div class="user_cancel">
                 <a href="javascript:;"><i class="fa fa-sign-out"></i>注销</a>
@@ -89,7 +89,7 @@
     <div id="Disk" class="chart" style="width: 400px;height:300px;"></div>
 </div>
 <div class="content_container">
-    <div id="Clicks" class="chart" style="width: 1000px;height:400px;"></div>
+    <div id="Clicks" class="chart" style="width: 1400px;height:400px;"></div>
 </div>
 <script src="../js/jquery.min.js"></script>
 <script src="../js/layui/layui.js"></script>
@@ -298,10 +298,15 @@
     setInterval(updateDiskData, 120000);
 </script>
 <script>
+    updateClickData();
+
     var ClicksChart = echarts.init(document.getElementById('Clicks'));
     Clicksoption = {
         xAxis: {
-            data: ['A', 'B', 'C', 'D', 'E']
+            data: ['A', 'B', 'C', 'D', 'E'],
+            axisLabel: {
+                interval: 0
+            }
         },
         yAxis: {},
         series: [
@@ -318,6 +323,52 @@
             }
         ]
     };
+
+    function updateClickData() {
+        $.ajax({
+            type: 'GET',
+            url: '../fe-blog/hotBlogs',
+            dataType: 'json',
+            success: function (res) {
+                let data=res.data;
+                let length=res.count;
+                var titles=[];
+                var clicks=[];
+                for(i=0;i<length;i++){
+                    titles[i]=data[i].title;
+                    clicks[i]=data[i].clicks;
+                }
+                // 更新图表数据
+                ClicksChart.setOption({
+                    xAxis: {
+                        data: titles
+                    },
+                    yAxis: {},
+                    series: [
+                        {
+                            data: clicks,
+                            type: 'line',
+                            label: {
+                                show: true,
+                                position: 'bottom',
+                                textStyle: {
+                                    fontSize: 20
+                                }
+                            }
+                        }
+                    ],
+                    title: {
+                        show: true,
+                        text: "点击数最多的博客",
+                    },
+                });
+            },
+            error: function () {
+                console.log("获取失败")
+            }
+        });
+    }
+
 
     ClicksChart.setOption(Clicksoption);
 </script>

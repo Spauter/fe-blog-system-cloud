@@ -63,4 +63,6 @@ public interface BlogMapper extends BaseMapper<Blog> {
      * @return
      */
     List<Blog> selectblogbytag(String tagname);
+
+    List<Blog>selectHotBlogs();
 }

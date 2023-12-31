@@ -12,6 +12,7 @@ import com.bloducspauter.mapper.TagRelationMapper;
 import com.bloducspauter.service.BlogService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -176,4 +177,9 @@ public class BlogServiceImpl implements BlogService {
     }
 
 
+
+    @Override
+    public List<Blog> popularBlogs() {
+        return blogMapper.selectHotBlogs();
+    }
 }
