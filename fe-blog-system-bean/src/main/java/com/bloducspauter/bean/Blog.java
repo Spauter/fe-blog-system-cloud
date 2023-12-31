@@ -34,4 +34,5 @@ public class Blog implements Serializable {
     private Date updateTime;
     private Integer clicks;
     private String audited;
+    private String keyWords;
 }
