@@ -18,7 +18,7 @@ function reply_content_load(){
         dataType:"json",
         success:function (res){
             if(res.code!==200){
-                $('.reply_comment').empty().append("暂无回复");
+                $('.reply_comment').empty().append(`<li class="comment_item"'> <span style="color: #00B894;font-weight: bold;">暂无回复</span> 抢占沙发成为评论第一人`);
                 layer.msg(res.msg,{
                     iron:2,
                     time:1000
