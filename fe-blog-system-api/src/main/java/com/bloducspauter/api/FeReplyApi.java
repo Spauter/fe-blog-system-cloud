@@ -1,6 +1,7 @@
 package com.bloducspauter.api;
 
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,4 +11,7 @@ import java.util.Map;
 public interface FeReplyApi {
     @RequestMapping("/fe-ornament/findResponseByCommentId")
     Map<String,Object> findResponseByCommentId(HttpServletRequest request);
+
+    @GetMapping("/fe-ornament/getCommentedUser")
+    Map<String,Object>getCommentedUser(HttpServletRequest request);
 }

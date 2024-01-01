@@ -68,4 +68,9 @@ public class CommentServiceImpl implements CommentService {
         queryWrapper.eq("blog_id",blogId);
         return commentMapper.selectCount(queryWrapper);
     }
+
+    @Override
+    public Comment selectCommentById(Integer cid) {
+        return commentMapper.selectById(cid);
+    }
 }

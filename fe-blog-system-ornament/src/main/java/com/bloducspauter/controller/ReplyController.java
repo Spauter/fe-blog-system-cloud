@@ -1,8 +1,12 @@
 package com.bloducspauter.controller;
 
 import com.alibaba.nacos.api.naming.pojo.healthcheck.impl.Http;
+import com.bloducspauter.bean.Comment;
 import com.bloducspauter.bean.Reply;
+import com.bloducspauter.bean.User;
+import com.bloducspauter.service.CommentService;
 import com.bloducspauter.service.ReplyService;
+import com.bloducspauter.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +28,11 @@ public class ReplyController {
     @Autowired
     private ReplyService replyService;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private CommentService commentService;
 
     @RequestMapping("findResponseByCommentId")
     public Map<String,Object>findResponseByCommentId(HttpServletRequest request){
@@ -31,7 +40,6 @@ public class ReplyController {
         String commentId=request.getParameter("cid");
         List<Reply>list;
         try{
-
             int cid=Integer.parseInt(commentId);
             list=replyService.selectAllResponseByCommentId(cid);
             if (list.isEmpty()){
@@ -52,8 +60,29 @@ public class ReplyController {
 
     @GetMapping("getCommentedUser")
     public Map<String,Object>getCommentedUser(HttpServletRequest request){
-        String account=request.getParameter("account");
         Map<String,Object>map=new HashMap<>();
+        String commentId=request.getParameter("cid");
+        try {
+            int cid=Integer.parseInt(commentId);
+            Comment selectedComment=commentService.selectCommentById(cid);
+            if (selectedComment==null){
+                map.put("code",500);
+                map.put("msg","找不到选中的评论");
+                return map;
+            }
+            User commentedUser = userService.getInfo(selectedComment.getAccount());
+            commentedUser.setPassword("到这里了居然还想看😮");
+            Map<String,Object>resultMap=new HashMap<>();
+            resultMap.put("user",commentedUser);
+            resultMap.put("comment",selectedComment);
+            map.put("code",200);
+            map.put("data",resultMap);
+        }catch (Exception e){
+            e.printStackTrace();
+            log.error(e.getMessage());
+            map.put("code",500);
+            map.put("msg",e.getCause());
+        }
         return map;
     }
 

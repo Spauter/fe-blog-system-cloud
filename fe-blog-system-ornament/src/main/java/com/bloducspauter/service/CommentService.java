@@ -56,4 +56,6 @@ public interface CommentService {
     int selectCommentCount(@Param("blogId") int blogId);
 
 
+    Comment selectCommentById(Integer cid);
+
 }
