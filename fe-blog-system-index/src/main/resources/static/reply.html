@@ -10,33 +10,42 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
     <meta name="renderer" content="ie-stand">
     <title>韬韬的个人博客-回复列表</title>
-    <link rel="stylesheet" href="./js/layui/css/layui.css">
     <link rel="stylesheet" href="./css/reply.css">
+    <link rel="stylesheet" href="./js/layui/css/layui.css">
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="./js/editor.md/css/editormd.preview.min.css">
     <link rel="stylesheet" href="./font/font-awesome-4.7.0/css/font-awesome.min.css">
-<!--    添加垂直滚动条-->
-    <style>
-    </style>
+    <!--    添加垂直滚动条-->
+
 </head>
 <body>
-<div class="comment_list">
-
+<div class="nav">
+    <nav class="nav_content">
+        <div class="nav_user">
+            <div class="comment_avatar">
+                <img src="./avatar.png" alt="头像">
+            </div>
+        </div>
+        <div class="nav_title" id="comment_name">
+            <h2>某人的名字</h2>
+        </div>
+    </nav>
 </div>
+
 <div class="reply_comment" id="reply_body">
-
-
 </div>
 
 <div class="bottom-fixed-container">
-    <h5 style="font-size: 2.5rem; color: #00B894;" >回复</h5>
+    <h5 style="font-size: 2.5rem; color: #00B894;">回复</h5>
     <div class="article_comment_frame">
         <!-- 您的其他底部元素的内容 -->
         <textarea class="textarea" name="comment_content" placeholder="在此处发表评论，请注意遵守道德与法律"
                   required id="reply"></textarea>
         <div class="comment-reply">
-            <i class="layui-icon layui-icon-mike" style="font-size: 2rem; color: #00B894;" onclick="inputByMicrophone(reply)"></i>
-            <i class="layui-icon layui-icon-circle-dot" style="font-size: 2rem" onclick="stopinputByMicrophone(reply)"></i>
+            <i class="layui-icon layui-icon-mike" style="font-size: 2rem; color: #00B894;"
+               onclick="inputByMicrophone(reply)"></i>
+            <i class="layui-icon layui-icon-circle-dot" style="font-size: 2rem"
+               onclick="stopinputByMicrophone(reply)"></i>
         </div>
 
         <div class="reply_btn">
