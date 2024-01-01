@@ -18,7 +18,7 @@ function reply_content_load(){
         dataType:"json",
         success:function (res){
             if(res.code!==200){
-                $('.reply_comment').empty().append(`<li class="comment_item"'> <span style="color: #00B894;font-weight: bold;">暂无回复</span> 抢占沙发成为评论第一人`);
+                $('.reply_comment').empty().append(`<div class="comment_item"> <span style="color: #00B894;font-weight: bold;">暂无回复</span> 抢占沙发成为评论第一人`);
                 layer.msg(res.msg,{
                     iron:2,
                     time:1000
@@ -28,7 +28,7 @@ function reply_content_load(){
             let data=res.data;
             let reply_list=[];
             for(let i=0;i<data.length;i++){
-                let element=`<li class="comment_item" id='reply_${data[i]['rid']}'> <span style="color: #00B894;font-weight: bold;">${data[i]['account']}：</span> ${data[i]['content']}`
+                let element=`<div class="comment_item" id='reply_${data[i]['rid']}'> <span style="color: #00B894;font-weight: bold;">${data[i]['account']}：</span> ${data[i]['content']}`
                 reply_list.push(element);
             }
             $('.reply_comment').empty().append(reply_list.join(''));

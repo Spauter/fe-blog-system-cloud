@@ -56,6 +56,7 @@ public class UserServiceImpl implements UserService {
         return user.getPassword().equals(password);
     }
 
+
     /**
      * 这是更改个人信息的原xml文件,
      * 改了一下，发送错误会返回修改前的信息

@@ -89,12 +89,6 @@
             <artifactId>fastdfs-client</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.example</groupId>
-            <artifactId>fe-blog-system-ornament</artifactId>
-            <version>1.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-openfeign-core</artifactId>
         </dependency>
