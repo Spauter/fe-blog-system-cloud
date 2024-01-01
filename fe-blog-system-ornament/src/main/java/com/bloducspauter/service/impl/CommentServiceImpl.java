@@ -21,13 +21,8 @@ public class CommentServiceImpl implements CommentService {
    private CommentMapper commentMapper;
 
     @Override
-    public Comment add(Comment comment) {
-        int i = commentMapper.insert(comment);
-        System.out.println(comment.getId());
-        if(i!=0){
-            return commentMapper.selectById(comment.getId());
-        }
-        return null;
+    public int add(Comment comment) {
+        return commentMapper.insert(comment);
     }
 
     /**

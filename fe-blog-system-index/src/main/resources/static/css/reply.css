@@ -9,11 +9,12 @@
 
 *.reply_comment {
     .comment_item {
-        padding: 10px;
-        margin-bottom: 10px;
+        padding: 15px;
+        margin-bottom: 15px;
         border-bottom: 1px solid #dfe6e9;
-        max-height: 3rem;
+        max-height: 4rem;
         box-shadow: 0px 0px 10px #dfe6e9;
+
     }
 }
 
@@ -23,7 +24,8 @@
 
 
     .comment_list {
-
+        padding-left: 0;
+        padding: 2rem;
     }
 }
 
@@ -38,11 +40,11 @@
     bottom: 15px;
     /* 具体的底部元素样式 */
 
-    .h5{
+    .h5 {
         color: #00B894;
     }
 
-        /* 根据需要设置样式，例如 padding、background-color、border 等 */
+    /* 根据需要设置样式，例如 padding、background-color、border 等 */
 
     .article_comment_frame {
         display: flex;

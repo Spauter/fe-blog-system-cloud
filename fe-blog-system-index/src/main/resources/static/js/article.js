@@ -61,6 +61,13 @@ function commentAdd(blogId) {
             'blog_id': blogId,
             'content': $('#comment').val(),
         }
+        if(data.content===''||data.content==null){
+            layer.msg("请输入评论", {
+                icon: 2,
+                time: 1000
+            })
+            return;
+        }
         $.ajax({
             type: 'POST',
             url: '/fe-ornament/AddCommentServlet',
@@ -147,8 +154,8 @@ function findAllComment(blogId) {
                         let data = res.data;
                         let comment_list = [];
                         for (let i = 0; i < data.length; i++) {
-                            let element = `<li class="comment_item" id='comment_${data[i]['id']}'> <span>${data[i]['account']}：</span> ${data[i]['content']}`
-                                       // <button type="button" class="layui-btn layui-btn-primary " lay-on="test-offset-r" onclick="reply()">回复</button>`
+                            let element = `<li class="comment_item" id='comment_${data[i]['id']}'> <span>${data[i]['account']}：</span> ${data[i]['content']}
+                                        <button type="button" class="layui-btn layui-btn-primary " id='reply_btn_${data[i]['id']}' lay-on="test-offset-r" onclick="reply()">回复</button>`
                             comment_list.push(element);
                         }
                         $('.comment_list').empty().append(comment_list.join(''));
@@ -178,7 +185,7 @@ function reply() {
                     shadeClose: true,
                     scrollbar: false,
                     id: 'ID-demo-layer-direction-r',
-                    content: 'reply.html'
+                    content: 'reply.html?rid='+$(this).attr('id')
                 });
             }
         })
