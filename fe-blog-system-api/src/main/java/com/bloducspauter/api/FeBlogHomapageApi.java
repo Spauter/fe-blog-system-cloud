@@ -10,9 +10,6 @@ import java.util.Map;
 public interface FeBlogHomapageApi {
     @RequestMapping("fe-blog/FindHomePage")
     Map<String, Object> findHomePage();
-
     @RequestMapping("fe-blog/HomePageManage")
     Map<String, Object> modifyHomePage(HttpServletRequest req);
-
-
 }

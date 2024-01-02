@@ -22,4 +22,9 @@ public class ReplyServiceImpl implements ReplyService {
         queryWrapper.eq("id",commentId);
         return replyMapper.selectList(queryWrapper);
     }
+
+    @Override
+    public int addReply(Reply reply) {
+        return replyMapper.insert(reply);
+    }
 }

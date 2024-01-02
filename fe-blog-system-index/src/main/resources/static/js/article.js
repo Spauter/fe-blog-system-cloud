@@ -126,21 +126,14 @@ function stopinputByMicrophone() {
 }
 
 function findAllComment(blogId) {
-
     layui.use('laypage', function () {
         let laypage = layui.laypage;
-        let allCount = 0;
         laypage.render({
             elem: 'commentPage',
             count: 100,
             limit: 20,
             jump: function (obj, first) {
                 curr = obj.curr;
-
-                if (!first) {
-
-                }
-
                 $.ajax({
                     type: 'GET',
                     url: '/fe-ornament/SelectAllCommentServlet',

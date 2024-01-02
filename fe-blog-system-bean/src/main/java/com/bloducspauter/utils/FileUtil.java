@@ -14,7 +14,6 @@ public class FileUtil {
 	 * @throws IOException
 	 */
 	public static byte[] read(String filePath) throws IOException {
-
 		InputStream in = new FileInputStream(filePath);
 		byte[] data = inputStream2ByteArray(in);
 		in.close();
@@ -30,7 +29,6 @@ public class FileUtil {
 	 * @throws IOException
 	 */
 	private static byte[] inputStream2ByteArray(InputStream in) throws IOException {
-
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		byte[] buffer = new byte[1024 * 4];
 		int n = 0;

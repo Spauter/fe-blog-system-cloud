@@ -7,6 +7,5 @@ import java.util.List;
 
 @Mapper
 public interface FieldStatisticsMapper {
-
     List<FieldStatistics> getFieldStatistics();
 }
