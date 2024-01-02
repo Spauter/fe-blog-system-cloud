@@ -53,7 +53,7 @@ public class BlogController {
             if (fieldname.equals("all")) {
                 blogs = blogService.selectByBlogLimit(Userid, page, size);
             } else {
-                blogs = fieldService.selectBlogbyField(fieldService.findField(fieldname), Userid, page, size);
+                blogs = blogService.selectBlogbyField(fieldService.findField(fieldname), Userid, page, size);
             }
             for (Blog blog : blogs) {
                 blog.setContent(null);
@@ -83,7 +83,7 @@ public class BlogController {
             if (fieldid.equals("all")) {
                 blog = blogService.fuzzyQuery(Userid, blogtitle, page, size);
             } else {
-                blog = fieldService.selectBlogbytitle(Integer.parseInt(fieldid), Userid, blogtitle, page, size);
+                blog = blogService.selectBlogbytitle(Integer.parseInt(fieldid), Userid, blogtitle, page, size);
             }
 
             for (Blog blog1 : blog) {
@@ -94,6 +94,7 @@ public class BlogController {
             map.put("data", blog);
         } catch (Exception e) {
             log.error(e.getMessage());
+            e.printStackTrace();
             map.put("code", 500);
             map.put("msg", e.getCause());
         }

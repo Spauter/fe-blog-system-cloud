@@ -12,7 +12,6 @@ import com.bloducspauter.mapper.TagRelationMapper;
 import com.bloducspauter.service.BlogService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,13 +37,8 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public boolean addBlog(Blog blog) {
         blog.setClicks(0);
-        blog.setAudited("待审核");
-        boolean flag = false;
         int row = blogMapper.insert(blog);
-        if (row > 0) {
-            flag = true;
-        }
-        return flag;
+        return row>0;
     }
 
     @Override
@@ -182,5 +176,15 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public List<Blog> popularBlogs() {
         return blogMapper.selectHotBlogs();
+    }
+
+    @Override
+    public List<Blog> selectBlogbyField(int Fieldid, int user_id, int page, int size) {
+        return blogMapper.selectBlogbyField(Fieldid,user_id,page,size);
+    }
+
+    @Override
+    public List<Blog> selectBlogbytitle(int fieldid, int userid, String blogtitle, int page, int size) {
+        return blogMapper.selectBlogbytitle(fieldid,userid,blogtitle,page,size);
     }
 }

@@ -15,81 +15,47 @@
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="./js/editor.md/css/editormd.preview.min.css">
     <link rel="stylesheet" href="./font/font-awesome-4.7.0/css/font-awesome.min.css">
-<!--    添加垂直滚动条-->
-    <style>
-        .layui-layer-content {
-            overflow-x: auto;
-            overflow-y: auto;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--    添加垂直滚动条-->
+
 </head>
 <body>
-<div class="reply_comment">
-        <div class="comment_item" > <span style="  color: #00B894">${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
-        <div class="comment_item" > <span>${data[i]['account']}：</span> ${data[i]['content']}</div>
+<div class="nav">
+    <nav class="nav_content">
+        <div class="nav_user">
+            <div class="comment_avatar">
+                <img src="./avatar.png" alt="头像">
+            </div>
+        </div>
+        <div class="nav_title" id="comment_name">
+            <h2>某人的名字</h2>
+        </div>
+    </nav>
+    <nav class="nav_content">
+        <h3>这是评论这是品论这是萍论这是品论</h3>
+    </nav>
+</div>
+
+<div class="reply_comment" id="reply_body">
+    <div class="comment_item"> <span style="color: #00B894;font-weight: bold;">暂无回复</span> 抢占沙发成为评论第一人</div>
+</div>
+<div id="replyPage" class="reply_page">
+    <div id="reply_page"></div>
 </div>
 <div class="bottom-fixed-container">
-    <h5>回复</h5>
+    <h5 style="font-size: 2rem; color: #00B894;">回复</h5>
     <div class="article_comment_frame">
         <!-- 您的其他底部元素的内容 -->
         <textarea class="textarea" name="comment_content" placeholder="在此处发表评论，请注意遵守道德与法律"
-                  required id="comment"></textarea>
+                  required id="reply"></textarea>
         <div class="comment-reply">
-            <i class="layui-icon layui-icon-mike" style="font-size: 2rem; color: #00B894;" onclick="inputByMicrophone()"></i>
-            <i class="layui-icon layui-icon-circle-dot" style="font-size: 2rem" onclick="stopinputByMicrophone()"></i>
+            <i class="layui-icon layui-icon-mike" style="font-size: 2rem; color: #00B894;"
+               onclick="responseByMicrophone()"></i>
+            <i class="layui-icon layui-icon-circle-dot" style="font-size: 2rem"
+               onclick="stopinputByMicrophone()"></i>
         </div>
 
-        <div class="reply_btn">
+        <div class="reply_btn" onclick="auditResponse()">
             点击回复
         </div>
     </div>
@@ -98,6 +64,16 @@
 
 <script src="./js/jquery.min.js"></script>
 <script src="./js/layui/layui.js"></script>
-<script src="./js/article.js"></script>
+<script src="./js/reply.js"></script>
+<script>
+    layui.use(function(){
+        var laypage = layui.laypage;
+        laypage.render({
+            elem: 'demo-laypage-normal-2',
+            count: 100 // 数据总数
+        });
+    });
+</script>
+
 </body>
 </html>

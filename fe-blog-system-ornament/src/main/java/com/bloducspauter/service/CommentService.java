@@ -17,7 +17,7 @@ public interface CommentService {
      *
      * @return true of false
      */
-    Comment add(@Param("comment") Comment comment);
+    int add(@Param("comment") Comment comment);
 
     /**
      * 删除对博客的评论
@@ -54,4 +54,8 @@ public interface CommentService {
      */
 
     int selectCommentCount(@Param("blogId") int blogId);
+
+
+    Comment selectCommentById(Integer cid);
+
 }

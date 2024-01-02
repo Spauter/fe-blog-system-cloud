@@ -16,7 +16,8 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 @LoadBalancerClients(value = {
         @LoadBalancerClient(name = "fe-blog",configuration ={MyBalancerConfiguration.class} ),
-        @LoadBalancerClient(name = "fe-category",configuration ={MyBalancerConfiguration.class} )
+        @LoadBalancerClient(name = "fe-category",configuration ={MyBalancerConfiguration.class}),
+        @LoadBalancerClient(name = "fe-ornament",configuration ={MyBalancerConfiguration.class})
 },defaultConfiguration = LoadBalancerClientConfiguration.class)
 public class webConfig {
     @LoadBalanced

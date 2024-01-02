@@ -12,7 +12,15 @@ import java.util.List;
 
 @Mapper
 public interface BlogMapper extends BaseMapper<Blog> {
+    /**
+     * 根据fieldid和blogtitle查询blog
+     * @param Fieldid
+     * @param blogtitle
+     * @return
+     */
+    List<Blog> selectBlogbytitle(int Fieldid, int user_id, String blogtitle, @Param("page") int page, @Param("size") int size);
 
+    List<Blog> selectBlogbyField(@Param("Fieldid") int Fieldid, @Param("user_id") int user_id, @Param("page") int page, @Param("size") int size);
 
     List<Blog> selectByBlogLimit(@Param("userId") int userId, @Param("page") int page, @Param("size") int size);
 
@@ -35,9 +43,6 @@ public interface BlogMapper extends BaseMapper<Blog> {
      */
     List<Blog> randomQuery(@Param("userId") int userId, @Param("page") int page, @Param("size") int size);
 
-
-
-
     /**
      * 绑定博客与标签
      *
@@ -54,8 +59,6 @@ public interface BlogMapper extends BaseMapper<Blog> {
      */
     List<Tag> selectByTag(List<String> tag);
 
-
-
     List<Blog> selectDeletedBlogLimit(@Param("userId") int userId, @Param("page") int page, @Param("size") int size);
     /**
      * 通过标签名查询到该标签下的博客信息
@@ -65,4 +68,6 @@ public interface BlogMapper extends BaseMapper<Blog> {
     List<Blog> selectblogbytag(String tagname);
 
     List<Blog>selectHotBlogs();
+
+
 }

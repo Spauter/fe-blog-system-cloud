@@ -51,10 +51,15 @@ public class CommentController {
         try {
             Comment comment = getComment(request);
             //修改评论方名字为登录名
+            if (comment.getContent()==null){
+                map.put("code", 500);
+                map.put("msg", "请输入评论");
+                return map;
+            }
             comment.setAccount(user.getAccount());
-            Comment result;
+            int result;
             result = commentService.add(comment);
-            if (result != null) {
+            if (result != 0) {
                 map.put("code", 200);
                 map.put("msg", "操作成功");
             } else {
@@ -62,6 +67,7 @@ public class CommentController {
                 map.put("msg", "操作失败");
             }
         } catch (Exception e) {
+            e.printStackTrace();
             log.error(e.getMessage());
             map.put("code", 500);
             map.put("msg", e.getCause());

@@ -18,6 +18,7 @@ import java.util.Date;
 @Data
 @TableName
 public class Comment implements Serializable {
+    @TableId(type = IdType.AUTO)
     private Integer id;
     private Integer blogId;
     private String content;

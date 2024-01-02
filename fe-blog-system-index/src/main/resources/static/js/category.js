@@ -19,9 +19,6 @@ function load() {
             })
         })
     }, 200)
-
-
-
 }
 
 function blog_list_load() {
@@ -129,6 +126,16 @@ function blog_list_load() {
                                                             'desk': 'SPAUTER',
                                                         },
                                                         success: function(res){
+                                                            if(res.code!==200){
+                                                                layui.use('layer',function (){
+                                                                    layer.msg("查询失败,请稍后再试",{
+                                                                        iron:2,
+                                                                        time:1000
+                                                                    })
+                                                                })
+                                                                layui.closeAll();
+                                                                return;
+                                                            }
                                                             let data = res.data;
                                                             let list = [];
                                                             for(let i = 0;i<data.length;i++){

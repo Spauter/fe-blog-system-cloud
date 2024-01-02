@@ -21,13 +21,8 @@ public class CommentServiceImpl implements CommentService {
    private CommentMapper commentMapper;
 
     @Override
-    public Comment add(Comment comment) {
-        int i = commentMapper.insert(comment);
-        System.out.println(comment.getId());
-        if(i!=0){
-            return commentMapper.selectById(comment.getId());
-        }
-        return null;
+    public int add(Comment comment) {
+        return commentMapper.insert(comment);
     }
 
     /**
@@ -72,5 +67,10 @@ public class CommentServiceImpl implements CommentService {
         QueryWrapper<Comment>queryWrapper=new QueryWrapper<>();
         queryWrapper.eq("blog_id",blogId);
         return commentMapper.selectCount(queryWrapper);
+    }
+
+    @Override
+    public Comment selectCommentById(Integer cid) {
+        return commentMapper.selectById(cid);
     }
 }

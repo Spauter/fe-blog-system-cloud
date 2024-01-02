@@ -89,10 +89,8 @@
             <artifactId>fastdfs-client</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.example</groupId>
-            <artifactId>fe-blog-system-ornament</artifactId>
-            <version>1.0</version>
-            <scope>compile</scope>
+            <groupId>com.luhuiguo</groupId>
+            <artifactId>fastdfs-spring-boot-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
