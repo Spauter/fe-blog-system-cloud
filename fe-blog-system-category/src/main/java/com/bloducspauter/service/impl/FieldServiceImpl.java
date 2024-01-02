@@ -71,18 +71,4 @@ public class FieldServiceImpl implements FieldService {
     public List<FieldStatistics> seeHotSubmittedFields() {
         return fieldStatisticsMapper.getFieldStatistics();
     }
-
-
-    @Override
-    public List<Blog> selectBlogbyField(int fieldid, int user_id, int page, int size) {
-        return fieldMapper.selectBlogbyField(fieldid, user_id, page, size);
-    }
-
-
-    @Override
-    public List<Blog> selectBlogbytitle(int fieldid, int user_id, String blogtitle, int page, int size) {
-        return fieldMapper.selectBlogbytitle(fieldid, user_id, blogtitle, page, size);
-    }
-
-
 }

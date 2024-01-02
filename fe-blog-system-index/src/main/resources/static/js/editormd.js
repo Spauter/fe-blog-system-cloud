@@ -1,9 +1,8 @@
-
-
 $(function () {
     userInfoLoad();
     getSession();
 })
+
 //防止跳转单独拿出来
 function userInfoLoad() {
     $.ajax({
@@ -12,23 +11,28 @@ function userInfoLoad() {
         data: {},
         dataType: 'json',
         success: function (res) {
-            let code = res.code;
             console.log(res);
-            if (res.data.status!=="注册用户") {
+            if (res.code === 404) {
+                changeBar();
+                $('.aside').empty();
+                return;
+            }
+            if (res.data.status !== "注册用户") {
                 loginUser = res.data; // 将值赋给全局变量
                 $('#user_avatar').attr("src", loginUser.avatar);
                 $('.user_avatar>img').attr("src", loginUser.avatar);
             } else {
-             $('.aside').empty();
-             $('#save_btn').text("点击投稿")
+                $('.aside').empty();
+                $('#save_btn').text("点击投稿")
                 changeBar()
             }
         }
     })
 }
+
 //游客登录下移除左边导航栏，添加头部导航栏
-function changeBar(){
-    let element=`
+function changeBar() {
+    let element = `
     <div class="nav_content">
         <div class="nav_content_title">
             <h1><a href="../index.html">韬韬的博客</a></h1>
@@ -57,7 +61,7 @@ function media_layer() {
             dataType: 'json',
             success: function (res) {
                 console.log(res);
-                let data=res.data
+                let data = res.data
                 for (let i = 0; i < data.length; i++) {
                     let element = `
                     <label for="${data[i]['image']}" class="layer_content_frame">
@@ -109,18 +113,17 @@ function media_layer() {
 }
 
 
-
-
 //添加博客
 function blog_add(editormd) {
     $('#blog_add').on('submit', function (e) {
-        if (loginUser==null){
-            layer.msg("请留下您的大名后在提交哦", {
-                icon: 6,
-                time: 1000
-            });
-            // 关闭加载
-            layer.closeAll('loading');
+        if (loginUser == null) {
+            layui.use('layer', function () {
+                layer.msg("您还未登录", {
+                    icon: 6,
+                    time: 1000
+                })
+            })
+            e.preventDefault();
             return;
         }
         let layer;
@@ -151,7 +154,7 @@ function blog_add(editormd) {
             "author": "admin",
             "tag": tagData,
             "field": $("option:selected").val(),
-            "audited":'待审核'
+            "audited": '待审核'
         }
         console.log(JSON.stringify(test));
         const str = Math.random().toString(36).slice(2);
@@ -160,48 +163,48 @@ function blog_add(editormd) {
             type: 'POST',
             url: 'https://gtf.ai.xingzheai.cn/v2.0/game_chat_ban/detect_text',
             data: {
-                'token':'LUJGYW0SB7KHIOZN',
+                'token': 'LUJGYW0SB7KHIOZN',
                 'data_id': str,
-                'context_type':'post',
+                'context_type': 'post',
                 'context': test.content,
                 'suggestion': '',
                 'label': ''
             },
             dataType: 'json',
-            success: function(data){
+            success: function (data) {
                 console.log(data);
                 let sug = data.data.suggestion;
-                if(sug === "review"){
-                    layui.use('layer',function(){
-                        let layer=layui.layer;
-                        layer.msg(data.data.msg,{
-                            icon:6,
+                if (sug === "review") {
+                    layui.use('layer', function () {
+                        let layer = layui.layer;
+                        layer.msg(data.data.msg, {
+                            icon: 6,
                             time: 2000
                         })
-                        test.audited="待审核";
+                        test.audited = "待审核";
                         add(test)
                     })
-                }else if (sug ==="block"){
-                    layui.use('layer',function(){
-                        let layer=layui.layer;
-                        layer.msg("含有敏感词汇,审核不通过",{
-                            icon:2,
+                } else if (sug === "block") {
+                    layui.use('layer', function () {
+                        let layer = layui.layer;
+                        layer.msg("含有敏感词汇,审核不通过", {
+                            icon: 2,
                             time: 1000
                         })
-                        test.audited="未通过";
+                        test.audited = "未通过";
                     })
-                }else {
-                    test.audited="已通过";
+                } else {
+                    test.audited = "已通过";
                     add(test)
                 }
                 // 关闭加载图标
                 layer.closeAll('loading');
             },
-            error :function(){
-                layui.use('layer',function(){
-                    let layer=layui.layer;
-                    layer.msg('自动审核失败，将移交给人工审核!',{
-                        icon:2,
+            error: function () {
+                layui.use('layer', function () {
+                    let layer = layui.layer;
+                    layer.msg('自动审核失败，将移交给人工审核!', {
+                        icon: 2,
                         time: 1000
                     })
                 })
@@ -212,7 +215,7 @@ function blog_add(editormd) {
 }
 
 //添加博客
-function add(test){
+function add(test) {
     $.ajax({
         type: 'POST',
         url: '/fe-blog/AddBlogController',
@@ -307,10 +310,10 @@ function getSession() {
             saveHTMLToTextarea: true,
             toolbarAutoFixed: false,
             //emoji:true
-    
+
             theme: "default",
             watch: true,
-    
+
             // Preview container theme, added v1.5.0
             // You can also custom css class .editormd-preview-theme-xxxx
             previewTheme: "default",
@@ -321,12 +324,12 @@ function getSession() {
                 return ['undo', 'redo', '|', 'bold', 'italic', 'quote', 'del', '|', 'list-ul', 'list-ol', 'hr', '|', 'link', 'image', '|', 'code', 'preformatted-text', 'table', 'datetime', 'html-entities', '|', 'watch', 'preview', '|', 'search']
             },
             onload: function () {
-    
+
             }
-    
+
             // Added @v1.5.0 & after version this is CodeMirror (editor area) theme
         })
-       
+
         let session = window.sessionStorage;
         let data = JSON.parse(session.getItem('data'));
         let blog = data.blog;
@@ -350,13 +353,13 @@ function getSession() {
                 layui.use('form', function () {
                     let form = layui.form;
                     form.render();
-    
+
                 })
-                
-                $('input[name="tag"]').each(function(element){
-                    for(let i=0;i<t.length;i++){
-                        if(t[i]['name'] == $(this).val()){
-                            $(this).attr('checked','checked');
+
+                $('input[name="tag"]').each(function (element) {
+                    for (let i = 0; i < t.length; i++) {
+                        if (t[i]['name'] == $(this).val()) {
+                            $(this).attr('checked', 'checked');
                         }
                     }
                 })
@@ -380,11 +383,11 @@ function getSession() {
                 layui.use('form', function () {
                     let form = layui.form;
                     form.render();
-    
+
                 })
-                $('#city option').each(function(){
-                    if($(this).attr('id') == blog.fieldId){
-                        $(this).attr('selected','selected');
+                $('#city option').each(function () {
+                    if ($(this).attr('id') == blog.fieldId) {
+                        $(this).attr('selected', 'selected');
                     }
                 })
                 $('input[name="type"]').each(function () {
@@ -405,7 +408,7 @@ function getSession() {
         $('#save_btn').text('保存更改');
         $('#blog_add').on('submit', function (e) {
             let layer;
-            layui.use(['layer'],function(){
+            layui.use(['layer'], function () {
                 layer = layui.layer;
                 layer.load(1);
             })
@@ -437,23 +440,22 @@ function getSession() {
                 url: '/fe-blog/ModifyBlogController',
                 data: JSON.stringify(test),
                 dataType: 'json',
-                success: function(res){
+                success: function (res) {
                     console.log(res.msg);
                     session.removeItem('data');
-                    
+
                     parent.layer.closeAll();
 
                     layer.msg("保存成功！")
-                    setTimeout(function(){
+                    setTimeout(function () {
                         parent.layer.closeAll();
                         window.location.href = 'newblog.html';
-                    },2000)
+                    }, 2000)
                 }
-    
-                
+
+
             })
         })
-        
 
 
     } else {
@@ -497,6 +499,6 @@ function getSession() {
 }
 
 function set_value() {
-    
+
 }
 

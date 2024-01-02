@@ -70,4 +70,15 @@
         LIMIT 6;
     </select>
 
+    <select id="selectBlogbyField" resultType="com.bloducspauter.bean.Blog" parameterType="com.bloducspauter.bean.Blog">
+        select * from db_mybatis.blog where field_id = #{Fieldid}
+        <if test='user_id != -1'> AND user_id = #{user_id} </if>
+        limit #{page},#{size};
+    </select>
+    <select id="selectBlogbytitle" resultType="com.bloducspauter.bean.Blog" parameterType="com.bloducspauter.bean.Blog">
+        select * from db_mybatis.blog   <where>title like "%#{param3}%"</where>
+        AND field_id = #{param1}
+        <if test='userId != -1'> AND user_id = #{param2} </if>
+        limit #{page},#{size};
+    </select>
 </mapper>

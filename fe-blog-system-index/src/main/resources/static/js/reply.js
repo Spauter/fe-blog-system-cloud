@@ -1,26 +1,94 @@
 let commentId = window.location.href.split('=')[1].split('_')[2];
-
+let loginUser;
 $(function () {
     reply_content_load()
+    userInfoLoad();
 })
 
 
-function add() {
+function auditResponse() {
     if (loginUser == null) {
-        layer.msg("请登录后再回复", {
-            iron: 6,
-            time: 1000
-        })
+        layui.use('layer', function () {
+            layer.msg("请登录后再回复", {
+                icon: 6,
+                time: 1000
+            })
+        });
+        return;
+    }
+    const str = Math.random().toString(36).slice(2);
+    let content = $('#reply').val()
+    if (content === '' || content == null) {
+       layui.use('layer',function (){
+           layer.msg("请输入内容", {
+               icon: 2,
+               time: 1000
+           })
+       })
         return;
     }
     $.ajax({
-        success: function () {
-//TODO 添加回复
+        type: 'POST',
+        url: 'https://gtf.ai.xingzheai.cn/v2.0/game_chat_ban/detect_text',
+        data: {
+            'token': 'LUJGYW0SB7KHIOZN',
+            'data_id': str,
+            'context_type': 'post',
+            'context': content,
+            'suggestion': '',
+            'label': ''
+        },
+        dataType: 'json',
+        success: function (data) {
+            console.log(data);
+            let sug = data.data.suggestion;
+            if (sug !== "pass") {
+                layui.use('layer', function () {
+                    let layer = layui.layer;
+                    layer.msg("含有非法词汇,发布失败", {
+                        icon: 2,
+                        time: 2000
+                    })
+                })
+            } else {
+                add(content);
+            }
+        }, error: function () {
+            layui.use('layer', function () {
+                let layer = layui.layer;
+                layer.msg("发布失败,请稍后再试", {
+                    icon: 2,
+                    time: 2000
+                })
+            })
+        }
+    })
+}
+
+function add(content) {
+    $.ajax({
+        type: 'POST',
+        url: 'fe-ornament/addResponse',
+        data: {
+            'content': content,
+            'cid': commentId,
+        },
+        dataType: 'json',
+        success: function (res) {
+            layer.msg(res.msg, {
+                iron: 6,
+                time: 1000,
+            })
+            $('reply').text('');
+            reply_content_load();
         },
         error: function () {
-            layer.msg("未知错误,请稍后再评论", {
-                iron: 5,
-                time: 1000
+            layui.use('layer', function () {
+                let layer = layui.layer;
+                layer.msg("未知错误,请稍后再试", {
+                    icon: 2,
+                    time: 2000
+                })
             })
         }
     })
@@ -36,10 +104,12 @@ function reply_content_load() {
         dataType: "json",
         success: function (res) {
             if (res.code !== 200) {
-                $('.reply_comment').empty().append(`<div class="comment_item"> <span style="color: #00B894;font-weight: bold;">暂无回复</span> 抢占沙发成为评论第一人`);
-                layer.msg(res.msg, {
-                    iron: 2,
-                    time: 1000
+                layui.use('layer', function () {
+                    let layer = layui.layer;
+                    layer.msg(res.msg, {
+                        icon: 6,
+                        time: 2000
+                    })
                 })
                 return;
             }
@@ -111,12 +181,27 @@ function stopinputByMicrophone() {
     })
 }
 
-(()=>{
+(() => {
     window.onbeforeunload = (event) => {
         return "离开不会保存您的更改，是否继续？";
     }
-})  (()=>{
+})(() => {
     window.onbeforeunload = (event) => {
         return "离开不会保存您的更改，是否继续？";
     }
 })
+
+//到这里loginUser的周期已经结束了,再写的一个
+function userInfoLoad() {
+    $.ajax({
+        type: 'GET',
+        url: '/fe-blog/SelectUserServlet',
+        data: {},
+        dataType: 'json',
+        success: function (res) {
+            let code = res.code;
+            console.log(res);
+            loginUser = res.data; // 将值赋给全局变量
+        }
+    })
+}

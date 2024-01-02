@@ -67,25 +67,63 @@ function commentAdd(blogId) {
             })
             return;
         }
+        const str = Math.random().toString(36).slice(2);
+        let content = $('#reply').val()
         $.ajax({
             type: 'POST',
-            url: '/fe-ornament/AddCommentServlet',
-            data: JSON.stringify(data),
+            url: 'https://gtf.ai.xingzheai.cn/v2.0/game_chat_ban/detect_text',
+            data: {
+                'token': 'LUJGYW0SB7KHIOZN',
+                'data_id': str,
+                'context_type': 'post',
+                'context': data.content,
+                'suggestion': '',
+                'label': ''
+            },
             dataType: 'json',
             success: function (res) {
-                console.log(res.msg);
-                layui.use('layer', function () {
-                    layer.msg(res.msg, {
-                        icon: 6,
-                        time: 1000
+                console.log(res);
+                let sug = res.data.suggestion;
+                if (sug !== "pass") {
+                    layui.use('layer', function () {
+                        let layer = layui.layer;
+                        layer.msg("含有非法词汇,发布失败", {
+                            icon: 2,
+                            time: 2000
+                        })
                     })
-                    if (res.code === 200) {
-                        $('#comment').val('');
-                    }
-                    findAllComment(blogId);
+                } else {
+                    addComment(data);
+                }
+            }, error: function () {
+                layer.msg("提交失败，请稍后再试", {
+                    icon: 2,
+                    time: 1000,
                 })
             }
         })
+    })
+}
+
+function addComment(data) {
+    $.ajax({
+        type: 'POST',
+        url: '/fe-ornament/AddCommentServlet',
+        data: JSON.stringify(data),
+        dataType: 'json',
+        success: function (res) {
+            console.log(res.msg);
+            layui.use('layer', function () {
+                layer.msg(res.msg, {
+                    icon: 6,
+                    time: 1000
+                })
+                if (res.code === 200) {
+                    $('#comment').val('');
+                }
+                findAllComment(data.blog_id);
+            })
+        }
     })
 }
 
@@ -168,7 +206,7 @@ function reply() {
         // 事件
         util.on('lay-on', {
             'test-offset-r': function () {
-                   layer.open({
+                layer.open({
                     title: false,
                     type: 2,
                     offset: 'r',

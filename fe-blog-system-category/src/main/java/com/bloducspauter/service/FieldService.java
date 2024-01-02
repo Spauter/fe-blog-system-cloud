@@ -59,24 +59,6 @@ public interface FieldService {
      */
     Field selectByField(String field);
 
-
-    /**
-     * 根据field名称查询所有的博客
-     *
-     * @param fieldid
-     * @return
-     */
-    List<Blog> selectBlogbyField(int fieldid, int user_id, int page, int size);
-
-    /**
-     * 根据fileldid和blogtitle查询博客
-     *
-     * @param fieldid
-     * @param blogtitle
-     * @return
-     */
-    List<Blog> selectBlogbytitle(int fieldid, int userid, String blogtitle, int page, int size);
-
     String SelectFieldNameById(int fieldID);
 
     List<FieldStatistics>seeHotSubmittedFields();

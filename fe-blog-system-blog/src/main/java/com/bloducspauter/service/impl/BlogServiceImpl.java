@@ -177,4 +177,14 @@ public class BlogServiceImpl implements BlogService {
     public List<Blog> popularBlogs() {
         return blogMapper.selectHotBlogs();
     }
+
+    @Override
+    public List<Blog> selectBlogbyField(int Fieldid, int user_id, int page, int size) {
+        return blogMapper.selectBlogbyField(Fieldid,user_id,page,size);
+    }
+
+    @Override
+    public List<Blog> selectBlogbytitle(int fieldid, int userid, String blogtitle, int page, int size) {
+        return blogMapper.selectBlogbytitle(fieldid,userid,blogtitle,page,size);
+    }
 }

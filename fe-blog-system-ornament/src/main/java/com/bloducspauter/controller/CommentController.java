@@ -51,9 +51,10 @@ public class CommentController {
         try {
             Comment comment = getComment(request);
             //修改评论方名字为登录名
-            if (comment.getContent().isEmpty()){
+            if (comment.getContent()==null){
                 map.put("code", 500);
                 map.put("msg", "请输入评论");
+                return map;
             }
             comment.setAccount(user.getAccount());
             int result;
