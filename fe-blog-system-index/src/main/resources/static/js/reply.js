@@ -74,3 +74,49 @@ function reply_content_load() {
     })
 }
 
+
+var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+var recognition = new SpeechRecognition();
+recognition.lang = 'zh-CN';
+recognition.interimResults = false;
+recognition.maxAlternatives = 1;
+recognition.onresult = function (event) {
+    var yourComment = event.results[0][0].transcript
+    console.log(event.results[0][0].transcript)
+    //把结果显示在输入框上
+    $('#reply').append(yourComment);
+    //存储回复内容
+}
+
+function responseByMicrophone() {
+    console.log("开始输入")
+    layui.use('layer', function () {
+        layer.msg("开始语音输入", {
+            icon: 6,
+            time: 1000
+        })
+        recognition.start();
+    })
+
+}
+
+function stopinputByMicrophone() {
+    console.log("停止输入")
+    layui.use('layer', function () {
+        layer.msg("停止语音输入", {
+            icon: 6,
+            time: 1000
+        })
+        recognition.stop();
+    })
+}
+
+(()=>{
+    window.onbeforeunload = (event) => {
+        return "离开不会保存您的更改，是否继续？";
+    }
+})  (()=>{
+    window.onbeforeunload = (event) => {
+        return "离开不会保存您的更改，是否继续？";
+    }
+})

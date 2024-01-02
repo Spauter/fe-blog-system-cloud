@@ -1,5 +1,4 @@
 let loginUser = null;
-
 $(function () {
     content_load();
 })
@@ -61,7 +60,7 @@ function commentAdd(blogId) {
             'blog_id': blogId,
             'content': $('#comment').val(),
         }
-        if(data.content===''||data.content==null){
+        if (data.content === '' || data.content == null) {
             layer.msg("请输入评论", {
                 icon: 2,
                 time: 1000
@@ -103,7 +102,8 @@ recognition.onresult = function (event) {
     //把结果显示在输入框上
     $('#comment').append(yourComment);
 }
-function inputByMicrophone() {
+
+function commentByMicrophone() {
     console.log("开始输入")
     layui.use('layer', function () {
         layer.msg("开始语音输入", {
@@ -112,8 +112,8 @@ function inputByMicrophone() {
         })
         recognition.start();
     })
-
 }
+
 function stopinputByMicrophone() {
     console.log("停止输入")
     layui.use('layer', function () {
@@ -168,19 +168,31 @@ function reply() {
         // 事件
         util.on('lay-on', {
             'test-offset-r': function () {
-                layer.open({
-                    title:false,
+                   layer.open({
+                    title: false,
                     type: 2,
                     offset: 'r',
                     anim: 'slideLeft',
                     area: ['560px', '100%'],
                     shade: 0.1,
-                    shadeClose: true,
+                    shadeClose: false,
                     scrollbar: false,
                     id: 'ID-demo-layer-direction-r',
-                    content: 'reply.html?rid='+$(this).attr('id')
+                    content: 'reply.html?rid=' + $(this).attr('id'),
+                    success: function (layero) {//成功 后回调方法
+                        layero.find('.layui-layer-close2').remove(); //去掉关闭按钮
+                    },
                 });
             }
+        })
+        $(document).on("click", ".layui-layer-shade", function () {
+            layer.confirm('你的编辑不会保存，是否离开？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                layer.closeAll()
+            }, function () {
+
+            });
         })
     })
 }
