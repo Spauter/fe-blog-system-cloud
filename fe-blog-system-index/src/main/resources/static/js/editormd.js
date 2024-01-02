@@ -117,12 +117,7 @@ function media_layer() {
 function blog_add(editormd) {
     $('#blog_add').on('submit', function (e) {
         if (loginUser == null) {
-            layui.use('layer', function () {
-                layer.msg("您还未登录", {
-                    icon: 6,
-                    time: 1000
-                })
-            })
+            alert("您还没登录呢,请登录后再投稿");
             e.preventDefault();
             return;
         }
