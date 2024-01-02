@@ -79,7 +79,7 @@ function add(content) {
                 iron: 6,
                 time: 1000,
             })
-            $('reply').text('');
+            $('#reply').text("");
             reply_content_load();
         },
         error: function () {
