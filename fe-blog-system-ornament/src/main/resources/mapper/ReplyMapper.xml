@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bloducspauter.mapper.ReplyMapper">
+    <select id="selectReplyByPage" resultType="com.bloducspauter.bean.Reply">
+        select * from db_mybatis.reply where id = #{id} limit #{page},#{size}
+    </select>
+</mapper>

@@ -38,8 +38,10 @@ public class ReplyController {
         String commentId=request.getParameter("cid");
         List<Reply>list;
         try{
+            int page = Integer.parseInt(request.getParameter("page"));
+            int size = Integer.parseInt(request.getParameter("size"));
             int cid=Integer.parseInt(commentId);
-            list=replyService.selectAllResponseByCommentId(cid);
+            list=replyService.selectAllResponseByCommentId(cid,page,size);
             if (list.isEmpty()){
                 map.put("code",404);
                 map.put("msg","暂无回复列表");

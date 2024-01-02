@@ -17,10 +17,8 @@ public class ReplyServiceImpl implements ReplyService {
     private ReplyMapper replyMapper;
 
     @Override
-    public List<Reply> selectAllResponseByCommentId(Integer commentId) {
-        QueryWrapper<Reply>queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("id",commentId);
-        return replyMapper.selectList(queryWrapper);
+    public List<Reply> selectAllResponseByCommentId(Integer commentId, Integer page, Integer size) {
+        return replyMapper.selectReplyByPage(commentId, page, size);
     }
 
     @Override

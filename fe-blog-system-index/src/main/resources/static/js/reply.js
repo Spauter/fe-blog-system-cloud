@@ -98,41 +98,47 @@ function reply_content_load() {
     layui.use('laypage',function (){
         let laypage=layui.laypage;
         laypage.render({
-            element:'reply_page',
+            elem:'reply_page',
             count:100,
-            // limit:
+            limit:10,
+            jump:function (obj,first){
+                let curr = obj.curr;
+                $.ajax({
+                    type: 'GET',
+                    url: 'fe-ornament/findResponseByCommentId',
+                    data: {
+                        'cid': commentId,
+                        'page':(curr-1)*10,
+                        'size':10
+                    },
+                    dataType: "json",
+                    success: function (res) {
+                        if (res.code !== 200) {
+                            layui.use('layer', function () {
+                                let layer = layui.layer;
+                                layer.msg(res.msg, {
+                                    icon: 6,
+                                    time: 2000
+                                })
+                            })
+                            $('.reply_comment').empty();
+                            return;
+                        }
+                        let data = res.data;
+                        let reply_list = [];
+                        for (let i = 0; i < data.length; i++) {
+                            let element = `<div class="comment_item" id='reply_${data[i]['rid']}'> <span style="color: #00B894;font-weight: bold;">${data[i]['account']}：</span> ${data[i]['content']}</div>`
+                            reply_list.push(element);
+                        }
+                        $('.reply_comment').empty().append(reply_list.join(''));
+                    }, error: function () {
+                        layer.msg("请求出错，即将返回首页");
+                        location.href = "../index.html"
+                    }
+                });
+            }
         })
     })
-    $.ajax({
-        type: 'GET',
-        url: 'fe-ornament/findResponseByCommentId',
-        data: {
-            cid: commentId,
-        },
-        dataType: "json",
-        success: function (res) {
-            if (res.code !== 200) {
-                layui.use('layer', function () {
-                    let layer = layui.layer;
-                    layer.msg(res.msg, {
-                        icon: 6,
-                        time: 2000
-                    })
-                })
-                return;
-            }
-            let data = res.data;
-            let reply_list = [];
-            for (let i = 0; i < data.length; i++) {
-                let element = `<div class="comment_item" id='reply_${data[i]['rid']}'> <span style="color: #00B894;font-weight: bold;">${data[i]['account']}：</span> ${data[i]['content']}</div>`
-                reply_list.push(element);
-            }
-            $('.reply_comment').empty().append(reply_list.join(''));
-        }, error: function () {
-            layer.msg("请求出错，即将返回首页");
-            location.href = "../index.html"
-        }
-    });
     $.ajax({
         type: 'GET',
         url: '/fe-ornament/getCommentedUser',
