@@ -17,8 +17,8 @@ function userInfoLoad() {
                 $('.aside').empty();
                 return;
             }
+            loginUser = res.data; // 将值赋给全局变量
             if (res.data.status !== "注册用户") {
-                loginUser = res.data; // 将值赋给全局变量
                 $('#user_avatar').attr("src", loginUser.avatar);
                 $('.user_avatar>img').attr("src", loginUser.avatar);
             } else {
