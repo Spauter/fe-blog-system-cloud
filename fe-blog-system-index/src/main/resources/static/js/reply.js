@@ -95,6 +95,14 @@ function add(content) {
 }
 
 function reply_content_load() {
+    layui.use('laypage',function (){
+        let laypage=layui.laypage;
+        laypage.render({
+            element:'reply_page',
+            count:100,
+            // limit:
+        })
+    })
     $.ajax({
         type: 'GET',
         url: 'fe-ornament/findResponseByCommentId',

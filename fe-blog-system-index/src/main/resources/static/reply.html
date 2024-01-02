@@ -10,11 +10,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
     <meta name="renderer" content="ie-stand">
     <title>韬韬的个人博客-回复列表</title>
-    <link rel="stylesheet" href="./css/reply.css">
     <link rel="stylesheet" href="./js/layui/css/layui.css">
+    <link rel="stylesheet" href="./css/reply.css">
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="./js/editor.md/css/editormd.preview.min.css">
     <link rel="stylesheet" href="./font/font-awesome-4.7.0/css/font-awesome.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--    添加垂直滚动条-->
 
 </head>
@@ -38,7 +39,9 @@
 <div class="reply_comment" id="reply_body">
     <div class="comment_item"> <span style="color: #00B894;font-weight: bold;">暂无回复</span> 抢占沙发成为评论第一人</div>
 </div>
-
+<div id="replyPage" class="reply_page">
+    <div id="reply_page"></div>
+</div>
 <div class="bottom-fixed-container">
     <h5 style="font-size: 2rem; color: #00B894;">回复</h5>
     <div class="article_comment_frame">
@@ -62,5 +65,15 @@
 <script src="./js/jquery.min.js"></script>
 <script src="./js/layui/layui.js"></script>
 <script src="./js/reply.js"></script>
+<script>
+    layui.use(function(){
+        var laypage = layui.laypage;
+        laypage.render({
+            elem: 'demo-laypage-normal-2',
+            count: 100 // 数据总数
+        });
+    });
+</script>
+
 </body>
 </html>
