@@ -2,14 +2,12 @@ package com.bloducspauter.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.bloducspauter.bean.Blog;
-import com.bloducspauter.bean.Field;
-import com.bloducspauter.bean.Tag;
-import com.bloducspauter.bean.User;
+import com.bloducspauter.bean.*;
 import com.bloducspauter.service.BlogService;
 import com.bloducspauter.service.FieldService;
 import com.bloducspauter.service.UserService;
 import com.bloducspauter.utils.GetRequestJson;
+import com.bloducspauter.utils.HttpUtil;
 import com.bloducspauter.utils.IsValidUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,15 +18,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.bloducspauter.utils.ltp.buildHttpHeader;
+
 @RestController
 @RequestMapping("fe-blog")
 @Slf4j
 public class BlogController {
+
+    String key = "";
 
     @Autowired
     private BlogService blogService;
@@ -40,7 +43,14 @@ public class BlogController {
     private UserService userService;
 
     private JSONObject json = new JSONObject();
-
+    private static final String WEBTTS_URL = "http://ltpapi.xfyun.cn/v1/ke";
+    // 应用ID
+    private static final String APPID = "ddd62ac7";
+    // 接口密钥
+    private static final String API_KEY = "cb8daf4a691f5f78c9c371ed1e714e88";
+    // 文本
+    private static  String TEXT = "";
+    private static final String TYPE = "dependent";
     @RequestMapping("FieldfindAllblog")
     public Map<String, Object> findAllBlogsField(HttpServletRequest req, HttpSession session) {
         Map<String, Object> map = new HashMap<>();
@@ -304,28 +314,46 @@ public class BlogController {
     public Map<String, Object> addBlog(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
         Map<String, Object> resultMap = new HashMap<>();
         Blog blog = accessBlog(request, response, session);
-        boolean addBlog = blogService.addBlog(blog);
-        boolean tagResult = insertTags(blog);
-        //查询博客的所有标签
-        List<Tag> taglist = blogService.selectTagsByBlog(blog.getBlogId());
-        //查询刚插入的博客
-        Blog newBlog = blogService.selectInBlog(blog.getBlogId());
-        HashMap<String, Object> map = new HashMap<String, Object>(2);
+        try{
+            //关键字查询
+            TEXT = blog.getContent();
+            System.out.println(TEXT.length());
+            Map<String, String> header = buildHttpHeader();
+            String result = HttpUtil.doPost1(WEBTTS_URL, header, "text=" + URLEncoder.encode(TEXT, "utf-8"));
+            System.out.println("itp 接口调用结果：" + result);
+            ltpData ltpData = JSONObject.parseObject(result, ltpData.class);
 
-        map.put("blog", newBlog);
-        map.put("tags", taglist);
-        if (addBlog && tagResult) {
-            resultMap.put("code", 200);
-            resultMap.put("msg", "发布成功");
-            resultMap.put("data", map);
-        } else if (!tagResult) {
-            resultMap.put("code", 500);
-            resultMap.put("msg", "标签库不存在这样的标签");
-        } else {
-            resultMap.put("code", 500);
-            resultMap.put("msg", "原因未知！接收错误");
-        }
-        return resultMap;
+            ltpData.getData().get(0).get("ke").forEach(k -> {
+                key += k.get("word")+",";
+            });
+            System.out.println(key);
+            blog.setKeyWords(key);
+
+            boolean addBlog = blogService.addBlog(blog);
+            boolean tagResult = insertTags(blog);
+            //查询博客的所有标签
+            List<Tag> taglist = blogService.selectTagsByBlog(blog.getBlogId());
+            //查询刚插入的博客
+            Blog newBlog = blogService.selectInBlog(blog.getBlogId());
+            HashMap<String, Object> map = new HashMap<String, Object>(2);
+
+            map.put("blog", newBlog);
+            map.put("tags", taglist);
+            if (addBlog && tagResult) {
+              resultMap.put("code", 200);
+              resultMap.put("msg", "发布成功");
+              resultMap.put("data", map);
+            } else if (!tagResult) {
+              resultMap.put("code", 500);
+              resultMap.put("msg", "标签库不存在这样的标签");
+            } else {
+              resultMap.put("code", 500);
+              resultMap.put("msg", "原因未知！接收错误");
+            }
+      }catch (Exception e){
+            e.printStackTrace();
+      }
+          return resultMap;
     }
 
     @RequestMapping("AllBlogCountServlet")
