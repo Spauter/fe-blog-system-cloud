@@ -38,6 +38,7 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public boolean addBlog(Blog blog) {
         blog.setClicks(0);
+        blog.setAudited("待审核");
         boolean flag = false;
         int row = blogMapper.insert(blog);
         if (row > 0) {

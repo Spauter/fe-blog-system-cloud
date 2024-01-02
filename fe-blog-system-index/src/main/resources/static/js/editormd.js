@@ -191,7 +191,7 @@ function blog_add(editormd) {
                         test.audited="未通过";
                     })
                 }else {
-                    test.audited="已通过";
+                    test.audited="待审核";
                     add(test)
                 }
                 // 关闭加载图标
@@ -230,7 +230,7 @@ function add(test){
                 return;
             }
             parent.layer.closeAll();
-            layer.msg('发布成功！');
+            layer.msg('投稿成功！等待管理员审核');
             setTimeout(function () {
                 parent.layer.closeAll();
                 window.location.href = 'newblog.html';
@@ -402,7 +402,7 @@ function getSession() {
             }
         })
         $('#content').text(blog_content[1]);
-        $('#save_btn').text('保存更改');
+        // $('#save_btn').text('保存更改');
         $('#blog_add').on('submit', function (e) {
             let layer;
             layui.use(['layer'],function(){

@@ -29,6 +29,7 @@ function edit(){
                     data: {'blogId':obj.data['blogId']},
                     dataType:'json',
                     success: function(res){
+                        $('#save_btn').text("24242443");
                         session = window.sessionStorage;
                         session.setItem('data',JSON.stringify(res.data));
                         window.location.href = '../pages/newblog.html';

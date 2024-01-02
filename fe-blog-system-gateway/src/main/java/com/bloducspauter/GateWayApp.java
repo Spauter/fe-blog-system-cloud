@@ -11,5 +11,6 @@ public class GateWayApp {
         SpringApplication springApplication = new SpringApplication(GateWayApp.class);
         springApplication.setAllowBeanDefinitionOverriding(true);
         springApplication.run(args);
+        System.out.println();
     }
 }
