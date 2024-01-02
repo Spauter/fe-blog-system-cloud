@@ -131,6 +131,7 @@ function addComment(data) {
 var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 var recognition = new SpeechRecognition();
 recognition.lang = 'zh-CN';
+recognition.continuous=true;
 recognition.interimResults = false;
 recognition.maxAlternatives = 1;
 
