@@ -34,6 +34,7 @@ public class EmailVerificationController {
             map.put("code", 200);
             map.put("msg", "邮件发送成功");
         } catch (Exception e) {
+            e.printStackTrace();
             log.error(e.getMessage());
             map.put("code", 500);
             map.put("msg", "发送失败");
