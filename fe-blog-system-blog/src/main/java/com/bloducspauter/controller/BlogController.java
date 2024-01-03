@@ -324,9 +324,9 @@ public class BlogController {
             ltpData ltpData = JSONObject.parseObject(result, ltpData.class);
 
             assert ltpData != null;
-            if(!ltpData.getCode().equals("0")){
-                resultMap.put("code",500);
-                resultMap.put("msg","您的内容与选题不符，请重新编辑");
+            if (!ltpData.getCode().equals("0")) {
+                resultMap.put("code", 500);
+                resultMap.put("msg", "您的内容与选题不符，请重新编辑");
                 return resultMap;
             }
             ltpData.getData().get(0).get("ke").forEach(k -> {
@@ -340,19 +340,19 @@ public class BlogController {
             Blog newBlog = blogService.selectInBlog(blog.getBlogId());
             List<Tag> taglist = blogService.selectTagsByBlog(blog.getBlogId());
             //把key转化为list集合
-            String[] keyWordsArray=key.split(",");
-            List<String>keyList= Arrays.asList(keyWordsArray);
+            String[] keyWordsArray = key.split(",");
+            List<String> keyList = Arrays.asList(keyWordsArray);
             //宽松匹配,只要包含了就给过
-            int contain=0;
-            for(Tag t:taglist){
+            int contain = 0;
+            for (Tag t : taglist) {
                 //不区分大小写
-                if(keyList.contains(t.getName().toLowerCase())){
+                if (keyList.contains(t.getName().toLowerCase())) {
                     contain++;
                 }
             }
-            if (contain==0){
-                resultMap.put("code",500);
-                resultMap.put("msg","您的内容与选题不符，请重新编辑");
+            if (contain == 0) {
+                resultMap.put("code", 500);
+                resultMap.put("msg", "您的内容与选题不符，请重新编辑");
                 //由于id是根据插入后生成的,所以需要再次删除
                 blogService.delete(newBlog.getBlogId());
                 return resultMap;
@@ -517,4 +517,15 @@ public class BlogController {
         }
         return map;
     }
+
+//    @RequestMapping("/add1")
+//    public Map<String, Object> hotBlogs1(HttpServletRequest request) {
+//        Map<String, Object> map = new HashMap<>();
+//        int blog_id = Integer.parseInt(request.getParameter("blog_id"));
+//        String audited = request.getParameter("audited");
+//        Blog blog = blogService.selectInBlog(blog_id);
+//        blog.setAudited(audited);
+//        return map;
+//       blogService.modifyBlog(blog);
+//    }
 }

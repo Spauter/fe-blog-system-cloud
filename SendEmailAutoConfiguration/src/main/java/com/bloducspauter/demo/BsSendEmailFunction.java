@@ -1,8 +1,8 @@
 package com.bloducspauter.demo;
 
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,22 +11,74 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
 @Slf4j
-public class BsSendEmailFunction {
+public class BsSendEmailFunction implements SendEmail {
+
 
     @Autowired
     private SendEmailProperties sendEmailProperties;
 
-    public void sendEmail(String requst, String to) throws IOException {
-        isValidPort();
-        isValidHost();
-        String s = toSend(requst, to);
-        log.info(s);
-        URL url = new URL(s);
-        log.info(url.toString());
+
+    @Override
+    public void sendEmailVerifyCode(String request, String to, String code) throws IOException {
+        String url = toSendVerifyCode(request, to, code);
+        StartToSendEmail(url);
+    }
+
+    //审核后发送的邮件
+    @Override
+    public void sendAuditNotice(String request, String to, String isAudited) throws IOException {
+        //TODO
+    }
+
+    //拼接url
+    private String toSendVerifyCode(String request, String to, String code) {
+        return "http://" + sendEmailProperties.getHost() + ":" + sendEmailProperties.getPort() + "/" + request + "?email=" + to + "&code=" + code;
+    }
+
+    private String toSendAuditEmail(String request,String to,boolean isAudited){
+        return "http://" + sendEmailProperties.getHost() + ":" + sendEmailProperties.getPort() + "/" + request + "?email=" + to +"&isAudited"+isAudited;
+    }
+
+
+    //打印返回码
+    private void setResponseCode(int responseCode) {
+        switch (responseCode / 100) {
+            case 1: {
+                log.warn("This request is not finished");
+                break;
+            }
+            case 2: {
+                log.info("OK");
+                break;
+            }
+            case 3: {
+                log.warn("Redirect Server");
+                break;
+            }
+            case 4: {
+                log.error("Request error");
+                break;
+            }
+            case 5: {
+                log.error("System Error");
+                break;
+            }
+            case 6: {
+                log.error("Unresolvable Response Headers");
+            }
+        }
+    }
+
+
+    private void StartToSendEmail(String StringUrl) throws IOException {
+        if (!sendEmailProperties.isOpenSendEmail()) {
+            log.warn("You set the open_send_email is false,so no email was sent");
+            return;
+        }
+        log.info("The target url:"+StringUrl);
+        URL url = new URL(StringUrl);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
         connection.setRequestProperty("Content-Type", "application/json");
@@ -43,55 +95,5 @@ public class BsSendEmailFunction {
         reader.close();
         String responseBody = response.toString();
         System.out.println(responseBody);
-    }
-
-    private String toSend(String request, String to) {
-        return "http://" + sendEmailProperties.getHost() + ":" + sendEmailProperties.getPort() + "/" + request + "?email=" + to;
-    }
-
-    private void isValidPort() throws MalformedURLException {
-        if (!sendEmailProperties.getPort().matches("\\d{0,9}")) {
-            throw new MalformedURLException("Invalid host! It must be a number!");
-        }
-        try {
-            int port = Integer.parseInt(sendEmailProperties.getPort());
-            if (port <= 0 || port > 65535) {
-                throw new MalformedURLException("Invalid host! It must between 1 and 65535!");
-            }
-        } catch (NumberFormatException numberFormatException) {
-            throw new MalformedURLException("Invalid host! Please check it");
-        }
-    }
-
-    private void isValidHost() throws MalformedURLException {
-        if (sendEmailProperties.getHost()==null){
-            throw new MalformedURLException("Please type a host!");
-        }
-        if (sendEmailProperties.getHost().isEmpty()){
-            throw new MalformedURLException("Please type a host!");
-        }
-    }
-
-    private void setResponseCode(int responseCode){
-        switch (responseCode/100){
-            case 1:{
-                log.warn("This request is not finished");
-                break;
-            } case 2:{
-                log.info("OK");
-                break;
-            } case 3:{
-                log.warn("Redirect Server");
-                break;
-            } case 4:{
-                log.error("Request error");
-                break;
-            } case 5:{
-                log.error("System Error");
-                break;
-            } case 6:{
-                log.error("Unresolvable Response Headers");
-            }
-        }
     }
 }

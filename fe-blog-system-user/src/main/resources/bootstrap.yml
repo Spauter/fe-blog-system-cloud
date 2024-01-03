@@ -2,17 +2,18 @@ spring:
   cloud:
     nacos:
       config:
-        prefix: fe-blog-user
-        file-extension: yml
-        namespace: 192099489
-        group: FE_BLOG
-        shared-configs:
-          - { data-id: 'mysql8-local.yml',refresh: true,group: FE_BLOG }
-          - {data-id: 'common.yml',refresh: true,group: FE_BLOG}
         server-addr: localhost:8848
+        namespace: 192099489
         username: nacos
         password: nacos
+        prefix: fe-blog-user
+        group: FE_BLOG
+        file-extension: yml
+        shared-configs:
+          - {data-id: 'common.yml',refresh: true,group: FE_BLOG}
+          - {data-id: 'mysql8-local.yml',refresh: true,group: FE_BLOG}
+          - {data-id: 'redis-local.yml',refresh: true,group: FE_BLOG}
       discovery:
         group: FE_BLOG
         namespace: 192099489
-
+        service: fe-user

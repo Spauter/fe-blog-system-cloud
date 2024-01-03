@@ -81,6 +81,11 @@ public class UserController {
         String email = request.getParameter("email");
         String vericode = request.getParameter("vericode");
         String generatedCode = (String) session.getAttribute("emailVerifyCode");
+        if(generatedCode==null){
+            map.put("code", 500);
+            map.put("msg", "无法获取验证码");
+            return map;
+        }
         if (!password.equals(confirmPassword)) {
             map.put("code", 500);
             map.put("msg", "两次输入的密码不一致");

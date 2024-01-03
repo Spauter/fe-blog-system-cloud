@@ -29,6 +29,7 @@ function toRegister() {
                     icon: 2,
                     time: 1000
                 })
+                return;
             }
         }
         register = true;
