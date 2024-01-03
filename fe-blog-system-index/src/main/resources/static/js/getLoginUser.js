@@ -16,8 +16,21 @@ function userInfoLoad() {
             console.log(res);
             if (code === 200) {
                 loginUser = res.data; // 将值赋给全局变量
-                if(loginUser.status==='注册用户'){
-                    changeBar();
+                if (loginUser.status === '注册用户') {
+                    let element = `
+         <div class="aside_menu ">
+            <ul class="layui-nav layui-nav-tree">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;">用户管理</a>
+                    <dl class="layui-nav-child">
+                        <dd ><a href="userinfo.html">个人信息</a></dd>
+                        <dd ><a href="account.html">账户管理</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+        `
+                    $('.aside').empty().append(element);
                 }
                 $('#user_avatar').attr("src", loginUser.avatar);
                 $('.user_avatar>img').attr("src", loginUser.avatar);
@@ -36,20 +49,4 @@ function userInfoLoad() {
 }
 
 
-function changeBar(){
-        let element=`
-         <div class="aside_menu ">
-            <ul class="layui-nav layui-nav-tree">
-                <li class="layui-nav-item layui-nav-itemed">
-                    <a href="javascript:;">用户管理</a>
-                    <dl class="layui-nav-child">
-                        <dd ><a href="userinfo.html">个人信息</a></dd>
-                        <dd ><a href="account.html">账户管理</a></dd>
-                    </dl>
-                </li>
-            </ul>
-        </div>
-        `
-        $('.aside').empty().append(element);
-}
 

@@ -17,7 +17,7 @@ public class CustomerExceptionHandelAdvice {
         Map<String,Object>map=new HashMap<>();
         map.put("code",-1);
         map.put("msg","Who put a TNT here?");
-        map.put("cause",e.getMessage());
+        map.put("cause","意料之外的错误:"+e.getCause());
         return map;
     }
 }

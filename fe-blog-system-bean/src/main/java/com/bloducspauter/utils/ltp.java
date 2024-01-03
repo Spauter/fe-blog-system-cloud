@@ -8,6 +8,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,11 +31,12 @@ public class ltp {
 	public static void main(String[] args) throws IOException {
 //		System.out.println(TEXT.length());
 		Map<String, String> header = buildHttpHeader();
-		String result = HttpUtil.doPost1(WEBTTS_URL, header, "text=" + URLEncoder.encode(TEXT, "utf-8"));
+		String result = HttpUtil.doPost1(WEBTTS_URL, header, "text=" + URLEncoder.encode(TEXT, StandardCharsets.UTF_8));
 		System.out.println("itp 接口调用结果：" + result);
 		ltpData ltpData = JSONObject.parseObject(result, ltpData.class);
 
-		ltpData.getData().get(0).get("ke").forEach(k -> {
+        assert ltpData != null;
+        ltpData.getData().get(0).get("ke").forEach(k -> {
 			key += k.get("word")+",";
 		});
 		System.out.println(key);
@@ -47,7 +49,7 @@ public class ltp {
 	public static Map<String, String> buildHttpHeader() throws UnsupportedEncodingException {
 		String curTime = System.currentTimeMillis() / 1000L + "";
 		String param = "{\"type\":\"" + TYPE +"\"}";
-		String paramBase64 = new String(Base64.encodeBase64(param.getBytes("UTF-8")));
+		String paramBase64 = new String(Base64.encodeBase64(param.getBytes(StandardCharsets.UTF_8)));
 		String checkSum = DigestUtils.md5Hex(API_KEY + curTime + paramBase64);
 		Map<String, String> header = new HashMap<String, String>();
 		header.put("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");

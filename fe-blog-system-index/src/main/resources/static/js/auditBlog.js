@@ -4,9 +4,9 @@ $(function () {
         let laypage = layui.laypage;
         let allCount = 0;
         let curr = 1;
-        let getUrl='/fe-blog/AllBlogCountServlet'
+        let getUrl='/fe-blog/auditBlog'
         let method='GET'
-        let requestUrl='/fe-blog/SelectLimitBlogController'
+        let requestUrl='/fe-blog/auditBlog'
         loadTable(table,laypage,allCount,curr,method,getUrl,requestUrl);
 
     })
@@ -16,7 +16,7 @@ $(function () {
 
 
 
-function edit(){
+function audit(){
     layui.use(['table'],function(){
         let table = layui.table;
         let session = null;
@@ -31,14 +31,14 @@ function edit(){
                     success: function(res){
                         session = window.sessionStorage;
                         session.setItem('data',JSON.stringify(res.data));
-                        window.location.href = '../article1.html' + '?' + 'blogId=' + $(this).attr('id');
+                        window.location.href = '../article1.html' + '?' + 'blogId=' +obj.data['blogId'];
                     },
                     error: function(){
                         console.log('请求出错');
                     }
                 })
             }
-            if(layEvent == 'del'){
+            if(layEvent === 'del'){
                 console.log("执行了一下");
                 let data = {
                     'blogId':obj.data['blogId']
@@ -69,7 +69,7 @@ function auditBlog(){
         let laypage = layui.laypage;
         let allCount = 0;
         let curr = 1;
-        let getUrl='/fe-blog/AllBlogCountServlet'
+        let getUrl='/fe-blog/auditBlog'
         let method='GET'
         let requestUrl='/fe-blog/auditBlog/'
         loadTable(table,laypage,allCount,curr,method,getUrl,requestUrl);
@@ -103,7 +103,7 @@ function loadTable(table,laypage,allCount,curr,method,getUrl,requestUrl) {
                     }
                     table.render({
                         elem: "#blog",
-                        title: "管理博客",
+                        title: "博客审核",
                         url: requestUrl,
                         where: {
                             'page': (curr - 1) * 14,
@@ -152,7 +152,7 @@ function loadTable(table,laypage,allCount,curr,method,getUrl,requestUrl) {
                             }
                         },
                         done: function () {
-                            edit();
+                            audit();
                         }
                     })
                 }

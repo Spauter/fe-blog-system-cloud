@@ -17,6 +17,7 @@ public class NullPointerExceptionHandelAdvice {
         Map<String,Object>map=new HashMap<>();
         map.put("code",-1);
         map.put("msg","Did you miss something? Go back and check it. :)");
+        map.put("cause","当你看到这个提示时,说明报Null了,请检查是不是少了什么东西");
         return map;
     }
 }

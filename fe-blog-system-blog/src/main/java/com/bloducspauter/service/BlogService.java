@@ -26,11 +26,10 @@ public interface BlogService {
      * 删除博客
      *
      * @param blogId
-     * @return boolean
      * @time 8-9
      * @version
      */
-    boolean deleteBlog(int blogId);
+    void deleteBlog(int blogId);
 
     /**
      * 修改博客
@@ -101,9 +100,8 @@ public interface BlogService {
      * 删除某一博客的对应关系
      *
      * @param blogId
-     * @return true of false
      */
-    int deleteBlogTag(int blogId);
+    void deleteBlogTag(int blogId);
 
     /**
      * 根据博客id查询全部标签
@@ -118,17 +116,15 @@ public interface BlogService {
      * 根据标签名查询tagId
      *
      * @param tag
-     * @return
      */
     List<Tag> selectByTag(List<String> tag);
 
     /**
      * 查询该标签下所有的博客信息
      *
-     * @param tagname
-     * @return
+     * @param tagName
      */
-    List<Blog> selectblogbytag(String tagname);
+    List<Blog> selectBlogByTag(String tagName);
 
 
     List<Blog> selectAuditingBlog();
@@ -149,5 +145,4 @@ public interface BlogService {
      * @return
      */
     List<Blog> selectBlogbytitle(int fieldid, int userid, String blogtitle, int page, int size);
-
 }

@@ -17,7 +17,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.util.UUID;
 
-import static com.bloducspauter.utils.DefalutValue.DEFAULT_AVATAR;
+import static com.bloducspauter.utils.DefaultValue.DEFAULT_AVATAR;
 
 
 @Slf4j

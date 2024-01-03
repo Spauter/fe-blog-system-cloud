@@ -9,11 +9,10 @@ public class CreateVerificationCode {
 
 
     public static String getSecurityCode() {
-        return (String) getSecurityCode(4, false);
+        return getSecurityCode(4, false);
     }
 
     public static String getSecurityCode(int length, boolean isCanRepeat) {
-        int len = length;
         //除去容易混淆的0和o，1和l
         char[] codes = {
                 '1', '2', '3', '4', '5', '6', '7', '8', '9',
@@ -28,11 +27,11 @@ public class CreateVerificationCode {
 
         int n=codes.length;
         //抛出运行时异常
-        if (len>n&&isCanRepeat==false){
+        if (length >n&& !isCanRepeat){
             throw new RuntimeException(
-                    String.format("调用securitycode.getSecurityCode(%1$s,len,level,isCanRepeat,n)"));
+                    "调用securitycode.getSecurityCode(%1$s,len,level,isCanRepeat,n)");
         }
-        char[] result=new char[len];
+        char[] result=new char[length];
         //判断能否出现重复的字符
         if (isCanRepeat){
             for(int i=0;i<result.length;i++){

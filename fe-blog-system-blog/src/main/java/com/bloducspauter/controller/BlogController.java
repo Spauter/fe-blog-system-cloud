@@ -48,17 +48,16 @@ public class BlogController {
     private static final String APPID = "ddd62ac7";
     // 接口密钥
     private static final String API_KEY = "cb8daf4a691f5f78c9c371ed1e714e88";
-    // 文本
-    private static  String TEXT = "";
     private static final String TYPE = "dependent";
+
     @RequestMapping("FieldfindAllblog")
     public Map<String, Object> findAllBlogsField(HttpServletRequest req, HttpSession session) {
         Map<String, Object> map = new HashMap<>();
         String fieldname = req.getParameter("fieldname");
-            int Userid = new IsValidUtil().getUserId(req,session);
-            int page = Integer.parseInt(req.getParameter("page"));
-            int size = Integer.parseInt(req.getParameter("size"));
-            List<Blog> blogs = null;
+        int Userid = new IsValidUtil().getUserId(req, session);
+        int page = Integer.parseInt(req.getParameter("page"));
+        int size = Integer.parseInt(req.getParameter("size"));
+        List<Blog> blogs = null;
         try {
             if (fieldname.equals("all")) {
                 blogs = blogService.selectByBlogLimit(Userid, page, size);
@@ -72,7 +71,7 @@ public class BlogController {
             map.put("msg", "查找成功");
             map.put("data", blogs);
         } catch (Exception e) {
-           e.printStackTrace();
+            e.printStackTrace();
             map.put("code", 500);
             map.put("msg", e.getCause());
         }
@@ -85,7 +84,7 @@ public class BlogController {
         String blogtitle = req.getParameter("blogtitle");
         Map<String, Object> map = new HashMap<>();
         try {
-            int Userid = new IsValidUtil().getUserId(req,session);
+            int Userid = new IsValidUtil().getUserId(req, session);
             int page = Integer.parseInt(req.getParameter("page"));
             int size = Integer.parseInt(req.getParameter("size"));
             List<Blog> blog = null;
@@ -116,7 +115,7 @@ public class BlogController {
         Map<String, Object> Resultmap = new HashMap<>();
         String tagname = req.getParameter("tagname");
         try {
-            List<Blog> selectblogbytag = blogService.selectblogbytag(tagname);
+            List<Blog> selectblogbytag = blogService.selectBlogByTag(tagname);
             List<Map<String, Object>> mapList = new ArrayList<>();
             for (Blog blog : selectblogbytag) {
                 Map<String, Object> map = new HashMap<>();
@@ -151,7 +150,7 @@ public class BlogController {
         String description = json.getString("description");
         String type = json.getString("type");
         String field = json.getString("field");
-        String audited=json.getString("audited");
+        String audited = json.getString("audited");
         Field field1 = fieldService.selectByField(field);
         int userId = Integer.parseInt(user.getUserId());
         String author = user.getAccount();
@@ -194,6 +193,7 @@ public class BlogController {
 
     /**
      * 获取也页面记录，用户作分页查询参数
+     *
      * @param request
      * @return
      */
@@ -272,12 +272,12 @@ public class BlogController {
     }
 
     @RequestMapping("SelectLimitBlogController")
-    public Map<String, Object> selectLimitedBlog(HttpServletRequest request,HttpSession session) {
+    public Map<String, Object> selectLimitedBlog(HttpServletRequest request, HttpSession session) {
         Map<String, Object> map = new HashMap<>();
         try {
             int page = getPageInfo(request).get(0);
             int size = getPageInfo(request).get(1);
-            int userId = new IsValidUtil().getUserId(request,session);
+            int userId = new IsValidUtil().getUserId(request, session);
             List<Blog> blogs;
             blogs = blogService.selectByBlogLimit(userId, page, size);
             Map<String, Object> allMap = allMap(blogs);
@@ -293,16 +293,16 @@ public class BlogController {
     }
 
     @RequestMapping("auditBlog")
-    public Map<String,Object>auditBlog(){
-        Map<String,Object>map=new HashMap<>();
+    public Map<String, Object> auditBlog() {
+        Map<String, Object> map = new HashMap<>();
         List<Blog> blogs;
-        try{
-            blogs=  blogService.selectAuditingBlog();
+        try {
+            blogs = blogService.selectAuditingBlog();
             Map<String, Object> allMap = allMap(blogs);
             map.put("code", 200);
             map.put("msg", "获取博客列表成功");
             map.put("data", allMap);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             map.put("code", 500);
             map.put("msg", e.getCause());
@@ -314,9 +314,10 @@ public class BlogController {
     public Map<String, Object> addBlog(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
         Map<String, Object> resultMap = new HashMap<>();
         Blog blog = accessBlog(request, response, session);
-        try{
+        try {
             //关键字查询
-            TEXT = blog.getContent();
+            // 文本
+            String TEXT = blog.getContent();
             System.out.println(TEXT.length());
             Map<String, String> header = buildHttpHeader();
             String result = HttpUtil.doPost1(WEBTTS_URL, header, "text=" + URLEncoder.encode(TEXT, "utf-8"));
@@ -324,7 +325,7 @@ public class BlogController {
             ltpData ltpData = JSONObject.parseObject(result, ltpData.class);
 
             ltpData.getData().get(0).get("ke").forEach(k -> {
-                key += k.get("word")+",";
+                key += k.get("word") + ",";
             });
             System.out.println(key);
             blog.setKeyWords(key);
@@ -340,20 +341,20 @@ public class BlogController {
             map.put("blog", newBlog);
             map.put("tags", taglist);
             if (addBlog && tagResult) {
-              resultMap.put("code", 200);
-              resultMap.put("msg", "发布成功");
-              resultMap.put("data", map);
+                resultMap.put("code", 200);
+                resultMap.put("msg", "发布成功");
+                resultMap.put("data", map);
             } else if (!tagResult) {
-              resultMap.put("code", 500);
-              resultMap.put("msg", "标签库不存在这样的标签");
+                resultMap.put("code", 500);
+                resultMap.put("msg", "标签库不存在这样的标签");
             } else {
-              resultMap.put("code", 500);
-              resultMap.put("msg", "原因未知！接收错误");
+                resultMap.put("code", 500);
+                resultMap.put("msg", "原因未知！接收错误");
             }
-      }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-      }
-          return resultMap;
+        }
+        return resultMap;
     }
 
     @RequestMapping("AllBlogCountServlet")
@@ -410,16 +411,18 @@ public class BlogController {
             HashMap<String, Object> map = new HashMap<>(2);
             map.put("tags", taglist);
             map.put("field", field);
-            int clicks=blog.getClicks();
-            clicks++;
-            blog.setClicks(clicks);
+            if (!blog.getAudited().equals("待审核")) {
+                int clicks = blog.getClicks();
+                clicks++;
+                blog.setClicks(clicks);
+            }
             blogService.modifyBlog(blog);
             map.put("blog", blog);
             resultMap.put("code", 200);
             resultMap.put("data", map);
         } catch (Exception e) {
             resultMap.put("code", 200);
-            resultMap.put("msg",e.getCause());
+            resultMap.put("msg", e.getCause());
         }
         return resultMap;
     }
@@ -476,20 +479,19 @@ public class BlogController {
     }
 
     @RequestMapping("/hotBlogs")
-    public Map<String,Object>hotBlogs(){
-        Map<String,Object>map=new HashMap<>();
-        List<Blog>blogs;
-        try{
-            blogs=blogService.popularBlogs();
-            map.put("code",200);
-            map.put("data",blogs);
-            map.put("count",blogs.size());
-        }catch (Exception e){
+    public Map<String, Object> hotBlogs() {
+        Map<String, Object> map = new HashMap<>();
+        List<Blog> blogs;
+        try {
+            blogs = blogService.popularBlogs();
+            map.put("code", 200);
+            map.put("data", blogs);
+            map.put("count", blogs.size());
+        } catch (Exception e) {
             e.printStackTrace();
-            map.put("code",500);
-            map.put("msg",e.getCause());
+            map.put("code", 500);
+            map.put("msg", e.getCause());
         }
         return map;
     }
-
 }

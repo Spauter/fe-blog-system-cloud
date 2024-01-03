@@ -45,10 +45,10 @@ public class IsValidUtil {
 
 
     public boolean isValidEmail(String email) {
-        String emailRegex = "^[\\w\\.-]+@[\\w\\.-]+\\.([a-z]{2,4}|[\\d]{1,3})(\\.[a-z]{2,4})?$";
+        String emailRegex = "^[\\w.-]+@[\\w.-]+\\.([a-z]{2,4}|\\d{1,3})(\\.[a-z]{2,4})?$";
         Pattern pattern = Pattern.compile(emailRegex, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
+        return !matcher.matches();
     }
 
 

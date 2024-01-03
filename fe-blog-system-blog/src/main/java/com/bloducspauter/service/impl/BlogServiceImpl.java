@@ -42,14 +42,13 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public boolean deleteBlog(int blogId) {
+    public void deleteBlog(int blogId) {
         QueryWrapper<Blog> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("blog_id", blogId);
         Blog blog = selectInBlog(blogId);
         blog.setDeleted(1);
         blog.setStatus(3);
         int row = blogMapper.update(blog, queryWrapper);
-       return row>0;
     }
 
     @Override
@@ -116,7 +115,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public int deleteBlogTag(int blogId) {
+    public void deleteBlogTag(int blogId) {
         QueryWrapper<TagRelation> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("blog_id", blogId);
         List<TagRelation> tagRelation = tagRelationMapper.selectList(queryWrapper);
@@ -125,7 +124,6 @@ public class BlogServiceImpl implements BlogService {
             t.setDeleted(1);
             result = tagRelationMapper.update(t, queryWrapper);
         }
-        return result;
     }
 
     /**
@@ -160,7 +158,7 @@ public class BlogServiceImpl implements BlogService {
 
 
     @Override
-    public List<Blog> selectblogbytag(String tagname) {
+    public List<Blog> selectBlogByTag(String tagname) {
         return blogMapper.selectblogbytag(tagname);
     }
 

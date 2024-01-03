@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.bloducspauter.utils.DefalutValue.*;
+import static com.bloducspauter.utils.DefaultValue.*;
 
 @RestController
 @Slf4j

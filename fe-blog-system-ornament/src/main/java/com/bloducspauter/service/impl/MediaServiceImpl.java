@@ -15,7 +15,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.bloducspauter.utils.DefalutValue.*;
+import static com.bloducspauter.utils.DefaultValue.*;
 
 @Service
 @Slf4j

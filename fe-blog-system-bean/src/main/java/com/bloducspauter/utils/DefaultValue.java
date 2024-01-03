@@ -1,7 +1,7 @@
 package com.bloducspauter.utils;
 import java.util.Arrays;
 import java.util.List;
-public class DefalutValue {
+public class DefaultValue {
     public static final String UPLOAD_AVATAR_PATH = "avatar/";
     public static final String UPLOAD_MEDIA_PATH = "media/";
     public static final String UPLOAD_AUDIO_PATH = "music/";

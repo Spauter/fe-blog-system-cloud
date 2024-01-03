@@ -24,7 +24,7 @@ public class EmailVerificationController {
     public Map<String, Object> sendEmail(HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
         String to = request.getParameter("email");
-        if (!new IsValidUtil().isValidEmail(to)) {
+        if (new IsValidUtil().isValidEmail(to)) {
             map.put("code", 500);
             map.put("msg", "非法邮件地址");
             return map;

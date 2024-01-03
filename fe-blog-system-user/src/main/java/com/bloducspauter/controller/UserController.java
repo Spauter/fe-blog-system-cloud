@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.bloducspauter.utils.DefalutValue.UPLOAD_AVATAR_PATH;
+import static com.bloducspauter.utils.DefaultValue.UPLOAD_AVATAR_PATH;
 
 @Slf4j
 @RestController
@@ -86,7 +86,7 @@ public class UserController {
             map.put("msg", "两次输入的密码不一致");
             return map;
         }
-        if (!new IsValidUtil().isValidEmail(email)) {
+        if (new IsValidUtil().isValidEmail(email)) {
             map.put("code", 500);
             map.put("msg", "邮箱格式不正确");
             return map;
