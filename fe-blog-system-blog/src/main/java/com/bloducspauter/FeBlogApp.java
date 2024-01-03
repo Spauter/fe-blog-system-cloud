@@ -17,5 +17,6 @@ public class FeBlogApp {
         SpringApplication springApplication = new SpringApplication(FeBlogApp.class);
         springApplication.setAllowBeanDefinitionOverriding(true);
         springApplication.run(args);
+
     }
 }

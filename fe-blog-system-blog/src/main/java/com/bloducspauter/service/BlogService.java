@@ -31,6 +31,8 @@ public interface BlogService {
      */
     void deleteBlog(int blogId);
 
+    void delete(Integer id);
+
     /**
      * 修改博客
      *

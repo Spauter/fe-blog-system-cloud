@@ -19,12 +19,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 import static com.bloducspauter.utils.ltp.buildHttpHeader;
+import static com.bloducspauter.utils.ltp.main;
 
 @RestController
 @RequestMapping("fe-blog")
@@ -177,7 +176,7 @@ public class BlogController {
      */
     private boolean insertTags(Blog blog) {
         JSONArray tag = json.getJSONArray("tag");
-        List<Tag> blogTag = null;
+        List<Tag> blogTag;
         boolean tagResult = false;
         ArrayList<String> tags = new ArrayList<>();
         for (Object o : tag) {
@@ -320,24 +319,46 @@ public class BlogController {
             String TEXT = blog.getContent();
             System.out.println(TEXT.length());
             Map<String, String> header = buildHttpHeader();
-            String result = HttpUtil.doPost1(WEBTTS_URL, header, "text=" + URLEncoder.encode(TEXT, "utf-8"));
+            String result = HttpUtil.doPost1(WEBTTS_URL, header, "text=" + URLEncoder.encode(TEXT, StandardCharsets.UTF_8));
             System.out.println("itp 接口调用结果：" + result);
             ltpData ltpData = JSONObject.parseObject(result, ltpData.class);
 
+            assert ltpData != null;
+            if(!ltpData.getCode().equals("0")){
+                resultMap.put("code",500);
+                resultMap.put("msg","您的内容与选题不符，请重新编辑");
+                return resultMap;
+            }
             ltpData.getData().get(0).get("ke").forEach(k -> {
-                key += k.get("word") + ",";
+                key += k.get("word").toLowerCase() + ",";
             });
             System.out.println(key);
             blog.setKeyWords(key);
-
             boolean addBlog = blogService.addBlog(blog);
             boolean tagResult = insertTags(blog);
             //查询博客的所有标签
-            List<Tag> taglist = blogService.selectTagsByBlog(blog.getBlogId());
-            //查询刚插入的博客
             Blog newBlog = blogService.selectInBlog(blog.getBlogId());
+            List<Tag> taglist = blogService.selectTagsByBlog(blog.getBlogId());
+            //把key转化为list集合
+            String[] keyWordsArray=key.split(",");
+            List<String>keyList= Arrays.asList(keyWordsArray);
+            //宽松匹配,只要包含了就给过
+            int contain=0;
+            for(Tag t:taglist){
+                //不区分大小写
+                if(keyList.contains(t.getName().toLowerCase())){
+                    contain++;
+                }
+            }
+            if (contain==0){
+                resultMap.put("code",500);
+                resultMap.put("msg","您的内容与选题不符，请重新编辑");
+                //由于id是根据插入后生成的,所以需要再次删除
+                blogService.delete(newBlog.getBlogId());
+                return resultMap;
+            }
+            //查询刚插入的博客
             HashMap<String, Object> map = new HashMap<String, Object>(2);
-
             map.put("blog", newBlog);
             map.put("tags", taglist);
             if (addBlog && tagResult) {
@@ -353,6 +374,8 @@ public class BlogController {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            resultMap.put("code", 500);
+            resultMap.put("msg", "原因未知！接收错误");
         }
         return resultMap;
     }

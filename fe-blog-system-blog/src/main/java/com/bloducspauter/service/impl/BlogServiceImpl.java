@@ -52,6 +52,11 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
+    public void delete(Integer id) {
+        blogMapper.deleteById(id);
+    }
+
+    @Override
     public boolean modifyBlog(Blog blog) {
         QueryWrapper<Blog> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("blog_id", blog.getBlogId());
