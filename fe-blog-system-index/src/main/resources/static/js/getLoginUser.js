@@ -2,10 +2,10 @@ let loginUser
 
 
 $(function () {
-    userInfoLoad();
+    userInfoLoadAtOpen();
 })
 
-function userInfoLoad() {
+function userInfoLoadAtOpen() {
     $.ajax({
         type: 'GET',
         url: '/fe-blog/SelectUserServlet',

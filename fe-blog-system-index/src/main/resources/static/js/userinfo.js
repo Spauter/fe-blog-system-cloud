@@ -2,8 +2,6 @@ $(function () {
     userInfoLoad();
     updateUserInfo();
 
-    // $('#user_avatar').attr('src', 'http://localhost:8888/group1/M00/00/00/rBIAA2V5izmAPLlZAAfnOqfDN0Y747.jpg');
-    // $('.user_avatar>img').attr('src', 'http://localhost:8888/group1/M00/00/00/rBIAA2V5izmAPLlZAAfnOqfDN0Y747.jpg');
     layui.use(['laydate', 'upload', 'form'], function () {
         let laydate = layui.laydate;
         let upload = layui.upload;
@@ -50,9 +48,6 @@ $(function () {
                 if (percent == '100%') {
                     setTimeout(function () {
                         parent.layer.closeAll()
-                        let temp = parseInt(10000 * Math.random());
-                        // $('#user_avatar').attr('src', 'http://localhost:8080/fe_blog/images/avatar/avatar.jpg');
-                        // $('.user_avatar>img').attr('src', 'http://localhost:8080/fe_blog/images/avatar/avatar.jpg');
                     }, 2000);
 
                 }
