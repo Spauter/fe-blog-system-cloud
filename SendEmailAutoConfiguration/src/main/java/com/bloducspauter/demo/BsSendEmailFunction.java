@@ -97,7 +97,7 @@ public class BsSendEmailFunction implements SendEmail {
         System.out.println(responseBody);
     }
 
-    public void checkSendUrl() throws MalformedURLException {
+    private void checkSendUrl() throws MalformedURLException {
         if(sendEmailProperties.getPort()==null){
             throw new MalformedURLException("Empty server port. You may define com.bs.port");
         }
