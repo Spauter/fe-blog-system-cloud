@@ -2,7 +2,6 @@ package com.bloducspauter.demo;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -77,6 +76,7 @@ public class BsSendEmailFunction implements SendEmail {
             log.warn("You set the open_send_email is false,so no email was sent");
             return;
         }
+        checkSendUrl();
         log.info("The target url:"+StringUrl);
         URL url = new URL(StringUrl);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -95,5 +95,28 @@ public class BsSendEmailFunction implements SendEmail {
         reader.close();
         String responseBody = response.toString();
         System.out.println(responseBody);
+    }
+
+    public void checkSendUrl() throws MalformedURLException {
+        if(sendEmailProperties.getPort()==null){
+            throw new MalformedURLException("Empty server port. You may define com.bs.port");
+        }
+        if (sendEmailProperties.getHost() == null) {
+            throw new MalformedURLException("Empty serer host, You may define com.bs.host");
+        }
+        if (!sendEmailProperties.getPort().matches("\\d{0,9}")) {
+            throw new MalformedURLException("Invalid server port! It must be a number!");
+        }
+        try {
+            int port = Integer.parseInt(sendEmailProperties.getPort());
+            if (port <= 0 || port > 65535) {
+                throw new MalformedURLException("Invalid server port! It must between 1 and 65535!");
+            }
+        } catch (NumberFormatException numberFormatException) {
+            throw new NumberFormatException("Invalid server port! Please check it");
+        }
+        if(!sendEmailProperties.isOpenSendEmail()){
+            log.warn("The properties of open_send_email was defined false, so no email will be sent");
+        }
     }
 }
