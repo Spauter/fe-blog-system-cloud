@@ -518,14 +518,15 @@ public class BlogController {
         return map;
     }
 
-//    @RequestMapping("/add1")
-//    public Map<String, Object> hotBlogs1(HttpServletRequest request) {
-//        Map<String, Object> map = new HashMap<>();
-//        int blog_id = Integer.parseInt(request.getParameter("blog_id"));
-//        String audited = request.getParameter("audited");
-//        Blog blog = blogService.selectInBlog(blog_id);
-//        blog.setAudited(audited);
-//        return map;
-//       blogService.modifyBlog(blog);
-//    }
+    @RequestMapping("/add1")
+    public Map<String, Object> hotBlogs1(HttpServletRequest request) {
+        Map<String, Object> map = new HashMap<>();
+        int blog_id = Integer.parseInt(request.getParameter("blog_id"));
+        String audited = request.getParameter("audited");
+        Blog blog = blogService.selectInBlog(blog_id);
+        blog.setAudited(audited);
+        blogService.modifyBlog(blog);
+        return map;
+    }
+
 }

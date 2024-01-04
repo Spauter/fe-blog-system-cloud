@@ -235,3 +235,54 @@ function reply() {
         })
     })
 }
+
+function add1() {
+    let blogId = window.location.href.split('=')[1];
+    $.ajax({
+        type: 'POST',
+        url: '/fe-blog/add1',
+        data: {
+            "blog_id" : blogId,
+            "audited" :"已通过"
+        },
+        dataType: 'json',
+        success: function () {
+            parent.layer.closeAll();
+            layer.msg('审核成功！文章已发表');
+            setTimeout(function () {
+                parent.layer.closeAll();
+                window.location.href = '../pages/auditBlog.html';
+            }, 2000)
+        },
+        error: function () {
+            console.log("错误");
+            // 关闭加载图标
+            layer.closeAll('loading');
+        }
+    });
+}
+function add2() {
+    let blogId = window.location.href.split('=')[1];
+    $.ajax({
+        type: 'POST',
+        url: '/fe-blog/add1',
+        data: {
+            "blog_id" : blogId,
+            "audited" :"未通过"
+        },
+        dataType: 'json',
+        success: function () {
+            parent.layer.closeAll();
+            layer.msg('文章未通过，已向用户发送邮件通知');
+            setTimeout(function () {
+                parent.layer.closeAll();
+                window.location.href = '../pages/auditBlog.html';
+            }, 2000)
+        },
+        error: function () {
+            console.log("错误");
+            // 关闭加载图标
+            layer.closeAll('loading');
+        }
+    });
+}
