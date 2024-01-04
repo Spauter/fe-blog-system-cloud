@@ -3,6 +3,7 @@ package com.bloducspauter.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bloducspauter.bean.*;
+import com.bloducspauter.demo.BsSendEmailFunction;
 import com.bloducspauter.service.BlogService;
 import com.bloducspauter.service.FieldService;
 import com.bloducspauter.service.UserService;
@@ -40,6 +41,9 @@ public class BlogController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private BsSendEmailFunction bsSendEmailFunction;
 
     private JSONObject json = new JSONObject();
     private static final String WEBTTS_URL = "http://ltpapi.xfyun.cn/v1/ke";
@@ -519,7 +523,7 @@ public class BlogController {
     }
 
     @RequestMapping("/resultOfAudit")
-    public Map<String, Object> resultOfAudit(HttpServletRequest request) {
+    public Map<String, Object> resultOfAudit(HttpServletRequest request) throws IOException {
         Map<String, Object> map = new HashMap<>();
         int blog_id = Integer.parseInt(request.getParameter("blog_id"));
         boolean audited = Boolean.parseBoolean(request.getParameter("audited"));
@@ -529,6 +533,9 @@ public class BlogController {
         }else {
             blog.setAudited("未通过");
         }
+        User user=userService.getInfo(blog.getAuthor());
+        String email=user.getEmail();
+        bsSendEmailFunction.sendAuditNotice("notice",email,audited);
         map.put("code",200);
         map.put("mag","提交审核结果成功");
         blogService.modifyBlog(blog);

@@ -27,8 +27,10 @@ public class BsSendEmailFunction implements SendEmail {
 
     //审核后发送的邮件
     @Override
-    public void sendAuditNotice(String request, String to, String isAudited) throws IOException {
-        //TODO
+    public void sendAuditNotice(String request, String to, boolean isAudited) throws IOException {
+        String url=toSendAuditEmail(request,to,isAudited);
+        StartToSendEmail(url);
+
     }
 
     //拼接url
@@ -70,7 +72,7 @@ public class BsSendEmailFunction implements SendEmail {
         }
     }
 
-
+//从后端发送
     private void StartToSendEmail(String StringUrl) throws IOException {
         if (!sendEmailProperties.isOpenSendEmail()) {
             log.warn("You set the open_send_email is false,so no email was sent");
