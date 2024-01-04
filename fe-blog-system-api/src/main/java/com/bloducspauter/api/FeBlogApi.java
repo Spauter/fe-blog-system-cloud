@@ -48,7 +48,6 @@ public interface FeBlogApi {
     @RequestMapping("/fe-blog/hotBlogs")
     Map<String,Object>hotBlogs();
 
-
-    @RequestMapping("/fe-blog/add1")
+    @RequestMapping("/fe-blog/resultOfAudit")
     Map<String, Object> hotBlogs1(HttpServletRequest request);
 }

@@ -518,13 +518,19 @@ public class BlogController {
         return map;
     }
 
-    @RequestMapping("/add1")
-    public Map<String, Object> hotBlogs1(HttpServletRequest request) {
+    @RequestMapping("/resultOfAudit")
+    public Map<String, Object> resultOfAudit(HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
         int blog_id = Integer.parseInt(request.getParameter("blog_id"));
-        String audited = request.getParameter("audited");
+        boolean audited = Boolean.parseBoolean(request.getParameter("audited"));
         Blog blog = blogService.selectInBlog(blog_id);
-        blog.setAudited(audited);
+        if(audited){
+            blog.setAudited("已通过");
+        }else {
+            blog.setAudited("未通过");
+        }
+        map.put("code",200);
+        map.put("mag","提交审核结果成功");
         blogService.modifyBlog(blog);
         return map;
     }
