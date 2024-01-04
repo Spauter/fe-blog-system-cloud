@@ -131,16 +131,23 @@ function addComment(data) {
 var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 var recognition = new SpeechRecognition();
 recognition.lang = 'zh-CN';
-recognition.continuous=true;
+recognition.continuous=false;
 recognition.interimResults = false;
 recognition.maxAlternatives = 1;
-
+var app = new Vue({
+    el: '#comment',
+    data: {
+        message: ''
+    }
+})
 recognition.onresult = function (event) {
     var yourComment = event.results[0][0].transcript
     console.log(event.results[0][0].transcript)
     //把结果显示在输入框上
-    $('#comment').append(yourComment);
-}
+    app.message += yourComment;
+    console.log("输入的内容为：" + app.message);
+    //window.location.reload("#comment");
+    }
 
 function commentByMicrophone() {
     console.log("开始输入")
