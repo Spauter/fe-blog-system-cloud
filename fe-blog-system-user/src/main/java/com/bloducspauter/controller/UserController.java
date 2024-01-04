@@ -101,6 +101,13 @@ public class UserController {
             map.put("msg", "邮箱验证码错误");
             return map;
         }
+        //判断发送邮箱的电子邮箱是否是当前填写的邮箱
+        String registerEmail= (String) session.getAttribute("registerEmail");
+        if(!registerEmail.equals(email)){
+            map.put("code",500);
+            map.put("msg","输入的电子邮箱与请求发送的电子邮箱不一致");
+            return map;
+        }
         User user = userService.register(account, password, email);
         user.setPassword("想看密码？怎么可能会给你看😜");
         map.put("code", 200);

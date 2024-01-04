@@ -33,7 +33,6 @@ public class EmailVerificationController {
             emailcode.append(a[i]);
         }
         String to = request.getParameter("email");
-        session.setAttribute("emailVerifyCode", emailcode.toString());
         log.info("Session code:"+ session.getAttribute("emailVerifyCode"));
         if (new IsValidUtil().isValidEmail(to)) {
             map.put("code", 500);
@@ -41,9 +40,11 @@ public class EmailVerificationController {
             return map;
         }
         try {
-            bsSendEmailFunction.sendEmailVerifyCode("sendEmail", to,emailcode.toString());
+            bsSendEmailFunction.sendEmailVerifyCode("EmailVerify", to,emailcode.toString());
             map.put("code", 200);
             map.put("msg", "邮件发送成功");
+            session.setAttribute("registerEmail",to);
+            session.setAttribute("emailVerifyCode", emailcode.toString());
         } catch (Exception e) {
             e.printStackTrace();
             log.error(e.getMessage());
