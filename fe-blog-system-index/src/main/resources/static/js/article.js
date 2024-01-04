@@ -240,7 +240,7 @@ function theResultOfAudit(audited){
     let blogId = window.location.href.split('=')[1];
     $.ajax({
         type: 'POST',
-        url: '/fe-blog/add1',
+        url: '/fe-blog/resultOfAudit',
         data: {
             "blog_id" : blogId,
             "audited" : audited,

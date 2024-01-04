@@ -39,7 +39,7 @@ public class BsSendEmailFunction implements SendEmail {
     }
 
     private String toSendAuditEmail(String request,String to,boolean isAudited){
-        return "http://" + sendEmailProperties.getHost() + ":" + sendEmailProperties.getPort() + "/" + request + "?email=" + to +"&isAudited"+isAudited;
+        return "http://" + sendEmailProperties.getHost() + ":" + sendEmailProperties.getPort() + "/" + request + "?email=" + to +"&isAudited="+isAudited;
     }
 
 
@@ -62,6 +62,7 @@ public class BsSendEmailFunction implements SendEmail {
                 log.error("Request error");
                 break;
             }
+
             case 5: {
                 log.error("System Error");
                 break;
