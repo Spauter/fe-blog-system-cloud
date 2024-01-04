@@ -31,7 +31,7 @@ function audit(){
                     success: function(res){
                         session = window.sessionStorage;
                         session.setItem('data',JSON.stringify(res.data));
-                        window.location.href = '../article1.html' + '?' + 'blogId=' +obj.data['blogId'];
+                        window.location.href = '../audit.html' + '?' + 'blogId=' +obj.data['blogId'];
                     },
                     error: function(){
                         console.log('请求出错');
