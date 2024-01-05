@@ -102,10 +102,10 @@ public class BsSendEmailFunction implements SendEmail {
 
     private void checkSendUrl() throws MalformedURLException {
         if(sendEmailProperties.getPort()==null){
-            throw new MalformedURLException("Empty server port. You may define com.bs.port");
+            throw new MalformedURLException("Empty server port. You may define bs.send.port");
         }
         if (sendEmailProperties.getHost() == null) {
-            throw new MalformedURLException("Empty serer host, You may define com.bs.host");
+            throw new MalformedURLException("Empty serer host, You may define bs.send.host");
         }
         if (!sendEmailProperties.getPort().matches("\\d{0,9}")) {
             throw new MalformedURLException("Invalid server port! It must be a number!");
