@@ -122,7 +122,7 @@ Apache Jmeter(~~没有流量就自己创造流量~~),Cpolar(内网穿透方便�
 3. Sentinel([Sentinel使用文档](https://github.com/alibaba/Sentinel/wiki/%E4%BB%8B%E7%BB%8D))下载后找到sentinel-dashboard.jar,并启动它
 3. 把upload文件放在D盘根目录（如果是Windows环境下）
 4. 使用相关工具导入数据库脚本文件
-5. 单独启动EmailService服务(需要使用idea另外打开这个项目,懒得打开的请按照要求配置application.yml然后点击startup.cmd)
+5. 单独启动EmailService服务(需要使用idea另外打开这个项目)
 6. 启动fe-blog-system
 
 ## 注意事项
