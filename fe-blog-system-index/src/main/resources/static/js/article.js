@@ -134,12 +134,12 @@ recognition.lang = 'zh-CN';
 recognition.continuous=false;
 recognition.interimResults = false;
 recognition.maxAlternatives = 1;
-var app = new Vue({
-    el: '#comment',
-    data: {
-        message: ''
-    }
-})
+// var app = new Vue({
+//     el: '#comment',
+//     data: {
+//         message: ''
+//     }
+// })
 recognition.onresult = function (event) {
     var yourComment = event.results[0][0].transcript
     console.log(event.results[0][0].transcript)

@@ -30,7 +30,7 @@ public interface   FeBlogUserApi {
     @RequestMapping("/fe-user/updatePassword")
     Map<String, Object> modifyPwd(HttpServletRequest request, HttpSession session);
 
-    @RequestMapping("/fe-user/updateavatar")
+    @RequestMapping("/fe-user/UserUpdateAvatarController")
     Map<String, Object> updateAvatar(@RequestParam MultipartFile avatar, HttpSession session);
 
     @RequestMapping("/fe-user/VerificationCodeController")

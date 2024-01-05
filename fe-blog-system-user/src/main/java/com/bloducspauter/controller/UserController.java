@@ -223,7 +223,7 @@ public class UserController {
         return map;
     }
 
-    @RequestMapping("updateavatar")
+    @RequestMapping("UserUpdateAvatarController")
     public Map<String, Object> updateAvatar(@RequestParam MultipartFile avatar, HttpSession session) {
         Map<String, Object> map = new HashMap<>();
         try {
