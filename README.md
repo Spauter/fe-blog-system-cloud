@@ -97,7 +97,7 @@
 
 ## 前端技术栈
 
-HTML、CSS、JavaScript、sass、Less、Layui
+HTML、CSS、JavaScript、sass、Less、Layui、Apache Echarts
 
 ## 后端技术栈
 
@@ -118,10 +118,12 @@ Apache Jmeter(~~没有流量就自己创造流量~~),Cpolar(内网穿透方便�
 除配置数据库外，还需要而外以下操作:
 
 1. Redis(下载链接：[Redis Windos版下载](https://github.com/tporadowski/redis/releases "Redis Windos版下载")),下载完毕后即可打开
-2. Nacos(使用文档[Nacos 快速开始](https://nacos.io/zh-cn/docs/quick-start.html "Nacos 使用文档"))，下载完毕后根据官方文档，创建一个命名空间，id号为192099489，名字FE_BLOG,并在配置管理找到相应的命名空间，然后把配置文件（nacos_config_export_20231223113249.zip）导入。
+2. Nacos(使用文档[Nacos 快速开始](https://nacos.io/zh-cn/docs/quick-start.html "Nacos 使用文档"))，下载完毕后根据官方文档，创建一个命名空间，id号为192099489，名字FE_BLOG,并在配置管理找到相应的命名空间，然后把配置文件（.zip）导入。
 3. Sentinel([Sentinel使用文档](https://github.com/alibaba/Sentinel/wiki/%E4%BB%8B%E7%BB%8D))下载后找到sentinel-dashboard.jar,并启动它
 3. 把upload文件放在D盘根目录（如果是Windows环境下）
 4. 使用相关工具导入数据库脚本文件
+5. 单独启动EmailService服务(需要使用idea另外打开这个项目,懒得打开的请按照要求配置application.yml然后点击startup.cmd)
+6. 启动fe-blog-system
 
 ## 注意事项
 
