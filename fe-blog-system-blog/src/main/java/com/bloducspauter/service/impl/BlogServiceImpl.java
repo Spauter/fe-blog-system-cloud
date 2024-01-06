@@ -153,6 +153,7 @@ public class BlogServiceImpl implements BlogService {
         QueryWrapper<Blog> queryWrapper = new QueryWrapper<>();
         queryWrapper.select("*");
         queryWrapper.eq("deleted", 0);
+        queryWrapper.eq("audited","已通过");
         return blogMapper.selectCount(queryWrapper);
     }
 
