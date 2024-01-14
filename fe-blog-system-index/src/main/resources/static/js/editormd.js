@@ -406,7 +406,8 @@ function getSession() {
                 "author": "admin",
                 "tag": tagData,
                 "field": $("option:selected").val(),
-                "blogId": blog.blogId
+                "blogId": blog.blogId,
+                "selectedImage":selectedImge,
             }
             $.ajax({
                 type: 'POST',

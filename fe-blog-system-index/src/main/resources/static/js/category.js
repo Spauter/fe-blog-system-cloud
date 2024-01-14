@@ -5,7 +5,7 @@ $(function () {
     })
     blog_list_load();
     findAllField();
-    
+
 })
 
 function load() {
@@ -61,6 +61,7 @@ function blog_list_load() {
                             },
                             dataType: 'json',
                             success: function (res) {
+                                imageList = []
                                 console.log(res);
                                 let data = res.data;
                                 let blog_list = [];
@@ -96,42 +97,42 @@ function blog_list_load() {
                                     })
                                 })
 
-                                $('.search_btn').on('click',function(){
-                                    if($('.search_input').val()){
+                                $('.search_btn').on('click', function () {
+                                    if ($('.search_input').val()) {
                                         let layer;
-                                        layui.use('layer',function(){
-                                            layer= layui.layer;
+                                        layui.use('layer', function () {
+                                            layer = layui.layer;
                                             layer.load(1);
                                         })
-                                        layui.use('laypage',function(){
+                                        layui.use('laypage', function () {
                                             let laypage = layui.laypage;
                                             laypage.render({
                                                 elem: 'laypage',
                                                 count: 60,
                                                 limit: 12,
-                                                jump: function(obj,first){
+                                                jump: function (obj, first) {
                                                     let curr = obj.curr;
                                                     if (!first) {
                                                         //do something
                                                         layer.load(1);
-                                
+
                                                     }
                                                     $.ajax({
                                                         type: 'get',
                                                         url: '/fe-blog/FieldFindBlog',
                                                         data: {
-                                                            'fieldid':'all',
-                                                            'page':(curr-1)*12,
+                                                            'fieldid': 'all',
+                                                            'page': (curr - 1) * 12,
                                                             'size': 12,
-                                                            'blogtitle':$('.search_input').val(),
+                                                            'blogtitle': $('.search_input').val(),
                                                             'desk': 'SPAUTER',
                                                         },
-                                                        success: function(res){
-                                                            if(res.code!==200){
-                                                                layui.use('layer',function (){
-                                                                    layer.msg("查询失败,请稍后再试",{
-                                                                        iron:2,
-                                                                        time:1000
+                                                        success: function (res) {
+                                                            if (res.code !== 200) {
+                                                                layui.use('layer', function () {
+                                                                    layer.msg("查询失败,请稍后再试", {
+                                                                        iron: 2,
+                                                                        time: 1000
                                                                     })
                                                                 })
                                                                 layui.closeAll();
@@ -139,9 +140,9 @@ function blog_list_load() {
                                                             }
                                                             let data = res.data;
                                                             let list = [];
-                                                            for(let i = 0;i<data.length;i++){
-                                                                let element = 
-                                                                `<li class="blog_item" id="${data[i]['blogId']}">
+                                                            for (let i = 0; i < data.length; i++) {
+                                                                let element =
+                                                                    `<li class="blog_item" id="${data[i]['blogId']}">
                                                                 <div class="blog_item_img">
                                                                 <img src="/default-banner.jpg" alt="封面图片" class="blog_fm">
                                                                 </div>
@@ -163,9 +164,9 @@ function blog_list_load() {
                                                                     window.location.href = 'article.html' + '?' + 'blogId=' + $(this).attr('id');
                                                                 })
                                                             })
-                                        
-                                                            }
-                                                        }) 
+
+                                                        }
+                                                    })
                                                 }
                                             })
                                         })
@@ -182,73 +183,73 @@ function blog_list_load() {
     })
 }
 
-function findAllField(){
+function findAllField() {
     $.ajax({
         type: 'GET',
         url: '/fe-category/FindAllField',
         data: {},
         dataType: 'json',
-        success: function(res){
+        success: function (res) {
             let data = res.data;
             let field = [];
             console.log(data);
-            for(let i = 0;i<data.length;i++){
+            for (let i = 0; i < data.length; i++) {
                 let element = `<option value="${data[i]['name']}" id="${data[i]['fieldId']}">${data[i]['name']}</option>`;
                 field.push(element);
             }
             console.log(field);
             $('#category_select').empty().append(`<option value="all">所有分类</option>`);
             $('#category_select').append(field.join(''));
-            layui.use('form',function(){
+            layui.use('form', function () {
                 let form = layui.form;
                 form.render();
-                
+
             })
             field_change();
         }
-    }) 
+    })
 }
 
-function field_change(){
-    $('#category_select').on('change',function(){
+function field_change() {
+    $('#category_select').on('change', function () {
         let selected = $(this).children('option:selected').val();
-        if(selected == 'all'){
+        if (selected == 'all') {
             blog_list_load();
-        }else{
+        } else {
             let layer;
-            layui.use('layer',function(){
-                layer= layui.layer;
+            layui.use('layer', function () {
+                layer = layui.layer;
                 layer.load(1);
-            })            
-            layui.use('laypage',function(){
+            })
+            layui.use('laypage', function () {
                 let laypage = layui.laypage;
                 laypage.render({
                     elem: 'laypage',
                     count: 60,
                     limit: 12,
-                    jump: function(obj,first){
+                    jump: function (obj, first) {
                         let curr = obj.curr;
                         if (!first) {
                             //do something
                             layer.load(1);
-    
+
                         }
                         $.ajax({
                             type: 'get',
                             url: '/fe-blog/FieldfindAllblog',
                             data: {
-                                'fieldname':selected,
-                                'page':(curr-1)*12,
+                                'fieldname': selected,
+                                'page': (curr - 1) * 12,
                                 'size': 12,
                                 'desk': 'SPAUTER',
                             },
-                            success: function(res){
+                            success: function (res) {
                                 let data = res.data;
                                 let list = [];
-                                imageList=[];
-                                for(let i = 0;i<data.length;i++){
-                                    let element = 
-                                    `<li class="blog_item" id="${data[i]['blogId']}">
+                                imageList = [];
+                                for (let i = 0; i < data.length; i++) {
+                                    let element =
+                                        `<li class="blog_item" id="${data[i]['blogId']}">
                                     <div class="blog_item_img">
                                     <img src="/default-banner.jpg" alt="封面图片" class="blog_fm">
                                     </div>
@@ -263,7 +264,7 @@ function field_change(){
                                     list.push(element);
                                 }
                                 console.log(list);
-                                
+
                                 parent.layer.closeAll();
                                 $('#content_list').empty().append(list.join(''));
                                 fm();
@@ -272,44 +273,45 @@ function field_change(){
                                         window.location.href = 'article.html' + '?' + 'blogId=' + $(this).attr('id');
                                     })
                                 })
-                                $('.search_btn').on('click',function(){
-                                    if($('.search_input').val()){
+                                $('.search_btn').on('click', function () {
+                                    if ($('.search_input').val()) {
                                         let layer;
-                                        layui.use('layer',function(){
-                                            layer= layui.layer;
+                                        layui.use('layer', function () {
+                                            layer = layui.layer;
                                             layer.load(1);
                                         })
-                                        layui.use('laypage',function(){
+                                        layui.use('laypage', function () {
                                             let laypage = layui.laypage;
                                             laypage.render({
                                                 elem: 'laypage',
                                                 count: 60,
                                                 limit: 12,
-                                                jump: function(obj,first){
+                                                jump: function (obj, first) {
                                                     let curr = obj.curr;
                                                     if (!first) {
                                                         //do something
                                                         layer.load(1);
-                                
+
                                                     }
                                                     $.ajax({
                                                         type: 'get',
-                                                        url: '/fe-category/FieldFindBlog',
+                                                        url: '/fe-category/FieldfindAllblog',
                                                         data: {
                                                             'fieldid': $('#category_select').children('option:selected').attr('id'),
-                                                            'page':(curr-1)*12,
+                                                            'page': (curr - 1) * 12,
                                                             'size': 12,
-                                                            'blogtitle':$('.search_input').val(),
+                                                            'blogtitle': $('.search_input').val(),
                                                             'desk': 'SPAUTER',
                                                         },
-                                                        success: function(res){
+                                                        success: function (res) {
+                                                            imageList = [];
                                                             console.log(JSON.parse(res));
                                                             let res2 = JSON.parse(res);
                                                             let data = res2.data;
                                                             let list = [];
-                                                            for(let i = 0;i<data.length;i++){
-                                                                let element = 
-                                                                `<li class="blog_item" id="${data[i]['blogId']}">
+                                                            for (let i = 0; i < data.length; i++) {
+                                                                let element =
+                                                                    `<li class="blog_item" id="${data[i]['blogId']}">
                                                                 <div class="blog_item_img">
                                                                     <img src="/default-banner.jpg" alt="封面图片" class="blog_fm">
                                                                 </div>
@@ -320,10 +322,11 @@ function field_change(){
                                                                     </p>
                                                                 </div>
                                                             </li>`
+                                                                imageList.push(data[i]['mediaName'])
                                                                 list.push(element);
                                                             }
                                                             console.log(list);
-                                                            
+
                                                             parent.layer.closeAll();
                                                             $('#content_list').empty().append(list.join(''));
                                                             $('.blog_item').each(function () {
@@ -331,31 +334,30 @@ function field_change(){
                                                                     window.location.href = 'article.html' + '?' + 'blogId=' + $(this).attr('id');
                                                                 })
                                                             })
-                                        
-                                                            }
-                                                        }) 
+
+                                                        }
+                                                    })
                                                 }
                                             })
                                         })
                                     }
                                 })
-            
-                                }
-                            }) 
+
+                            }
+                        })
                     }
                 })
             })
-            
-               
-           
+
+
         }
     })
 }
 
 function fm() {
-    let index=0
+    let index = 0
     $('.blog_fm').each(function () {
-        $(this).attr('src','/'+imageList[index]);
+        $(this).attr('src', '/' + imageList[index]);
         index++;
     })
 }

@@ -182,8 +182,7 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public List<Blog> popularBlogs() {
-        List<Blog> blogs = blogMapper.selectHotBlogs();
-        return accesBlogMediaName(blogs);
+        return blogMapper.selectHotBlogs();
     }
 
     @Override

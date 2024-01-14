@@ -18,6 +18,7 @@
         select * from blog
         <where>title like  CONCAT('%',#{title},'%')</where>
         AND deleted = 0
+        AND audited ='已通过'
         <if test='userId != -1'> AND user_id = #{userId} </if>
         limit #{page},#{size}
     </select>
@@ -27,6 +28,7 @@
         (SELECT ROUND(RAND() * ((SELECT MAX(blog_id) FROM blog) - (SELECT MIN(blog_id) FROM blog)) + (SELECT MIN(blog_id) FROM blog))
             AS id FROM blog) AS t2 ON t1.blog_id = t2.id
         AND deleted = 0
+        AND audited ='已通过'
         limit #{page},#{size}
     </select>
 
@@ -42,8 +44,9 @@
     </select>
 
     <select id="selectDeletedBlogLimit" resultType="com.bloducspauter.bean.Blog" parameterType="com.bloducspauter.bean.Blog">
-        select blog_id,title,description,type,create_time,update_time,user_id,field_id,author,status from blog
-        <where> deleted = 1 </where>AND user_id = #{userId} limit #{page},#{size}
+        select blog_id,title,description,type,create_time,update_time,user_id,field_id,author,status,media_id from blog
+        <where> deleted = 1 </where>
+        AND user_id = #{userId} AND audited ='已通过' limit #{page},#{size}
     </select>
 
 
@@ -61,6 +64,7 @@
         (select blog_id from tag_relation
             where tag_id in
             (select tag_id from tag where name = #{tagname}) and deleted = 0 )
+        AND audited ='已通过'
     </select>
 
     <select id="selectHotBlogs" resultType="com.bloducspauter.bean.Blog">
@@ -73,6 +77,7 @@
     <select id="selectBlogbyField" resultType="com.bloducspauter.bean.Blog" parameterType="com.bloducspauter.bean.Blog">
         select * from db_mybatis.blog where field_id = #{Fieldid}
         <if test='user_id != -1'> AND user_id = #{user_id} </if>
+        AND audited ='已通过'
         limit #{page},#{size};
     </select>
     <select id="selectBlogbytitle" resultType="com.bloducspauter.bean.Blog" parameterType="com.bloducspauter.bean.Blog">
