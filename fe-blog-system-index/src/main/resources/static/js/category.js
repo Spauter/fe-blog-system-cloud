@@ -1,4 +1,4 @@
-
+let imageList = [];
 $(function () {
     $('.blog_item').on('click', function () {
         window.location.href = 'article.html';
@@ -65,6 +65,7 @@ function blog_list_load() {
                                 let data = res.data;
                                 let blog_list = [];
                                 for (let key in data) {
+                                    imageList.push(data[key].blog.mediaName)
                                     let element = `
                                     <li class="blog_item" id="${data[key].blog['blogId']}">
                                         <div class="blog_item_img">
@@ -244,6 +245,7 @@ function field_change(){
                             success: function(res){
                                 let data = res.data;
                                 let list = [];
+                                imageList=[];
                                 for(let i = 0;i<data.length;i++){
                                     let element = 
                                     `<li class="blog_item" id="${data[i]['blogId']}">
@@ -257,6 +259,7 @@ function field_change(){
                                         </p>
                                     </div>
                                 </li>`
+                                    imageList.push(data[i]['mediaName'])
                                     list.push(element);
                                 }
                                 console.log(list);
@@ -350,10 +353,10 @@ function field_change(){
 }
 
 function fm() {
-    let imgList = ['fm0.jpg','fm1.jpg', 'fm2.jpg', 'fm3.jpg', 'fm4.jpg', 'fm5.jpg', 'fm6.jpg', 'fm7.jpg', 'fm8.jpg','fm9.jpg','fm10.jpg','fm11.jpg'];
+    let index=0
     $('.blog_fm').each(function () {
-        let index = Math.floor(Math.random()*12);
-        $(this).attr('src','/'+imgList[index]);
+        $(this).attr('src','/'+imageList[index]);
+        index++;
     })
 }
 

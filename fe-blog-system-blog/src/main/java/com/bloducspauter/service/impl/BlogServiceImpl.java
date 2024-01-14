@@ -2,11 +2,9 @@ package com.bloducspauter.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
-import com.bloducspauter.bean.Blog;
-import com.bloducspauter.bean.BlogTag;
-import com.bloducspauter.bean.Tag;
-import com.bloducspauter.bean.TagRelation;
+import com.bloducspauter.bean.*;
 import com.bloducspauter.mapper.BlogMapper;
+import com.bloducspauter.mapper.MediaMapper;
 import com.bloducspauter.mapper.TagMapper;
 import com.bloducspauter.mapper.TagRelationMapper;
 import com.bloducspauter.service.BlogService;
@@ -33,12 +31,23 @@ public class BlogServiceImpl implements BlogService {
     @Autowired
     private TagRelationMapper tagRelationMapper;
 
+    @Autowired
+    private MediaMapper mediaMapper;
+
+    private List<Blog> accesBlogMediaName(List<Blog> blogs) {
+        for (Blog b : blogs) {
+            int mediaId = b.getMediaId();
+            Media media = mediaMapper.selectById(mediaId);
+            b.setMediaName(media.getImage());
+        }
+        return blogs;
+    }
 
     @Override
     public boolean addBlog(Blog blog) {
         blog.setClicks(0);
         int row = blogMapper.insert(blog);
-        return row>0;
+        return row > 0;
     }
 
     @Override
@@ -67,40 +76,33 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public List<Blog> selectByBlogLimit(@Param("userId") int userId, @Param("page") int page, @Param("size") int size) {
-        QueryWrapper<Blog> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("deleted", 0);
-        queryWrapper.eq("user_id", userId);
-        return blogMapper.selectByBlogLimit(userId, page, size);
+        List<Blog> blogs = blogMapper.selectByBlogLimit(userId, page, size);
+        return accesBlogMediaName(blogs);
     }
 
 
     @Override
     public List<Blog> fuzzyQuery(@Param("userId") int userId, @Param("title") String title, @Param("page") int page, @Param("size") int size) {
-
-        return blogMapper.fuzzyQuery(userId, title, page, size);
+        List<Blog> blogs = blogMapper.fuzzyQuery(userId, title, page, size);
+        return accesBlogMediaName(blogs);
     }
 
 
     @Override
     public List<Blog> randomQuery(@Param("userId") int userId, @Param("page") int page, @Param("size") int size) {
-        return blogMapper.randomQuery(userId, page, size);
+        List<Blog> blogs = blogMapper.randomQuery(userId, page, size);
+        return accesBlogMediaName(blogs);
     }
 
 
     @Override
     public boolean addRelation(int blogId, int tagId) {
-        boolean flag = false;
-
         HashMap<String, Integer> map = new HashMap<String, Integer>();
         BlogTag blogTag = new BlogTag();
         blogTag.setBlogId(blogId);
         blogTag.setTagId(tagId);
-
         int row = blogMapper.addRelation(blogTag);
-        if (row > 0) {
-            flag = true;
-        }
-        return flag;
+        return row > 0;
     }
 
     //是根据标题去找BLog,不是Id
@@ -124,10 +126,9 @@ public class BlogServiceImpl implements BlogService {
         QueryWrapper<TagRelation> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("blog_id", blogId);
         List<TagRelation> tagRelation = tagRelationMapper.selectList(queryWrapper);
-        int result = 0;
         for (TagRelation t : tagRelation) {
             t.setDeleted(1);
-            result = tagRelationMapper.update(t, queryWrapper);
+            tagRelationMapper.update(t, queryWrapper);
         }
     }
 
@@ -145,7 +146,8 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public List<Blog> selectDeletedBlog(int userId, int page, int size) {
-        return blogMapper.selectDeletedBlogLimit(userId, page, size);
+        List<Blog> blogs = blogMapper.selectDeletedBlogLimit(userId, page, size);
+        return accesBlogMediaName(blogs);
     }
 
     @Override
@@ -153,7 +155,7 @@ public class BlogServiceImpl implements BlogService {
         QueryWrapper<Blog> queryWrapper = new QueryWrapper<>();
         queryWrapper.select("*");
         queryWrapper.eq("deleted", 0);
-        queryWrapper.eq("audited","已通过");
+        queryWrapper.eq("audited", "已通过");
         return blogMapper.selectCount(queryWrapper);
     }
 
@@ -165,30 +167,34 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public List<Blog> selectBlogByTag(String tagname) {
-        return blogMapper.selectblogbytag(tagname);
+        List<Blog> blogs = blogMapper.selectblogbytag(tagname);
+        return accesBlogMediaName(blogs);
     }
 
     @Override
     public List<Blog> selectAuditingBlog() {
-        QueryWrapper<Blog>queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("audited","待审核");
-        return blogMapper.selectList(queryWrapper);
+        QueryWrapper<Blog> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("audited", "待审核");
+        List<Blog> blogs = blogMapper.selectList(queryWrapper);
+        return accesBlogMediaName(blogs);
     }
-
 
 
     @Override
     public List<Blog> popularBlogs() {
-        return blogMapper.selectHotBlogs();
+        List<Blog> blogs = blogMapper.selectHotBlogs();
+        return accesBlogMediaName(blogs);
     }
 
     @Override
     public List<Blog> selectBlogbyField(int Fieldid, int user_id, int page, int size) {
-        return blogMapper.selectBlogbyField(Fieldid,user_id,page,size);
+        List<Blog> blogs = blogMapper.selectBlogbyField(Fieldid, user_id, page, size);
+        return accesBlogMediaName(blogs);
     }
 
     @Override
     public List<Blog> selectBlogbytitle(int fieldid, int userid, String blogtitle, int page, int size) {
-        return blogMapper.selectBlogbytitle(fieldid,userid,blogtitle,page,size);
+        List<Blog> blogs = blogMapper.selectBlogbytitle(fieldid, userid, blogtitle, page, size);
+        return accesBlogMediaName(blogs);
     }
 }

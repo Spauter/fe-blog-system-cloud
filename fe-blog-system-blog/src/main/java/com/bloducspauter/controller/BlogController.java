@@ -6,6 +6,7 @@ import com.bloducspauter.bean.*;
 import com.bloducspauter.demo.BsSendEmailFunction;
 import com.bloducspauter.service.BlogService;
 import com.bloducspauter.service.FieldService;
+import com.bloducspauter.service.MediaService;
 import com.bloducspauter.service.UserService;
 import com.bloducspauter.utils.GetRequestJson;
 import com.bloducspauter.utils.HttpUtil;
@@ -23,6 +24,8 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
+import static com.bloducspauter.utils.DefaultValue.DEFAULT_MEDIA_IMAGE;
+import static com.bloducspauter.utils.DefaultValue.MEDIA_IMAGE_TYPE;
 import static com.bloducspauter.utils.ltp.buildHttpHeader;
 import static com.bloducspauter.utils.ltp.main;
 
@@ -45,6 +48,11 @@ public class BlogController {
     @Autowired
     private BsSendEmailFunction bsSendEmailFunction;
 
+    @Autowired
+    private MediaService mediaService;
+
+
+
     private JSONObject json = new JSONObject();
     private static final String WEBTTS_URL = "http://ltpapi.xfyun.cn/v1/ke";
     // 应用ID
@@ -60,7 +68,7 @@ public class BlogController {
         int Userid = new IsValidUtil().getUserId(req, session);
         int page = Integer.parseInt(req.getParameter("page"));
         int size = Integer.parseInt(req.getParameter("size"));
-        List<Blog> blogs = null;
+        List<Blog> blogs;
         try {
             if (fieldname.equals("all")) {
                 blogs = blogService.selectByBlogLimit(Userid, page, size);
@@ -90,7 +98,7 @@ public class BlogController {
             int Userid = new IsValidUtil().getUserId(req, session);
             int page = Integer.parseInt(req.getParameter("page"));
             int size = Integer.parseInt(req.getParameter("size"));
-            List<Blog> blog = null;
+            List<Blog> blog;
             log.info("fieldid:" + fieldid);
             if (fieldid.equals("all")) {
                 blog = blogService.fuzzyQuery(Userid, blogtitle, page, size);
@@ -153,6 +161,9 @@ public class BlogController {
         String description = json.getString("description");
         String type = json.getString("type");
         String field = json.getString("field");
+        String selectedImage=json.getString("selectedImage");
+        selectedImage=selectedImage == null ? DEFAULT_MEDIA_IMAGE.get(0) : selectedImage;
+        int media_id=mediaService.findMedia(selectedImage,MEDIA_IMAGE_TYPE).getMediaId();
         String audited = json.getString("audited");
         Field field1 = fieldService.selectByField(field);
         int userId = Integer.parseInt(user.getUserId());
@@ -168,6 +179,7 @@ public class BlogController {
         blog.setFieldId(field1.getFieldId());
         blog.setUserId(userId);
         blog.setAuthor(author);
+        blog.setMediaId(media_id);
         blog.setAudited(audited);
         return blog;
     }

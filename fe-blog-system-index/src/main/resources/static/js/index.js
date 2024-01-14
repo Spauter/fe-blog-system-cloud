@@ -1,3 +1,4 @@
+let imageList = [];
 $(function () {
     indexTextLoad();
     let temp = parseInt(10000 * Math.random());
@@ -78,8 +79,8 @@ function isLogin() {
                 <i class="fa fa-tachometer"></i>
                 <span>进入后台</span>
             </a>`;
-                }else {
-                 element=`            
+                } else {
+                    element = `            
             <a class="user_func_box" href="./pages/userinfo.html">
                 <i class="fa fa-user"></i>
                 <span>我的信息</span>
@@ -107,6 +108,10 @@ function pageBlogLoad() {
         data: {},
         dataType: 'json',
         success: function (res) {
+            if (res.code !== 200) {
+                console.log("加载失败");
+                return;
+            }
             console.log(res);
             const allCount = res.data;
             layui.use(['laypage', 'layer'], function () {
@@ -147,6 +152,7 @@ function pageBlogLoad() {
                                 let blog_list = [];
                                 for (let key in data) {
                                     let tags = [];
+                                    imageList.push(data[key].blog.mediaName)
                                     for (let i = 0; i < data[key].tag.length; i++) {
                                         let tag_element = `<span>${data[key].tag[i]['name']}</span>`;
                                         tags.push(tag_element);
@@ -177,15 +183,15 @@ function pageBlogLoad() {
 
 
                                 }
-
+                                console.log("imageList is:" + imageList);
                                 $('.content_blog_list').empty().append(blog_list.join(''));
                                 parent.layer.closeAll();
                                 if (first) {
                                     load();
                                 }
+
                                 animate();
                                 fm();
-
                                 $('.blog_list_item').each(function () {
                                     $(this).on('click', function () {
                                         window.location.href = 'article.html' + '?' + 'blogId=' + $(this).attr('id');
@@ -225,10 +231,10 @@ function load() {
 
 //博客的封面，就是从image选取的
 function fm() {
-    let imgList = ['fm0.jpg', 'fm1.jpg', 'fm2.jpg', 'fm3.jpg', 'fm4.jpg', 'fm5.jpg', 'fm6.jpg', 'fm7.jpg', 'fm8.jpg', 'fm9.jpg', 'fm10.jpg', 'fm11.jpg', 'fm11.jpg', 'HT.jpg'];
+    let index=0;
     $('.blog_fm').each(function () {
-        let index = Math.floor(Math.random() * 13);
-        $(this).attr('src', '' + imgList[index]);
+        $(this).attr('src', '' + imageList[index]);
+        index++;
     })
 }
 
@@ -251,6 +257,7 @@ function userInfoLoad() {
     })
 }
 
+//主页面的动画效果,包括主页面加载和图片旋转
 function animate() {
     ScrollReveal().reveal('.animal-left', {
         //delay延迟

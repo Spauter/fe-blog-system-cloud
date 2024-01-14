@@ -1,6 +1,7 @@
 package com.bloducspauter.bean;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -17,22 +18,43 @@ import java.util.Date;
 @NoArgsConstructor
 @TableName
 public class Blog implements Serializable {
+
     @TableId(type = IdType.AUTO)
+
     private Integer blogId;
+
     private String title;
+
     private String content;
+
     private String description;
+
     private String type;
+
     private String author;
+
     private Integer status;
+
     private Integer userId;
+
     private Integer fieldId;
+
     private Integer deleted;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date updateTime;
+
     private Integer clicks;
+
     private String audited;
+
     private String keyWords;
+
+    private Integer mediaId;
+
+    @TableField(exist = false)
+    private String mediaName;
 }

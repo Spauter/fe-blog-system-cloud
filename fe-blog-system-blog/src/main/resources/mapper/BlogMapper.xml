@@ -31,7 +31,7 @@
     </select>
 
     <select id="selectByBlogLimit" resultType="com.bloducspauter.bean.Blog" parameterType="com.bloducspauter.bean.Blog">
-        SELECT blog_id, title, description, type, create_time, update_time, user_id, field_id, author, status
+        SELECT blog_id, title, description, type, create_time, update_time, user_id, field_id, author, status,media_id
         FROM blog
         <where>
             deleted = 0

@@ -1,6 +1,7 @@
 $(function () {
     getSession();
 })
+let selectedImage = null;
 
 //游客登录下移除左边导航栏，添加头部导航栏
 function changeBar() {
@@ -70,7 +71,8 @@ function media_layer() {
                     e.preventDefault();
                     let data = $('#media_layer_form').serializeArray();
                     console.log(data[0].value);
-                    let img = `<img src= "/${data[0].value}" id="img_set" name="${data[0].value}">`;
+                    selectedImge=data[0].value;
+                    let img = `<img src= "/${data[0].value}" id="img_set" name="${data[0].value}" alt="封面">`;
                     $('.media_check_frame').empty().append(img);
                     parent.layer.closeAll();
                 })
@@ -85,6 +87,7 @@ function media_layer() {
 //添加博客
 function blog_add(editormd) {
     $('#blog_add').on('submit', function (e) {
+        console.log(selectedImge)
         let layer;
         layui.use(['layer'], function () {
             layer = layui.layer;
@@ -123,7 +126,8 @@ function blog_add(editormd) {
             "author": "admin",
             "tag": tagData,
             "field": $("option:selected").val(),
-            "audited": '待审核'
+            "audited": '待审核',
+            "selectedImage":selectedImge,
         }
         console.log(JSON.stringify(test));
         const str = Math.random().toString(36).slice(2);

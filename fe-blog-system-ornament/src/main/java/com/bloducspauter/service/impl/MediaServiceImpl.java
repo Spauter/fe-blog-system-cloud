@@ -96,7 +96,7 @@ public class MediaServiceImpl implements MediaService {
     @Override
     public Media findMedia(String media, String type) {
         QueryWrapper<Media> queryWrapper = new QueryWrapper<>();
-        if (type.equals(MEDIA_IMAGE_TYPE)) {
+        if (type.equalsIgnoreCase(MEDIA_IMAGE_TYPE)) {
             queryWrapper.eq(MEDIA_IMAGE_TYPE,media);
         } else {
             queryWrapper.eq(MEDIA_AUDIO_TYPE,media);
