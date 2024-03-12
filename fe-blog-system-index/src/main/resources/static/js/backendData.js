@@ -403,4 +403,4 @@ DiskChart.setOption(Diskoption);
 //自动发送请求
 setInterval(updateDiskData, 120000);
 setInterval(updateRAMData, 7500);
-setInterval(updateCPUData, 2500);
+setInterval(updateCPUData, 7500);

@@ -42,8 +42,7 @@ public class UploadServicesImpl implements UploadService {
             StorePath storePath = storageClient.uploadFile(IOUtils.toByteArray(inputStream),
                     FilenameUtils.getExtension(multipartFile.getOriginalFilename()));
 
-            log.info("" +
-                    "文件上传成功，路径信息:" + storePath);
+            log.info("文件上传成功，路径信息:" + storePath);
             log.info("groupd:" + storePath.getGroup());
             log.info("path:" + storePath.getPath());
             return  storePath.getFullPath();

@@ -1,8 +1,6 @@
 package com.bloducspauter.bean;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,9 +12,7 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@TableName
 public class ltpData implements Serializable {
-    @TableId(type = IdType.AUTO)
 
     //结果码(具体见SDK&API错误码查询 )
     private String code;

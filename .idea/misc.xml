@@ -10,6 +10,7 @@
     </option>
     <option name="ignoredFiles">
       <set>
+        <option value="$PROJECT_DIR$/fe-blog-chat/pom.xml" />
         <option value="$PROJECT_DIR$/fe-blog-comment/pom.xml" />
         <option value="$PROJECT_DIR$/fe-blog-system-back-user/pom.xml" />
         <option value="$PROJECT_DIR$/fe-blog-system-field/pom.xml" />
@@ -17,9 +18,8 @@
         <option value="$PROJECT_DIR$/fe-blog-system-tag/pom.xml" />
       </set>
     </option>
-    <option name="workspaceImportForciblyTurnedOn" value="true" />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

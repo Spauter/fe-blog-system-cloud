@@ -60,6 +60,13 @@ function commentAdd(blogId) {
             'blog_id': blogId,
             'content': $('#comment').val(),
         }
+        if(loginUser==null){
+            layer.msg("请登陆后评论", {
+                icon: 6,
+                time: 1000
+            })
+            return;
+        }
         if (data.content === '' || data.content == null) {
             layer.msg("请输入评论", {
                 icon: 2,
@@ -68,7 +75,6 @@ function commentAdd(blogId) {
             return;
         }
         const str = Math.random().toString(36).slice(2);
-        let content = $('#reply').val()
         $.ajax({
             type: 'POST',
             url: 'https://gtf.ai.xingzheai.cn/v2.0/game_chat_ban/detect_text',
