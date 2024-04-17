@@ -45,8 +45,9 @@ public class MediaController extends HttpServlet {
         try {
             if (osName.startsWith("Windows")) {
                 uploadService.uploadToWindows(file, UPLOAD_MEDIA_PATH, false);
-            } else
+            } else {
                 uploadService.uploadToNginx(file);
+            }
             Media media = new Media();
             String type = new IsValidUtil().checkFileType(file.getOriginalFilename());
             if ("Image".equals(type)) {

@@ -22,5 +22,4 @@ public class MyBalancerConfiguration {
         mapperScannerConfigurer.setBasePackage("com.bloducspauter.mapper");
         return mapperScannerConfigurer;
     }
-
 }

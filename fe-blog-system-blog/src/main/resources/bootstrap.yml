@@ -2,7 +2,7 @@ spring:
   cloud:
     nacos:
       config:
-        server-addr: localhost:8848
+        server-addr: 172.18.0.2:8848
         namespace: 192099489
         group: FE_BLOG
         prefix: fe-blog-blog
