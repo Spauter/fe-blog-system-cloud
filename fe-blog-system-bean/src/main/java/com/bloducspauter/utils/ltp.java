@@ -1,7 +1,6 @@
 package com.bloducspauter.utils;
 
 import com.alibaba.fastjson.JSONObject;
-import com.bloducspauter.FeBlogBeanMain;
 import com.bloducspauter.bean.ltpData;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -45,7 +44,6 @@ public class ltp {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        FeBlogBeanMain.start();
 //
     }
 
