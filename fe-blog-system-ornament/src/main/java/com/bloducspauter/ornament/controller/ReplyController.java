@@ -1,10 +1,10 @@
-package com.bloducspauter.category.controller;
+package com.bloducspauter.ornament.controller;
 
 import com.bloducspauter.bean.Comment;
 import com.bloducspauter.bean.Reply;
 import com.bloducspauter.bean.User;
-import com.bloducspauter.category.service.CommentService;
-import com.bloducspauter.category.service.ReplyService;
+import com.bloducspauter.ornament.service.CommentService;
+import com.bloducspauter.ornament.service.ReplyService;
 import com.bloducspauter.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.bloducspauter.category.service;
+package com.bloducspauter.ornament.service;
 
 import com.bloducspauter.bean.Reply;
 import java.util.List;

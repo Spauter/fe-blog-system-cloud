@@ -1,12 +1,12 @@
-package com.bloducspauter.category.service.impl;
+package com.bloducspauter.ornament.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
-import com.bloducspauter.bean.Media;
-import com.bloducspauter.category.mapper.MediaMapper;
-import com.bloducspauter.category.service.MediaService;
+import com.bloducspauter.bean.media.Media;
+import com.bloducspauter.ornament.mapper.MediaMapper;
+import com.bloducspauter.ornament.service.MediaService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

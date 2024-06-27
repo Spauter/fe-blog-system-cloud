@@ -1,4 +1,4 @@
-package com.bloducspauter.bean;
+package com.bloducspauter.bean.category;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 import java.io.Serializable;
 
 
@@ -14,8 +15,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Data
 @TableName
-public class Field implements Serializable {
+public class Tag implements Serializable {
     @TableId(type = IdType.AUTO)
-    private Integer fieldId;
+    private Integer tagId;
     private String name;
 }

@@ -6,6 +6,7 @@
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/fe-blog-system-index/pom.xml" />
+        <option value="$PROJECT_DIR$/fe-blog-system-media/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

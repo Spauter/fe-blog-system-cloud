@@ -1,8 +1,8 @@
-package com.bloducspauter.category.controller;
+package com.bloducspauter.ornament.controller;
 
 
-import com.bloducspauter.bean.Media;
-import com.bloducspauter.category.service.MediaService;
+import com.bloducspauter.bean.media.Media;
+import com.bloducspauter.ornament.service.MediaService;
 import com.bloducspauter.user.service.UploadService;
 import com.bloducspauter.bean.utils.IsValidUtil;
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,4 @@
-package com.bloducspauter.bean;
+package com.bloducspauter.bean.media;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -14,8 +14,9 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Data
 @TableName
-public class BlogTag implements Serializable {
+public class Media implements Serializable {
     @TableId(type = IdType.AUTO)
-    private Integer blogId;
-    private Integer tagId;
+    private Integer mediaId;
+    private String image;
+    private String music;
 }

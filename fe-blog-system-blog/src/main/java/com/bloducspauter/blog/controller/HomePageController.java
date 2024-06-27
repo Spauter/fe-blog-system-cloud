@@ -2,7 +2,7 @@ package com.bloducspauter.blog.controller;
 
 
 
-import com.bloducspauter.bean.Homepage;
+import com.bloducspauter.bean.blog.Homepage;
 
 import com.bloducspauter.blog.service.HomePageService;
 import lombok.extern.slf4j.Slf4j;

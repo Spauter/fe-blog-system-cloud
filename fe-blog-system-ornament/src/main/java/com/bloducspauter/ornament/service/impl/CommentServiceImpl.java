@@ -1,9 +1,9 @@
-package com.bloducspauter.category.service.impl;
+package com.bloducspauter.ornament.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
 import com.bloducspauter.bean.Comment;
-import com.bloducspauter.category.mapper.CommentMapper;
-import com.bloducspauter.category.service.CommentService;
+import com.bloducspauter.ornament.mapper.CommentMapper;
+import com.bloducspauter.ornament.service.CommentService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;

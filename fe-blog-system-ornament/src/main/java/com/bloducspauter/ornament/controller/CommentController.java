@@ -1,8 +1,8 @@
-package com.bloducspauter.category.controller;
+package com.bloducspauter.ornament.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.bloducspauter.bean.Comment;
 import com.bloducspauter.bean.User;
-import com.bloducspauter.category.service.CommentService;
+import com.bloducspauter.ornament.service.CommentService;
 import com.bloducspauter.bean.utils.GetRequestJson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

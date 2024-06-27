@@ -2,7 +2,7 @@ package com.bloducspauter.category.service;
 
 
 
-import com.bloducspauter.bean.Tag;
+import com.bloducspauter.bean.category.Tag;
 import com.bloducspauter.bean.statistics.TagStatistics;
 
 import java.util.List;

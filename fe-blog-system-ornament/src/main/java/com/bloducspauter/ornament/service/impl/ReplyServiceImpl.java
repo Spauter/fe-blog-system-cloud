@@ -1,8 +1,8 @@
-package com.bloducspauter.category.service.impl;
+package com.bloducspauter.ornament.service.impl;
 
 import com.bloducspauter.bean.Reply;
-import com.bloducspauter.category.mapper.ReplyMapper;
-import com.bloducspauter.category.service.ReplyService;
+import com.bloducspauter.ornament.mapper.ReplyMapper;
+import com.bloducspauter.ornament.service.ReplyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

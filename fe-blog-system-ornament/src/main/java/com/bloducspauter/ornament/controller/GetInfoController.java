@@ -1,4 +1,4 @@
-package com.bloducspauter.category.controller;
+package com.bloducspauter.ornament.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hyperic.sigar.SigarException;

@@ -2,7 +2,7 @@ package com.bloducspauter.category.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
-import com.bloducspauter.bean.Field;
+import com.bloducspauter.bean.category.Field;
 
 import com.bloducspauter.category.mapper.FieldMapper;
 import com.bloducspauter.category.mapper.FieldStatisticsMapper;

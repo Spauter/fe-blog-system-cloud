@@ -15,7 +15,6 @@
         <module>fe-blog-system-api</module>
         <module>fe-blog-system-category</module>
         <module>fe-blog-system-gateway</module>
-        <module>fe-blog-media</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

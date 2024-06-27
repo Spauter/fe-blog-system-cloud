@@ -2,7 +2,7 @@ package com.bloducspauter.blog.service;
 
 
 
-import com.bloducspauter.bean.Homepage;
+import com.bloducspauter.bean.blog.Homepage;
 
 import java.util.List;
 

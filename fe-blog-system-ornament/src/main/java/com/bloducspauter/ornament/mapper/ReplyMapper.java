@@ -1,4 +1,4 @@
-package com.bloducspauter.category.mapper;
+package com.bloducspauter.ornament.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.bloducspauter.bean.Reply;

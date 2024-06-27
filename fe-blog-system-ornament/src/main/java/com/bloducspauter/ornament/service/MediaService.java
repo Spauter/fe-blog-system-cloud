@@ -1,7 +1,7 @@
-package com.bloducspauter.category.service;
+package com.bloducspauter.ornament.service;
 
 
-import com.bloducspauter.bean.Media;
+import com.bloducspauter.bean.media.Media;
 
 import java.io.InputStream;
 import java.util.ArrayList;
