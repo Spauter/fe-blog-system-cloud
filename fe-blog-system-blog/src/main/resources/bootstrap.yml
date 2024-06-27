@@ -12,7 +12,7 @@ spring:
         password: nacos
         shared-configs:
           - {data-id: 'common.yml',refresh: true,group: FE_BLOG}
-          - {data-id: 'redis-local.yml',refresh: true,group: FE_BLOG}
+          - {data-id: 'redis-local',refresh: true,group: FE_BLOG}
           - {data-id: 'mysql8-local.yml',refresh: true,group: FE_BLOG}
       discovery:
         namespace: 192099489
