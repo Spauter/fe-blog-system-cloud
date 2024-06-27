@@ -7,7 +7,7 @@
         <result property="tagCount" column="tag_count" />
     </resultMap>
 <!--    根据blog的数量,统计出现次数最多的标签名-->
-<select id="getTagStatistics" resultType="com.bloducspauter.statistics.TagStatistics">
+<select id="getTagStatistics" resultType="com.bloducspauter.bean.statistics.TagStatistics">
     SELECT t.name AS tag_name, COUNT(*) AS tag_count
     FROM blog b
              JOIN tag_relation tr ON b.blog_id = tr.blog_id

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.bloducspauter.mapper.BlogMapper">
+<mapper namespace="com.bloducspauter.blog.mapper.BlogMapper">
 
 
     <insert id="addRelation" parameterType="com.bloducspauter.bean.BlogTag">
@@ -68,20 +68,20 @@
     </select>
 
     <select id="selectHotBlogs" resultType="com.bloducspauter.bean.Blog">
-        SELECT blog_id,title,clicks FROM db_mybatis.blog
+        SELECT blog_id,title,clicks FROM blog
                  where audited='已通过'
         ORDER BY clicks DESC
         LIMIT 6;
     </select>
 
     <select id="selectBlogbyField" resultType="com.bloducspauter.bean.Blog" parameterType="com.bloducspauter.bean.Blog">
-        select * from db_mybatis.blog where field_id = #{Fieldid}
+        select * from blog where field_id = #{Fieldid}
         <if test='user_id != -1'> AND user_id = #{user_id} </if>
         AND audited ='已通过'
         limit #{page},#{size};
     </select>
     <select id="selectBlogbytitle" resultType="com.bloducspauter.bean.Blog" parameterType="com.bloducspauter.bean.Blog">
-        select * from db_mybatis.blog   <where>title like  CONCAT('%',#{title},'%')</where>
+        select * from blog   <where>title like  CONCAT('%',#{title},'%')</where>
         AND field_id = #{param1}
         <if test='userId != -1'> AND user_id = #{param2} </if>
         limit #{page},#{size};
