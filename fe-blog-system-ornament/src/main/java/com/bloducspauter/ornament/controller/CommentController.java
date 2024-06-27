@@ -150,7 +150,7 @@ public class CommentController {
         int blogId = Integer.parseInt(request.getParameter("blog_id"));
         int page = Integer.parseInt(request.getParameter("page"));
         int size = Integer.parseInt(request.getParameter("size"));
-        log.info(blogId + "" + page + size);
+        log.info("{}{}{}", blogId, page, size);
         Map<String,Object>map=new HashMap<>();
         try {
             List<Comment> comments = commentService.selectAll(blogId, page, size);

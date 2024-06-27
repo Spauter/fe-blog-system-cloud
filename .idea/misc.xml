@@ -7,6 +7,16 @@
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/fe-blog-system-index/pom.xml" />
         <option value="$PROJECT_DIR$/fe-blog-system-media/pom.xml" />
+        <option value="$PROJECT_DIR$/fe-blog-system-chat/pom.xml" />
+        <option value="$PROJECT_DIR$/fe-blog-system-cloud-parent/pom.xml" />
+        <option value="$PROJECT_DIR$/SendEmailAutoConfiguration/pom.xml" />
+        <option value="$PROJECT_DIR$/fe-blog-system-user/pom.xml" />
+        <option value="$PROJECT_DIR$/fe-blog-system-api/pom.xml" />
+        <option value="$PROJECT_DIR$/fe-blog-system-bean/pom.xml" />
+        <option value="$PROJECT_DIR$/fe-blog-system-blog/pom.xml" />
+        <option value="$PROJECT_DIR$/fe-blog-system-category/pom.xml" />
+        <option value="$PROJECT_DIR$/fe-blog-system-ornament/pom.xml" />
+        <option value="$PROJECT_DIR$/fe-blog-system-gateway/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
@@ -14,6 +24,7 @@
         <option value="$PROJECT_DIR$/fe-blog-chat/pom.xml" />
         <option value="$PROJECT_DIR$/fe-blog-comment/pom.xml" />
         <option value="$PROJECT_DIR$/fe-blog-system-back-user/pom.xml" />
+        <option value="$PROJECT_DIR$/fe-blog-system-chat/pom.xml" />
         <option value="$PROJECT_DIR$/fe-blog-system-field/pom.xml" />
         <option value="$PROJECT_DIR$/fe-blog-system-homepage/pom.xml" />
         <option value="$PROJECT_DIR$/fe-blog-system-index/pom.xml" />

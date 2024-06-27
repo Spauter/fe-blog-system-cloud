@@ -3,7 +3,8 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.bloducspauter</groupId>
-        <artifactId>fe-blog-system-cloud</artifactId>
+        <artifactId>fe-blog-system-cloud-parent</artifactId>
+        <relativePath>../fe-blog-system-cloud-parent/pom.xml</relativePath>
         <version>1.0</version>
     </parent>
 
@@ -111,11 +112,6 @@
             <groupId>org.fusesource</groupId>
             <artifactId>sigar</artifactId>
             <version>1.6.4</version>
-        </dependency>
-        <dependency>
-            <groupId>com.bloducspauter</groupId>
-            <artifactId>fe-blog-system-bean</artifactId>
-            <version>1.0</version>
         </dependency>
     </dependencies>
     <build>
