@@ -12,7 +12,36 @@ spring:
         shared-configs:
           - {data-id: 'mysql8-local.yml',refresh: true,group: FE_BLOG}
           - {data-id: 'common.yml',refresh: true,group: FE_BLOG}
-          - {data-id: 'redis-local.yml',refresh: true,group: FE_BLOG}
+          - {data-id: 'redis-local',refresh: false,group: FE_BLOG}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         group: FE_BLOG
       discovery:
        namespace: 192099489

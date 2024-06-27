@@ -1,4 +1,4 @@
-package com.bloducspauter.mapper;
+package com.bloducspauter.blog.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;

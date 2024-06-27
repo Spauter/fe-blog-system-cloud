@@ -2,7 +2,7 @@ package com.bloducspauter.blog.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bloducspauter.bean.Homepage;
-import com.bloducspauter.mapper.HomePageMapper;
+import com.bloducspauter.blog.mapper.HomePageMapper;
 import com.bloducspauter.blog.service.HomePageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

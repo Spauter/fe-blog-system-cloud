@@ -3,12 +3,13 @@ package com.bloducspauter.blog.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
 import com.bloducspauter.bean.*;
+import com.bloducspauter.blog.mapper.BlogMapper;
 import com.bloducspauter.blog.service.BlogService;
-import com.bloducspauter.mapper.BlogMapper;
-import com.bloducspauter.mapper.MediaMapper;
-import com.bloducspauter.mapper.TagMapper;
-import com.bloducspauter.mapper.TagRelationMapper;
 
+
+import com.bloducspauter.category.mapper.MediaMapper;
+import com.bloducspauter.category.mapper.TagMapper;
+import com.bloducspauter.category.mapper.TagRelationMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;

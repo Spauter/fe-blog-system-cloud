@@ -12,9 +12,23 @@ spring:
         password: nacos
         shared-configs:
           - {data-id: 'common.yml',refresh: true,group: FE_BLOG}
-          - {data-id: 'redis-local',refresh: true,group: FE_BLOG}
           - {data-id: 'mysql8-local.yml',refresh: true,group: FE_BLOG}
+          - {data-id: 'redis-local.yml',refresh: true,group: FE_BLOG}
       discovery:
         namespace: 192099489
         group: FE_BLOG
         server-addr: 192.168.24.128:8848
+
+
+#server:
+#  port: 51809
+#spring:
+#  application:
+#    name: redis-local
+#  cloud:
+#    nacos:
+#      discovery:
+#        server-addr: 192.168.24.128:8848
+#      config:
+#        server-addr: 192.168.24.128:8848
+#        file-extension: yml
