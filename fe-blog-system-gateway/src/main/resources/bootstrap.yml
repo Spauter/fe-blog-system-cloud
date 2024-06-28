@@ -17,3 +17,26 @@ spring:
         group: FE_BLOG
         service: fe-gateway
         server-addr:  http://192.168.24.128:8848
+
+    gateway:
+
+      # 网关跨域配置start---------------------------------
+      # 开启网关的跨域功能，具体微服务上的跨域需要进行关闭，否则无效
+      globalcors:
+        cors-configurations:
+          # 匹配所有请求
+          '[/**]':
+            # 跨域处理 允许所有的域
+            allowedOrigins: "*"
+            # 支持的方法
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+            allowed-headers:
+              - access-control-allow-origin
+              - authority,content-type
+              - version-info
+              - X-Requested-With
+              - Token

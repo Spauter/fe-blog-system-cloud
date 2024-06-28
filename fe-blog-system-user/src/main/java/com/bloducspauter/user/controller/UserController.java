@@ -1,13 +1,11 @@
 package com.bloducspauter.user.controller;
 
 
-import com.alibaba.nacos.api.naming.pojo.healthcheck.impl.Http;
 import com.bloducspauter.bean.User;
 import com.bloducspauter.user.service.UploadService;
 import com.bloducspauter.user.service.UserService;
 import com.bloducspauter.bean.utils.IsValidUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,6 +40,14 @@ public class UserController {
     private User getUser(HttpServletRequest request) {
         String account = request.getParameter("username");
         return userService.Login(account);
+    }
+
+    public User getRedisUser(HttpServletRequest request) {
+        String token = request.getHeader("token");
+        if (token == null) {
+            return null;
+        }
+        return (User) redisTemplate.opsForValue().get(token);
     }
 
     @PostMapping("UserLoginController")
@@ -121,10 +127,9 @@ public class UserController {
 
     //此段代码是用来获取session（保持登录的）
     @GetMapping("UserLoginController")
-    public Map<String, Object> getLoginedUser(HttpServletRequest request) {
-        String token = request.getHeader("token");
+    public Map<String, Object> getLoginUser(HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
-        User user = (User) redisTemplate.opsForValue().get(token);
+        User user = getRedisUser(request);
         if (user != null) {
             map.put("code", 200);
             map.put("msg", "已经登录");
@@ -151,10 +156,10 @@ public class UserController {
 
     @RequestMapping("userUpdateServlet")
     public Map<String, Object> updateUser(HttpServletRequest request) {
-        String token = request.getHeader("token");
+
         Map<String, Object> map = new HashMap<>();
         //获取登录的user对象，如果没有用会话对象，返回null
-        User sessionUser = (User) redisTemplate.opsForValue().get(token);
+        User sessionUser = getRedisUser(request);
         User user = userService.getInfo(sessionUser.getAccount());
         if (user == null) {
             map.put("code", 404);
@@ -204,7 +209,7 @@ public class UserController {
     public Map<String, Object> modifyPwd(HttpServletRequest request ){
         Map<String, Object> map = new HashMap<>();
         String token = request.getHeader("token");
-        User tokenUser = (User) redisTemplate.opsForValue().get(token);
+        User tokenUser =getRedisUser(request);
         if (tokenUser == null) {
             map.put("code", 404);
             map.put("msg", "没有登录,请先登录");
@@ -234,7 +239,7 @@ public class UserController {
         Map<String, Object> map = new HashMap<>();
         String token = request.getHeader("token");
         try {
-            User sessionUser = (User) redisTemplate.opsForValue().get(token);
+            User sessionUser = getRedisUser(request);
             User user = userService.getInfo(sessionUser.getAccount());
             String osName = System.getProperty("os.name");
             String path;
