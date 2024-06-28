@@ -1,6 +1,7 @@
 package com.bloducspauter.user.controller;
 
 
+import com.alibaba.nacos.api.naming.pojo.healthcheck.impl.Http;
 import com.bloducspauter.bean.User;
 import com.bloducspauter.user.service.UploadService;
 import com.bloducspauter.user.service.UserService;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
@@ -47,13 +49,6 @@ public class UserController {
             return map;
         }
         String password = req.getParameter("password");
-        String vericode = req.getParameter("vericode");
-        String generatedCode = (String) session.getAttribute("verifyCode");
-        if (!vericode.equals(generatedCode)) {
-            map.put("code", 500);
-            map.put("msg", "验证码错误");
-            return map;
-        }
         if (!password.equals(loginUser.getPassword())) {
             map.put("code", 404);
             map.put("msg", "用户名或者密码错误");
