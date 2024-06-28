@@ -68,7 +68,7 @@ public class UserController {
         loginUser.setPassword("想看密码？怎么可能给你看😜");
         //生成token;
         String token = UUID.randomUUID().toString();
-        redisTemplate.opsForValue().set(token, loginUser, 5, TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set(token, loginUser);
         map.put("code", 200);
         map.put("data", loginUser);
         map.put("token", token);
@@ -76,7 +76,7 @@ public class UserController {
     }
 
     @RequestMapping("register")
-    public Map<String, Object> register(HttpServletRequest request, HttpSession session) {
+    public Map<String, Object> register(HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
         User isAlreadyLoginUser = getUser(request);
         if (isAlreadyLoginUser != null) {
@@ -88,13 +88,6 @@ public class UserController {
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirmPassword");
         String email = request.getParameter("email");
-        String vericode = request.getParameter("vericode");
-        String generatedCode = (String) session.getAttribute("emailVerifyCode");
-        if (generatedCode == null) {
-            map.put("code", 500);
-            map.put("msg", "无法获取验证码");
-            return map;
-        }
         if (!password.equals(confirmPassword)) {
             map.put("code", 500);
             map.put("msg", "两次输入的密码不一致");
@@ -105,23 +98,26 @@ public class UserController {
             map.put("msg", "邮箱格式不正确");
             return map;
         }
-        if (!vericode.equals(generatedCode)) {
-            map.put("code", 500);
-            map.put("msg", "邮箱验证码错误");
-            return map;
-        }
+        //todo 将session修改成d带token
+//        if (!vericode.equals(generatedCode)) {
+//            map.put("code", 500);
+//            map.put("msg", "邮箱验证码错误");
+//            return map;
+//        }
         //判断发送邮箱的电子邮箱是否是当前填写的邮箱
-        String registerEmail = (String) session.getAttribute("registerEmail");
-        if (!registerEmail.equals(email)) {
-            map.put("code", 500);
-            map.put("msg", "输入的电子邮箱与请求发送的电子邮箱不一致");
-            return map;
-        }
+//        String registerEmail = (String) session.getAttribute("registerEmail");
+//        if (!registerEmail.equals(email)) {
+//            map.put("code", 500);
+//            map.put("msg", "输入的电子邮箱与请求发送的电子邮箱不一致");
+//            return map;
+//        }
         User user = userService.register(account, password, email);
         user.setPassword("想看密码？怎么可能会给你看😜");
         map.put("code", 200);
         map.put("data", user);
-        session.setAttribute("user", user);
+        String token = UUID.randomUUID().toString();
+        redisTemplate.opsForValue().set(token, user);
+        map.put("token", token);
         return map;
     }
 
@@ -251,7 +247,7 @@ public class UserController {
             }
             user.setAvatar(path);
             userService.updateInfo(user);
-            redisTemplate.opsForValue().set(token, user, 5, TimeUnit.MINUTES);
+            redisTemplate.opsForValue().set(token, user);
             map.put("code", 200);
             map.put("data", user);
         } catch (Exception e) {
