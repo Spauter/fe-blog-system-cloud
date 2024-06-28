@@ -5,6 +5,7 @@ import com.bloducspauter.bean.media.Media;
 import com.bloducspauter.ornament.service.MediaService;
 import com.bloducspauter.user.service.UploadService;
 import com.bloducspauter.bean.utils.IsValidUtil;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,7 @@ import static com.bloducspauter.bean.utils.DefaultValue.*;
 @Slf4j
 @RequestMapping("fe-ornament")
 @MultipartConfig
+@Deprecated
 public class MediaController extends HttpServlet {
 
     @Autowired
