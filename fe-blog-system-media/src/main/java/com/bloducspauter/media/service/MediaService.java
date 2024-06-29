@@ -21,7 +21,7 @@ public interface MediaService {
      * 上传文件，适合小文件上传
      * @return 文件是否上传成功
      */
-    MediaFiles uploadFile(File file);
+    MediaFiles uploadFile(File file,String userId,String originFileName);
 
     /**
      * 获取文件的MD5值

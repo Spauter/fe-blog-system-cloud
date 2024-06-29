@@ -70,7 +70,7 @@ public class CommonFilesController {
         try {
             File templateFile = File.createTempFile("minio", ".temp");
             file.transferTo(templateFile);
-            MediaFiles mediaFiles = mediaService.uploadFile(templateFile);
+            MediaFiles mediaFiles = mediaService.uploadFile(templateFile,user.getUserId(),file.getOriginalFilename());
             if (mediaFiles != null) {
                 map.put("code", 200);
                 map.put("msg", "上传成功");

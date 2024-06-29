@@ -56,7 +56,7 @@ public class MediaServiceImpl implements MediaService {
      */
     @Transactional
 
-    public MediaFiles addMediaFilesToDb(String fileMd5, String bucket, String objectName,long size) {
+    public MediaFiles addMediaFilesToDb(String fileMd5, String bucket, String objectName,long size,String userId,String fileName) {
         //将文件信息保存到数据库
         MediaFiles mediaFiles = mapper.selectById(fileMd5);
         if (mediaFiles == null) {
@@ -67,8 +67,8 @@ public class MediaServiceImpl implements MediaService {
             mediaFiles.setBucket(bucket);
             //file_path
             mediaFiles.setFilePath(objectName);
-            //file_id
-            mediaFiles.setFileId(fileMd5);
+            mediaFiles.setUserId(userId);
+            mediaFiles.setFileName(fileName);
             //url
             mediaFiles.setUrl("/" + bucket + "/" + objectName);
             //上传时间
@@ -181,7 +181,7 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    public MediaFiles uploadFile(File file) {
+    public MediaFiles uploadFile(File file,String userId,String originFileName) {
         String id=getId(file);
         String fileName=file.getName();
         String defaultFolderPath = getDefaultFolderPath();
@@ -194,7 +194,7 @@ public class MediaServiceImpl implements MediaService {
         if(!result){
             return null;
         }
-        return addMediaFilesToDb(id,bucketEmojis,objectName,size);
+        return addMediaFilesToDb(id,bucketEmojis,objectName,size,userId,originFileName);
     }
 
     @Override
