@@ -1,0 +1,10 @@
+server:
+  port: 8080
+netty:
+  port: 8081
+  path: /chat
+spring:
+  data:
+    redis:
+      host: 192.168.24.128
+      port: 6380
