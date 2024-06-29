@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Data
 public class CurrentReply {
     @Id
-    private Integer rid;
+    private String rid;
     private String account;
     private LocalDateTime createTime;
     private String content;

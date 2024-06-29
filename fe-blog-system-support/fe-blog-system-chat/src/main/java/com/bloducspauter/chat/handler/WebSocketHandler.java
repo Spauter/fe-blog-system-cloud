@@ -21,9 +21,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 @Component
 @Slf4j
-/**
- * 设置通道共享
- */
 @ChannelHandler.Sharable
 public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
 
