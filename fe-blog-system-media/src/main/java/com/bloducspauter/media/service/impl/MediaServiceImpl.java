@@ -49,20 +49,19 @@ public class MediaServiceImpl implements MediaService {
 
     /**
      * 将文件信息添加到文件表
-     *
-     * @param fileMd5             文件md5值
+     *      文件md5值
      * @param bucket              桶
      * @param objectName          对象名称
      */
     @Transactional
 
-    public MediaFiles addMediaFilesToDb(String fileMd5, String bucket, String objectName,long size,String userId,String fileName) {
+    public MediaFiles addMediaFilesToDb(String bucket, String objectName,long size,String userId,String fileName,String id) {
         //将文件信息保存到数据库
-        MediaFiles mediaFiles = mapper.selectById(fileMd5);
+        MediaFiles mediaFiles = mapper.selectById(id);
         if (mediaFiles == null) {
             mediaFiles = new MediaFiles();
             //文件id
-            mediaFiles.setId(fileMd5);
+            mediaFiles.setId(id);
             //桶
             mediaFiles.setBucket(bucket);
             //file_path
@@ -119,37 +118,6 @@ public class MediaServiceImpl implements MediaService {
         return fileMd5.charAt(0) + "/" + fileMd5.charAt(1) + "/" + fileMd5 + "/";
     }
 
-    /**
-     * 将文件上传到minio
-     *
-     * @param localFilePath 文件本地路径
-     * @param mimeType      媒体类型
-     * @param bucket        桶
-     * @param objectName    对象名
-     * @return boolean
-     */
-    public boolean addMediaFilesToMinIO(String localFilePath, String mimeType, String bucket, String objectName) {
-        try {
-            UploadObjectArgs uploadObjectArgs = UploadObjectArgs.builder()
-                    //桶
-                    .bucket(bucket)
-                    //指定本地文件路径
-                    .filename(localFilePath)
-                    //对象名 放在子目录下
-                    .object(objectName)
-                    //设置媒体文件类型
-                    .contentType(mimeType)
-                    .build();
-            //上传文件
-            minioClient.uploadObject(uploadObjectArgs);
-            log.debug("上传文件到minio成功,bucket:{},objectName:{}", bucket, objectName);
-            return true;
-        } catch (Exception e) {
-            log.error("上传文件出错,bucket:{},objectName:{},错误信息:{}", bucket, objectName, e.getMessage());
-            e.printStackTrace();
-        }
-        return false;
-    }
 
     @Override
     public boolean checkFileExists(String id) {
@@ -183,18 +151,45 @@ public class MediaServiceImpl implements MediaService {
     @Override
     public MediaFiles uploadFile(File file,String userId,String originFileName) {
         String id=getId(file);
-        String fileName=file.getName();
-        String defaultFolderPath = getDefaultFolderPath();
         String filePath=getFileFolderPath(id);
-        String extension = fileName.substring(fileName.lastIndexOf("."));
+        String extension =getExtension(originFileName);
         String minType=getMimeType(extension);
-        String objectName = defaultFolderPath + id + extension;
+        String objectName =filePath+ id + "."+extension;
         long size=file.length();
-        boolean result= addMediaFilesToMinIO(file.getAbsolutePath(),minType,bucketEmojis,filePath);
+        boolean result= addMediaFilesToMinIO(file.getAbsolutePath(),minType,bucketEmojis,objectName);
         if(!result){
             return null;
         }
-        return addMediaFilesToDb(id,bucketEmojis,objectName,size,userId,originFileName);
+        return addMediaFilesToDb(bucketEmojis,objectName,size,userId,originFileName,id);
+    }
+    public boolean addMediaFilesToMinIO(String localFilePath, String mimeType, String bucket, String objectName) {
+        try {
+            UploadObjectArgs uploadObjectArgs = UploadObjectArgs.builder()
+                    //桶
+                    .bucket(bucket)
+                    //指定本地文件路径
+                    .filename(localFilePath)
+                    //对象名 放在子目录下
+                    .object(objectName)
+                    //设置媒体文件类型
+                    .contentType(mimeType)
+                    .build();
+            //上传文件
+            minioClient.uploadObject(uploadObjectArgs);
+            log.debug("上传文件到minio成功,bucket:{},objectName:{}", bucket, objectName);
+            return true;
+        } catch (Exception e) {
+            log.error("上传文件出错,bucket:{},objectName:{},错误信息:{}", bucket, objectName, e.getMessage());
+            e.printStackTrace();
+        }
+        return false;
+    }
+    private String getExtension(String fileName) {
+        if (fileName.split("\\.").length == 1) {
+            return null;
+        } else {
+            return fileName.split("\\.")[1];
+        }
     }
 
     @Override
