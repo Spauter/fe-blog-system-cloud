@@ -12,6 +12,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Deprecated
 public class MediaRelation implements Serializable {
     @TableId(type = IdType.AUTO)
     private Integer blogId;

@@ -14,6 +14,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Data
 @TableName
+@Deprecated
 public class Media implements Serializable {
     @TableId(type = IdType.AUTO)
     private Integer mediaId;
