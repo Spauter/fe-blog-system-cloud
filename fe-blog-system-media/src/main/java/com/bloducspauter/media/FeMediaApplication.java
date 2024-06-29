@@ -15,8 +15,11 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 @EnableRedisHttpSession
 @EnableFeignClients(basePackages = {"com.bloducspauter.api"})
 @MapperScan("com.bloducspauter.media.mapper")
-public class MediaApplication {
+public class FeMediaApplication {
+
     public static void main(String[] args) {
-        SpringApplication.run(MediaApplication.class, args);
+        SpringApplication springApplication = new SpringApplication(FeMediaApplication.class);
+        springApplication.setAllowBeanDefinitionOverriding(true);
+        springApplication.run(args);
     }
 }

@@ -21,5 +21,5 @@ public interface NFeBlogMediaApi {
     Map<String, Object> checkFile( @RequestParam("fileMd5") String fileMd5);
 
     @PostMapping(value = "/upload/commonFile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    Map<String, Object> upload(@RequestParam("image") MultipartFile file, HttpServletRequest request);
+    Map<String, Object> upload(@RequestParam("file") MultipartFile file, HttpServletRequest request);
 }

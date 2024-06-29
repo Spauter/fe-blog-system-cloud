@@ -56,8 +56,8 @@ public class CommonFilesController {
     }
 
 
-    @PostMapping(value = "/upload/commonFile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Map<String, Object> upload(@RequestParam("image") MultipartFile file, HttpServletRequest request) throws Exception{
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Map<String, Object> upload(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception{
         Map<String, Object> map = new HashMap<>();
         User user = getUser(request);
         if (user == null) {
