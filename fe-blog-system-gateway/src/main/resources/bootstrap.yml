@@ -40,3 +40,4 @@ spring:
               - version-info
               - X-Requested-With
               - Token
+              - Content-Type
