@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -30,10 +31,10 @@ public class CommonFilesController {
     private com.bloducspauter.media.service.MediaService mediaService;
 
     @Resource
-    private RedisTemplate<String,Object>redisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
 
     private User getUser(HttpServletRequest request) {
-        String token=request.getHeader("token");
+        String token = request.getHeader("token");
         if (token == null) {
             return null;
         }
@@ -57,8 +58,9 @@ public class CommonFilesController {
 
 
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Map<String, Object> upload(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception{
+    public Map<String, Object> upload(@RequestParam("file") MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> map = new HashMap<>();
+        response.setHeader("Content-Type", "application/json;charset=UTF-8");
         User user = getUser(request);
         if (user == null) {
             map.put("code", 401);
@@ -68,20 +70,20 @@ public class CommonFilesController {
         try {
             File templateFile = File.createTempFile("minio", ".temp");
             file.transferTo(templateFile);
-           MediaFiles mediaFiles = mediaService.uploadFile(templateFile);
+            MediaFiles mediaFiles = mediaService.uploadFile(templateFile);
             if (mediaFiles != null) {
                 map.put("code", 200);
                 map.put("msg", "上传成功");
                 map.put("data", mediaFiles);
             } else {
                 map.put("code", 500);
-                map.put("msg","上传失败");
+                map.put("msg", "上传失败");
             }
         } catch (IOException e) {
             e.printStackTrace();
             map.put("code", 500);
-            map.put("msg","上传失败");
-            map.put("cause",e.getMessage());
+            map.put("msg", "上传失败");
+            map.put("cause", e.getMessage());
         }
         return map;
     }
