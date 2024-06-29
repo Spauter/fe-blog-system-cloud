@@ -190,7 +190,7 @@ public class MediaServiceImpl implements MediaService {
         String minType=getMimeType(extension);
         String objectName = defaultFolderPath + id + extension;
         long size=file.length();
-        boolean result= addMediaFilesToMinIO(filePath,minType,bucketEmojis,filePath);
+        boolean result= addMediaFilesToMinIO(file.getAbsolutePath(),minType,bucketEmojis,filePath);
         if(!result){
             return null;
         }
