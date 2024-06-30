@@ -6,23 +6,22 @@ import jakarta.annotation.Resource;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
- * 评论服务层实现类
  * @author Bloduc Spauter
- *
  */
+@Service
 public class CommentServiceImpl implements CommentService {
 
     @Resource
     private MongoTemplate mongoTemplate;
 
     @Override
-    public int save(CurrentComment comment) {
+    public void save(CurrentComment comment) {
         mongoTemplate.save(comment);
-        return 1;
     }
 
     @Override
@@ -39,6 +38,7 @@ public class CommentServiceImpl implements CommentService {
         Criteria criteria = Criteria.where("blog_id").is(blogId);
         query.addCriteria(criteria);
         query.limit(pageSize);
-        return List.of();
+        query.skip(pageNo-1);
+        return mongoTemplate.find(query, CurrentComment.class);
     }
 }

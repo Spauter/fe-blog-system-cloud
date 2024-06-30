@@ -12,10 +12,10 @@ import java.util.List;
 public interface CommentService {
     /**
      * 保存评论
+     *
      * @param comment 评论
-     * @return
      */
-    int save(CurrentComment comment);
+    void save(CurrentComment comment);
 
     /**
      * 根基Blog的id获取评论
