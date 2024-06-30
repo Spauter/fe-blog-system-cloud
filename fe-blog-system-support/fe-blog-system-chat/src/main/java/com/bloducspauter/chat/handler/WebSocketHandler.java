@@ -20,10 +20,12 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * 自定义处理类
@@ -47,6 +49,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
     @Resource
     ReplyService replyService;
 
+    private static final List<Channel>  CHANNELS = new CopyOnWriteArrayList<>();
 
     /**
      * 通道就绪事件
@@ -58,6 +61,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         Channel channel = ctx.channel();
         log.info("有新的连接加入。。。{}", channel.id());
+        CHANNELS.add(channel);
     }
 
     /**
@@ -106,7 +110,14 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
     private void handleInitMessage(ChannelHandlerContext ctx, NettyJson nettyJson) {
         String id = ctx.channel().id().asLongText();
         String location = nettyJson.getLocation();
-        channelRelationService.save(id, location);
+        try {
+            channelRelationService.save(id, location);
+            CHANNEL_MAP.put(new ChannelRelation(id, location), ctx.channel());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            CHANNEL_MAP.put(new ChannelRelation("a", location), ctx.channel());
+        }
         log.info("初始化通道 id: {}", id);
     }
 
@@ -119,7 +130,11 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
         c.setAccount(nettyJson.getAccount());
         c.setContent(nettyJson.getContent());
         c.setCreateTime(LocalDateTime.now());
-        commentService.save(c);
+        try {
+            commentService.save(c);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         log.info("评论成功");
         sendToChannels(ctx,nettyJson.getLocation(), nettyJson.getContent(),c.getId());
     }
@@ -133,7 +148,11 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
         r.setAccount(nettyJson.getAccount());
         r.setContent(nettyJson.getContent());
         r.setCreateTime(LocalDateTime.now());
-        replyService.save(r);
+        try {
+            replyService.save(r);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         log.info("回复成功");
         sendToChannels(ctx,nettyJson.getLocation(), nettyJson.getContent(),r.getRid());
     }
@@ -150,16 +169,22 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
      *
      */
     private void sendToChannels(ChannelHandlerContext ctx,String location, String content,String id) {
-        List<ChannelRelation> channelRelations = channelRelationService.selectList(location);
         Channel thisChannel = ctx.channel();
-        SendContentToChannels sendContentToChannels = new SendContentToChannels();
-        sendContentToChannels.setCid(id);
-        sendContentToChannels.setContent(content);
-        String sendContent = JSONArray.toJSONString(sendContentToChannels);
-        for (ChannelRelation channelRelation : channelRelations) {
-            Channel channel = CHANNEL_MAP.get(channelRelation);
-            if (channel != null && channel != thisChannel) {
-                channel.writeAndFlush(new TextWebSocketFrame(sendContent));
+        try {
+            List<ChannelRelation> channelRelations = channelRelationService.selectList(location);
+            for (ChannelRelation channelRelation : channelRelations) {
+                Channel channel = CHANNEL_MAP.get(channelRelation);
+                if (channel != null && channel != thisChannel) {
+                    channel.writeAndFlush(new TextWebSocketFrame(content));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("发送消息到指定通道失败");
+            for (Channel channel : CHANNELS) {
+                if (thisChannel != channel) {
+                    channel.writeAndFlush(new TextWebSocketFrame(content));
+                }
             }
         }
     }
