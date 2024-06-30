@@ -19,8 +19,6 @@ import jakarta.annotation.Resource;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -136,7 +134,6 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
             e.printStackTrace();
         }
         log.info("评论成功");
-        sendToChannels(ctx,nettyJson.getLocation(), nettyJson.getContent(),c.getId());
     }
 
     /**
@@ -154,7 +151,6 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
             e.printStackTrace();
         }
         log.info("回复成功");
-        sendToChannels(ctx,nettyJson.getLocation(), nettyJson.getContent(),r.getRid());
     }
 
     /**
@@ -168,14 +164,14 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
      * 发送消息到指定通道
      *
      */
-    private void sendToChannels(ChannelHandlerContext ctx,String location, String content,String id) {
+    private void sendToChannels(ChannelHandlerContext ctx,NettyJson nettyJson) {
         Channel thisChannel = ctx.channel();
         try {
-            List<ChannelRelation> channelRelations = channelRelationService.selectList(location);
+            List<ChannelRelation> channelRelations = channelRelationService.selectList(nettyJson.getLocation());
             for (ChannelRelation channelRelation : channelRelations) {
                 Channel channel = CHANNEL_MAP.get(channelRelation);
                 if (channel != null && channel != thisChannel) {
-                    channel.writeAndFlush(new TextWebSocketFrame(content));
+                    channel.writeAndFlush(new TextWebSocketFrame(nettyJson.getContent()));
                 }
             }
         } catch (Exception e) {
@@ -183,7 +179,8 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
             log.error("发送消息到指定通道失败");
             for (Channel channel : CHANNELS) {
                 if (thisChannel != channel) {
-                    channel.writeAndFlush(new TextWebSocketFrame(content));
+                    String json=JSONArray.toJSONString(nettyJson);
+                    channel.writeAndFlush(new TextWebSocketFrame(json));
                 }
             }
         }
