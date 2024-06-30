@@ -12,7 +12,7 @@ public interface ReplyService {
     /**
      * 保存回复
      */
-    int save(CurrentReply currentReply);
+    void save(CurrentReply currentReply);
 
     /**
      * 根据博客的评论ID查询所有评论
