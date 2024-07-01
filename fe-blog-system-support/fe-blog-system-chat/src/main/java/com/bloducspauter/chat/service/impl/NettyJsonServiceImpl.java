@@ -89,7 +89,7 @@ public class NettyJsonServiceImpl implements NettyJsonService {
         try {
             Query query = new Query();
             query.addCriteria(Criteria.where("location").is(location));
-            query.skip(pageNo-1);
+            query.skip((long) (pageNo - 1) *pageSize);
             query.limit(pageSize);
             log.info("select  nettyJsons by page success");
             return mongoTemplate.find(query, NettyJson.class);
