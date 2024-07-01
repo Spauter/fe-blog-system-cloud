@@ -26,4 +26,6 @@ public interface NettyJsonService {
     List<NettyJson> selectList(String location);
 
     NettyJson selectOne(String id);
+
+    void update(NettyJson nettyJson);
 }

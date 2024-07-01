@@ -27,6 +27,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Slf4j
 @ChannelHandler.Sharable
 public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
+    private String nettyLocation;
 
     private static final Map<String, Channel> CHANNEL_MAP = new ConcurrentHashMap<>();
 
@@ -57,8 +58,10 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         Channel channel = ctx.channel();
+        CHANNELS.remove(channel);
+        CHANNEL_MAP.remove(nettyLocation);
+        ctx.close();
         //当有客户端断开连接的时候,就移除对应的通道
-        String id = channel.id().asLongText();
         log.info("有连接已经断开。。。");
     }
 
@@ -75,17 +78,11 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
         //发送消息
         Channel channel = ctx.channel();
         //存储相关信息
+        nettyLocation=nettyJson.getLocation();
         CHANNEL_MAP.put(nettyJson.getLocation(), channel);
         sendToChannels(ctx, nettyJson);
     }
 
-
-    /**
-     * 处理未知消息
-     */
-    private void handleUnknownMessage(NettyJson nettyJson) {
-        log.warn("未知类型消息: {}", nettyJson.getType());
-    }
 
     /**
      * 发送消息到指定通道
@@ -122,6 +119,8 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
         //移除集合
         String id = channel.id().asShortText();
         log.info("异常断开连接。。。{}", id);
-        service.delete(id);
+        CHANNELS.remove(channel);
+        CHANNEL_MAP.remove(nettyLocation);
+        ctx.close();
     }
 }

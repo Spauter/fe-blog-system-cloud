@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import java.util.List;
 /**
@@ -67,6 +68,19 @@ public class NettyJsonServiceImpl implements NettyJsonService {
             log.error("select a nettyJson failed because {}", e.getMessage());
             e.printStackTrace();
             return null;
+        }
+    }
+
+    @Override
+    public void update(NettyJson nettyJson) {
+       Update u = new Update();
+        u.set("location", nettyJson.getLocation());
+        try {
+            mongoTemplate.updateFirst(new Query(Criteria.where("id").is(nettyJson.getId())), u, NettyJson.class);
+            log.info("update nettyJson success");
+        } catch (Exception e) {
+            log.error("update nettyJson failed because {}", e.getMessage());
+            e.printStackTrace();
         }
     }
 }

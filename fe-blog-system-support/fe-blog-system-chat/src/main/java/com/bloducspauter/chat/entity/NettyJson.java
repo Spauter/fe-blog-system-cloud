@@ -21,7 +21,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @Document("netty_json")
 public class NettyJson {
-    @Id
+
     private String id;
     private String blogId;
     private String contentId;
