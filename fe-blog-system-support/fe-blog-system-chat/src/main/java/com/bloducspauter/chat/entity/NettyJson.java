@@ -3,6 +3,7 @@ package com.bloducspauter.chat.entity;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 /**
  * 对应:<p>
@@ -21,7 +22,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @Document("netty_json")
 public class NettyJson {
-
     private String id;
     private String blogId;
     private String contentId;

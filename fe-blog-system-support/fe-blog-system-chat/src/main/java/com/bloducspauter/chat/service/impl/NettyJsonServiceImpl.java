@@ -83,4 +83,25 @@ public class NettyJsonServiceImpl implements NettyJsonService {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public List<NettyJson>selectListByPage(String location,int pageNo,int pageSize){
+        try {
+            Query query = new Query();
+            query.addCriteria(Criteria.where("location").is(location));
+            query.skip(pageNo-1);
+            query.limit(pageSize);
+            log.info("select  nettyJsons by page success");
+            return mongoTemplate.find(query, NettyJson.class);
+        } catch (Exception e) {
+            log.error("select nettyJsons by page was failed because {}", e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<NettyJson> findAll() {
+        return mongoTemplate.findAll(NettyJson.class);
+    }
 }

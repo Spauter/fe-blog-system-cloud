@@ -12,6 +12,7 @@ import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -29,7 +30,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
     private String nettyLocation;
 
-    private static final Map<String, Channel> CHANNEL_MAP = new ConcurrentHashMap<>();
+    private static final Map<Channel, String> CHANNEL_MAP = new ConcurrentHashMap<>();
 
 
     @Resource
@@ -46,8 +47,8 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         Channel channel = ctx.channel();
-        log.info("有新的连接加入。。。{}", channel.id());
         CHANNELS.add(channel);
+        log.info("有新的连接加入。。。{}", channel.id());
     }
 
     /**
@@ -59,7 +60,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         Channel channel = ctx.channel();
         CHANNELS.remove(channel);
-        CHANNEL_MAP.remove(nettyLocation);
+        CHANNEL_MAP.remove(channel);
         ctx.close();
         //当有客户端断开连接的时候,就移除对应的通道
         log.info("有连接已经断开。。。");
@@ -78,8 +79,8 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
         //发送消息
         Channel channel = ctx.channel();
         //存储相关信息
-        nettyLocation=nettyJson.getLocation();
-        CHANNEL_MAP.put(nettyJson.getLocation(), channel);
+        nettyLocation = nettyJson.getLocation();
+        CHANNEL_MAP.put(channel, nettyLocation);
         sendToChannels(ctx, nettyJson);
     }
 
@@ -88,17 +89,19 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
      * 发送消息到指定通道
      */
     private void sendToChannels(ChannelHandlerContext ctx, NettyJson nettyJson) {
-        String json = JSONArray.toJSONString(nettyJson);
+
         try {
             String location = nettyJson.getLocation();
-            List<NettyJson> nettyJsons = service.selectList(location);
-            for (NettyJson n : nettyJsons) {
-                Channel channel = CHANNEL_MAP.get(n.getLocation());
-                channel.writeAndFlush(new TextWebSocketFrame(json));
-            }
+            CHANNELS.forEach(l -> {
+                if (CHANNEL_MAP.get(l).equals(location)) {
+                    String json = JSONArray.toJSONString(nettyJson);
+                    l.writeAndFlush(new TextWebSocketFrame(json));
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
             log.error("发送消息到指定通道失败,进行全局发送");
+            String json = JSONArray.toJSONString(nettyJson);
             for (Channel channel : CHANNELS) {
                 channel.writeAndFlush(new TextWebSocketFrame(json));
             }
@@ -120,7 +123,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
         String id = channel.id().asShortText();
         log.info("异常断开连接。。。{}", id);
         CHANNELS.remove(channel);
-        CHANNEL_MAP.remove(nettyLocation);
+        CHANNEL_MAP.remove(channel);
         ctx.close();
     }
 }

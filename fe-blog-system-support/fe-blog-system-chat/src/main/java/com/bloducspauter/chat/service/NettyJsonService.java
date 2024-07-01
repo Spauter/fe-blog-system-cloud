@@ -28,4 +28,8 @@ public interface NettyJsonService {
     NettyJson selectOne(String id);
 
     void update(NettyJson nettyJson);
+
+    List<NettyJson>selectListByPage(String location, int pageNo, int pageSize);
+
+    List<NettyJson>findAll();
 }
