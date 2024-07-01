@@ -1,8 +1,8 @@
 package com.bloducspauter.chat.entity;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * 对应:<p>
@@ -19,7 +19,9 @@ import lombok.Setter;
  * @author Bloduc Spauter
  */
 @Data
+@Document("netty_json")
 public class NettyJson {
+    @Id
     private String id;
     private String blogId;
     private String contentId;

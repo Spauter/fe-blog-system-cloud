@@ -2,25 +2,17 @@ package com.bloducspauter.chat.handler;
 
 
 import com.alibaba.fastjson.JSONArray;
-import com.bloducspauter.chat.entity.ChannelRelation;
-import com.bloducspauter.chat.entity.CurrentComment;
-import com.bloducspauter.chat.entity.CurrentReply;
 import com.bloducspauter.chat.entity.NettyJson;
-import com.bloducspauter.chat.enums.ReceptionType;
-import com.bloducspauter.chat.service.ChannelRelationService;
-import com.bloducspauter.chat.service.CommentService;
-import com.bloducspauter.chat.service.ReplyService;
+import com.bloducspauter.chat.service.NettyJsonService;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import jakarta.annotation.Resource;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import java.util.List;
-import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -36,18 +28,13 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @ChannelHandler.Sharable
 public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
 
-    private static final Map<ChannelRelation, Channel> CHANNEL_MAP = new ConcurrentHashMap<>();
+    private static final Map<String, Channel> CHANNEL_MAP = new ConcurrentHashMap<>();
+
 
     @Resource
-    private ChannelRelationService channelRelationService;
+    NettyJsonService service;
 
-    @Resource
-    private CommentService commentService;
-
-    @Resource
-    ReplyService replyService;
-
-    private static final List<Channel>  CHANNELS = new CopyOnWriteArrayList<>();
+    private static final List<Channel> CHANNELS = new CopyOnWriteArrayList<>();
 
     /**
      * 通道就绪事件
@@ -72,7 +59,6 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
         Channel channel = ctx.channel();
         //当有客户端断开连接的时候,就移除对应的通道
         String id = channel.id().asLongText();
-        channelRelationService.save(id, null);
         log.info("有连接已经断开。。。");
     }
 
@@ -83,75 +69,16 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
     protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame textWebSocketFrame) throws Exception {
         String msg = textWebSocketFrame.text();
         NettyJson nettyJson = JSONArray.parseObject(msg, NettyJson.class);
-        switch (ReceptionType.getReceptionType(nettyJson.getType())) {
-            case INIT:
-                handleInitMessage(ctx, nettyJson);
-                break;
-            case COMMENT:
-                handleCommentMessage(ctx,nettyJson);
-                break;
-            case REPLY:
-                handleReplyMessage(ctx,nettyJson);
-                break;
-            case Unknown:
-                handleUnknownMessage(nettyJson);
-                break;
-            default:
-                break;
-        }
+        log.info("收到消息:{}", nettyJson);
+        // 处理消息
+        service.save(nettyJson);
+        //发送消息
+        Channel channel = ctx.channel();
+        //存储相关信息
+        CHANNEL_MAP.put(nettyJson.getLocation(), channel);
+        sendToChannels(ctx, nettyJson);
     }
 
-    /**
-     * 初始化通道
-     * @param nettyJson 初始化消息
-     */
-    private void handleInitMessage(ChannelHandlerContext ctx, NettyJson nettyJson) {
-        String id = ctx.channel().id().asLongText();
-        String location = nettyJson.getLocation();
-        try {
-            channelRelationService.save(id, location);
-            CHANNEL_MAP.put(new ChannelRelation(id, location), ctx.channel());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }finally {
-            CHANNEL_MAP.put(new ChannelRelation("a", location), ctx.channel());
-        }
-        log.info("初始化通道 id: {}", id);
-    }
-
-    /**
-     *  处理评论通道
-     */
-    private void handleCommentMessage(ChannelHandlerContext ctx,NettyJson nettyJson) {
-        CurrentComment c = new CurrentComment();
-        c.setId(String.valueOf(nettyJson.getId()));
-        c.setAccount(nettyJson.getAccount());
-        c.setContent(nettyJson.getContent());
-        c.setCreateTime(LocalDateTime.now());
-        try {
-            commentService.save(c);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        log.info("评论成功");
-    }
-
-    /**
-     * 处理回复频道
-     */
-    private void handleReplyMessage(ChannelHandlerContext ctx,NettyJson nettyJson) {
-        CurrentReply r = new CurrentReply();
-        r.setRid(String.valueOf(nettyJson.getId()));
-        r.setAccount(nettyJson.getAccount());
-        r.setContent(nettyJson.getContent());
-        r.setCreateTime(LocalDateTime.now());
-        try {
-            replyService.save(r);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        log.info("回复成功");
-    }
 
     /**
      * 处理未知消息
@@ -162,26 +89,21 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
 
     /**
      * 发送消息到指定通道
-     *
      */
-    private void sendToChannels(ChannelHandlerContext ctx,NettyJson nettyJson) {
-        Channel thisChannel = ctx.channel();
+    private void sendToChannels(ChannelHandlerContext ctx, NettyJson nettyJson) {
+        String json = JSONArray.toJSONString(nettyJson);
         try {
-            List<ChannelRelation> channelRelations = channelRelationService.selectList(nettyJson.getLocation());
-            for (ChannelRelation channelRelation : channelRelations) {
-                Channel channel = CHANNEL_MAP.get(channelRelation);
-                if (channel != null && channel != thisChannel) {
-                    channel.writeAndFlush(new TextWebSocketFrame(nettyJson.getContent()));
-                }
+            String location = nettyJson.getLocation();
+            List<NettyJson> nettyJsons = service.selectList(location);
+            for (NettyJson n : nettyJsons) {
+                Channel channel = CHANNEL_MAP.get(n.getLocation());
+                channel.writeAndFlush(new TextWebSocketFrame(json));
             }
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("发送消息到指定通道失败");
+            log.error("发送消息到指定通道失败,进行全局发送");
             for (Channel channel : CHANNELS) {
-                if (thisChannel != channel) {
-                    String json=JSONArray.toJSONString(nettyJson);
-                    channel.writeAndFlush(new TextWebSocketFrame(json));
-                }
+                channel.writeAndFlush(new TextWebSocketFrame(json));
             }
         }
     }
@@ -198,14 +120,8 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
         cause.printStackTrace();
         Channel channel = ctx.channel();
         //移除集合
-        String id = channel.id().asLongText();
+        String id = channel.id().asShortText();
         log.info("异常断开连接。。。{}", id);
-        channelRelationService.delete(id, null);
+        service.delete(id);
     }
-}
-
-@Setter
-class SendContentToChannels {
-    private String cid;
-    private String content;
 }
