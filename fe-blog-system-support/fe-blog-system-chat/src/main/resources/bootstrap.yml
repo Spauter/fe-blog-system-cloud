@@ -1,4 +1,6 @@
 spring:
+  main:
+    allow-bean-definition-overriding: true
   cloud:
     nacos:
       config:
@@ -10,6 +12,8 @@ spring:
         prefix: fe-blog-chat
         file-extension: yml
         group: FE_BLOG
+        shared-configs:
+          - {data-id: 'common.yml',refresh: true,group: FE_BLOG}
       discovery:
         namespace: 192099489
         group: FE_BLOG

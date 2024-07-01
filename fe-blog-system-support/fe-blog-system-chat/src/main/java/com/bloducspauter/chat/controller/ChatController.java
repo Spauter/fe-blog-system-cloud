@@ -12,7 +12,7 @@ import java.util.List;
  *
  */
 @RestController
-@RequestMapping("fe-ornament")
+@RequestMapping("fe-chat")
 public class ChatController {
 
     @Resource
@@ -27,5 +27,4 @@ public class ChatController {
     public List<NettyJson>findByPage(String location,int pageNo,int pageSize) {
         return nettyJsonService.selectListByPage(location,pageNo,pageSize);
     }
-
 }
