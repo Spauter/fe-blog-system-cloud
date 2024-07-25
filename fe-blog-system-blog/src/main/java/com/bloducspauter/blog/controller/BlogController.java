@@ -3,9 +3,12 @@ package com.bloducspauter.blog.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bloducspauter.bean.*;
+import com.bloducspauter.bean.blog.Blog;
+import com.bloducspauter.bean.category.Field;
+import com.bloducspauter.bean.category.Tag;
 import com.bloducspauter.blog.service.BlogService;
 import com.bloducspauter.category.service.FieldService;
-import com.bloducspauter.category.service.MediaService;
+import com.bloducspauter.ornament.service.MediaService;
 import com.bloducspauter.email.demo.BsSendEmailFunction;
 import com.bloducspauter.user.service.UserService;
 import com.bloducspauter.bean.utils.GetRequestJson;
@@ -13,9 +16,11 @@ import com.bloducspauter.bean.utils.HttpUtil;
 import com.bloducspauter.bean.utils.IsValidUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -50,7 +55,8 @@ public class BlogController {
     @Autowired
     private MediaService mediaService;
 
-
+    @Resource
+    private RedisTemplate<String, Object> redisTemplate;
 
     private JSONObject json = new JSONObject();
     private static final String WEBTTS_URL = "http://ltpapi.xfyun.cn/v1/ke";
@@ -160,9 +166,9 @@ public class BlogController {
         String description = json.getString("description");
         String type = json.getString("type");
         String field = json.getString("field");
-        String selectedImage=json.getString("selectedImage");
-        selectedImage=selectedImage == null ? DEFAULT_MEDIA_IMAGE.get(0) : selectedImage;
-        int media_id=mediaService.findMedia(selectedImage,MEDIA_IMAGE_TYPE).getMediaId();
+        String selectedImage = json.getString("selectedImage");
+        selectedImage = selectedImage == null ? DEFAULT_MEDIA_IMAGE.get(0) : selectedImage;
+        int media_id = mediaService.findMedia(selectedImage, MEDIA_IMAGE_TYPE).getMediaId();
         String audited = json.getString("audited");
         Field field1 = fieldService.selectByField(field);
         int userId = Integer.parseInt(user.getUserId());
@@ -218,31 +224,6 @@ public class BlogController {
         list.add(page);
         list.add(size);
         return list;
-    }
-
-    @RequestMapping("SelectUserServlet")
-    public Map<String, Object> getLoginUser(HttpSession session) {
-        Map<String, Object> map = new HashMap<>();
-        //获取登录的user对象，如果没有用会话对象，返回null
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            map.put("code", 404);
-            map.put("msg", "没有登录,请登录");
-            return map;
-        }
-        User dataSourceUser = userService.getInfo(user.getAccount());
-        if (dataSourceUser == null) {
-            map.put("code", 500);
-            map.put("msg", "登录失效，请重新登录");
-            session.removeAttribute("user");
-            return map;
-        }
-        //更新session
-        dataSourceUser.setPassword("想看密码？怎么可能会给你看😜");
-        map.put("code", 200);
-        map.put("data", dataSourceUser);
-        session.setAttribute("user", dataSourceUser);
-        return map;
     }
 
     private Map<String, Object> allMap(List<Blog> blogs) {
@@ -539,16 +520,16 @@ public class BlogController {
         int blog_id = Integer.parseInt(request.getParameter("blog_id"));
         boolean audited = Boolean.parseBoolean(request.getParameter("audited"));
         Blog blog = blogService.selectInBlog(blog_id);
-        if(audited){
+        if (audited) {
             blog.setAudited("已通过");
-        }else {
+        } else {
             blog.setAudited("未通过");
         }
-        User user=userService.getInfo(blog.getAuthor());
-        String email=user.getEmail();
-        bsSendEmailFunction.sendAuditNotice("notice",email,audited);
-        map.put("code",200);
-        map.put("mag","提交审核结果成功");
+        User user = userService.getInfo(blog.getAuthor());
+        String email = user.getEmail();
+        bsSendEmailFunction.sendAuditNotice("notice", email, audited);
+        map.put("code", 200);
+        map.put("mag", "提交审核结果成功");
         blogService.modifyBlog(blog);
         return map;
     }

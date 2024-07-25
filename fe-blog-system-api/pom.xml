@@ -3,7 +3,8 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.bloducspauter</groupId>
-        <artifactId>fe-blog-system-cloud</artifactId>
+        <artifactId>fe-blog-system-cloud-parent</artifactId>
+        <relativePath>../fe-blog-system-cloud-parent/pom.xml</relativePath>
         <version>1.0</version>
     </parent>
 
@@ -36,10 +37,13 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
                 <configuration>
-                    <classifier>exec</classifier>
+                    <source>11</source>
+                    <target>11</target>
+                    <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
         </plugins>

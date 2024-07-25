@@ -5,7 +5,7 @@
 <mapper namespace="com.bloducspauter.blog.mapper.BlogMapper">
 
 
-    <insert id="addRelation" parameterType="com.bloducspauter.bean.BlogTag">
+    <insert id="addRelation" parameterType="com.bloducspauter.bean.blog.BlogTag">
         insert into tag_relation (blog_id, tag_id) values (#{blogId}, #{tagId});
         <selectKey keyProperty="blogId" order="AFTER" resultType="java.lang.Integer">
             SELECT LAST_INSERT_ID()
@@ -14,7 +14,7 @@
 
 
 
-    <select id="fuzzyQuery" resultType="com.bloducspauter.bean.Blog">
+    <select id="fuzzyQuery" resultType="com.bloducspauter.bean.blog.Blog">
         select * from blog
         <where>title like  CONCAT('%',#{title},'%')</where>
         AND deleted = 0
@@ -23,7 +23,7 @@
         limit #{page},#{size}
     </select>
 
-    <select id="randomQuery" resultType="com.bloducspauter.bean.Blog">
+    <select id="randomQuery" resultType="com.bloducspauter.bean.blog.Blog">
         SELECT * FROM blog AS t1 JOIN
         (SELECT ROUND(RAND() * ((SELECT MAX(blog_id) FROM blog) - (SELECT MIN(blog_id) FROM blog)) + (SELECT MIN(blog_id) FROM blog))
             AS id FROM blog) AS t2 ON t1.blog_id = t2.id
@@ -32,7 +32,7 @@
         limit #{page},#{size}
     </select>
 
-    <select id="selectByBlogLimit" resultType="com.bloducspauter.bean.Blog" parameterType="com.bloducspauter.bean.Blog">
+    <select id="selectByBlogLimit" resultType="com.bloducspauter.bean.blog.Blog" parameterType="com.bloducspauter.bean.blog.Blog">
         SELECT blog_id, title, description, type, create_time, update_time, user_id, field_id, author, status,media_id
         FROM blog
         <where>
@@ -43,14 +43,14 @@
         LIMIT #{page}, #{size}
     </select>
 
-    <select id="selectDeletedBlogLimit" resultType="com.bloducspauter.bean.Blog" parameterType="com.bloducspauter.bean.Blog">
+    <select id="selectDeletedBlogLimit" resultType="com.bloducspauter.bean.blog.Blog" parameterType="com.bloducspauter.bean.blog.Blog">
         select blog_id,title,description,type,create_time,update_time,user_id,field_id,author,status,media_id from blog
         <where> deleted = 1 </where>
         AND user_id = #{userId} AND audited ='已通过' limit #{page},#{size}
     </select>
 
 
-    <select id="selectByTag" resultType="com.bloducspauter.bean.Tag">
+    <select id="selectByTag" resultType="com.bloducspauter.bean.category.Tag">
         SELECT * FROM tag WHERE name IN
         <foreach collection="list" item="name" open="(" separator="," close=")">
             #{name}
@@ -59,7 +59,7 @@
 
 
 
-    <select id="selectblogbytag" resultType="com.bloducspauter.bean.Blog">
+    <select id="selectblogbytag" resultType="com.bloducspauter.bean.blog.Blog">
         select * from blog where blog_id in
         (select blog_id from tag_relation
             where tag_id in
@@ -67,20 +67,20 @@
         AND audited ='已通过'
     </select>
 
-    <select id="selectHotBlogs" resultType="com.bloducspauter.bean.Blog">
+    <select id="selectHotBlogs" resultType="com.bloducspauter.bean.blog.Blog">
         SELECT blog_id,title,clicks FROM blog
                  where audited='已通过'
         ORDER BY clicks DESC
         LIMIT 6;
     </select>
 
-    <select id="selectBlogbyField" resultType="com.bloducspauter.bean.Blog" parameterType="com.bloducspauter.bean.Blog">
+    <select id="selectBlogbyField" resultType="com.bloducspauter.bean.blog.Blog" parameterType="com.bloducspauter.bean.blog.Blog">
         select * from blog where field_id = #{Fieldid}
         <if test='user_id != -1'> AND user_id = #{user_id} </if>
         AND audited ='已通过'
         limit #{page},#{size};
     </select>
-    <select id="selectBlogbytitle" resultType="com.bloducspauter.bean.Blog" parameterType="com.bloducspauter.bean.Blog">
+    <select id="selectBlogbytitle" resultType="com.bloducspauter.bean.blog.Blog" parameterType="com.bloducspauter.bean.blog.Blog">
         select * from blog   <where>title like  CONCAT('%',#{title},'%')</where>
         AND field_id = #{param1}
         <if test='userId != -1'> AND user_id = #{param2} </if>

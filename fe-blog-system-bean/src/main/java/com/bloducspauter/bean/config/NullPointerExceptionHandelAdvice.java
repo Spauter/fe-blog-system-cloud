@@ -13,7 +13,8 @@ import java.util.Map;
 public class NullPointerExceptionHandelAdvice {
     @ExceptionHandler(NullPointerException.class)
     @ResponseBody
-    public Map<String,Object> handelRuntimeException(){
+    public Map<String,Object> handelRuntimeException(NullPointerException e){
+        e.printStackTrace();
         Map<String,Object>map=new HashMap<>();
         map.put("code",-1);
         map.put("msg","Did you miss something? Go back and check it. :)");

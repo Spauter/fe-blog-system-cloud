@@ -12,7 +12,6 @@ HTML、CSS、JavaScript、sass、Less、Layui、Apache Echarts
 ## 后端技术栈
 
 Java11+Maven 3.9.5+Spring Boot 2.7.16+Spring Cloud 3.1.6+MyBatis Plus+Jakarta  Mail+Sentinel+Gateway+git/github+MySQL8+STDOUT_LOGGING(Mybatis日志工具)+Nacos+Redis+Lombok+fastjson+fastDFS
-
 ## 测试工具
 
 Apache Jmeter(~~没有流量就自己创造流量~~),Cpolar(内网穿透方便其他同学测试，访问速度比较慢。~~毕竟是免费的东西，没钱整校园网和云服务器~~。)

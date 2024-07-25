@@ -9,8 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
-
+/**
+ * @author Bloduc Spauter
+ *
+ */
 @FeignClient(name = "fe-ornament")
+@Deprecated
 public interface FeBlogMediaApi {
     @RequestMapping("/fe-ornament/addMedia")
     Map<String, Object> addMedia(@RequestParam("image") MultipartFile file);

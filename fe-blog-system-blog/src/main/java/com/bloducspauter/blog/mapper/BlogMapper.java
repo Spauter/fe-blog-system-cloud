@@ -2,9 +2,9 @@ package com.bloducspauter.blog.mapper;
 
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.bloducspauter.bean.Blog;
-import com.bloducspauter.bean.BlogTag;
-import com.bloducspauter.bean.Tag;
+import com.bloducspauter.bean.blog.Blog;
+import com.bloducspauter.bean.blog.BlogTag;
+import com.bloducspauter.bean.category.Tag;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

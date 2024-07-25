@@ -1,8 +1,8 @@
 package com.bloducspauter.blog.service;
 
 
-import com.bloducspauter.bean.Blog;
-import com.bloducspauter.bean.Tag;
+import com.bloducspauter.bean.blog.Blog;
+import com.bloducspauter.bean.category.Tag;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

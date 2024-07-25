@@ -2,9 +2,9 @@ package com.bloducspauter.blog;
 
 
 import com.bloducspauter.category.mapper.FieldMapper;
-import com.bloducspauter.category.mapper.MediaMapper;
+import com.bloducspauter.ornament.mapper.MediaMapper;
 import com.bloducspauter.category.service.FieldService;
-import com.bloducspauter.category.service.MediaService;
+import com.bloducspauter.ornament.service.MediaService;
 import com.bloducspauter.user.mapper.UserMapper;
 import com.bloducspauter.user.service.UserService;
 import org.mybatis.spring.annotation.MapperScan;

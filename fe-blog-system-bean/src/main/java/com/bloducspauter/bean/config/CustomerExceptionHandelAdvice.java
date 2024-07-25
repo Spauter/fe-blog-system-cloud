@@ -14,6 +14,7 @@ public class CustomerExceptionHandelAdvice {
     @ExceptionHandler(RuntimeException.class)
     @ResponseBody
     public Map<String,Object>handelRuntimeException(RuntimeException e){
+        e.printStackTrace();
         Map<String,Object>map=new HashMap<>();
         map.put("code",-1);
         map.put("msg","Who put a TNT here?");

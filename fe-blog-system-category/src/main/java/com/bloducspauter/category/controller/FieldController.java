@@ -2,7 +2,7 @@ package com.bloducspauter.category.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.bloducspauter.bean.Field;
+import com.bloducspauter.bean.category.Field;
 import com.bloducspauter.bean.statistics.FieldStatistics;
 import com.bloducspauter.category.service.FieldService;
 import lombok.extern.slf4j.Slf4j;

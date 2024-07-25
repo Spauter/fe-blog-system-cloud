@@ -3,7 +3,7 @@ package com.bloducspauter.category.mapper;
 
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.bloducspauter.bean.Tag;
+import com.bloducspauter.bean.category.Tag;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 

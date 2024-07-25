@@ -1,6 +1,6 @@
 package com.bloducspauter.category.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.bloducspauter.bean.Tag;
+import com.bloducspauter.bean.category.Tag;
 
 import com.bloducspauter.category.mapper.TagMapper;
 import com.bloducspauter.category.mapper.TagStatisticsMapper;

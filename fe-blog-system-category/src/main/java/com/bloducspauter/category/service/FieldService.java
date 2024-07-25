@@ -2,7 +2,7 @@ package com.bloducspauter.category.service;
 
 
 
-import com.bloducspauter.bean.Field;
+import com.bloducspauter.bean.category.Field;
 import com.bloducspauter.bean.statistics.FieldStatistics;
 
 import java.util.List;

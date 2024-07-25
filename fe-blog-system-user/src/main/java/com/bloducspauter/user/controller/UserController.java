@@ -6,10 +6,11 @@ import com.bloducspauter.user.service.UploadService;
 import com.bloducspauter.user.service.UserService;
 import com.bloducspauter.bean.utils.IsValidUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
@@ -17,6 +18,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import static com.bloducspauter.bean.utils.DefaultValue.UPLOAD_AVATAR_PATH;
 
@@ -25,20 +28,30 @@ import static com.bloducspauter.bean.utils.DefaultValue.UPLOAD_AVATAR_PATH;
 @RequestMapping("fe-user")
 public class UserController {
 
-    @Autowired
+    @Resource
     private UserService userService;
 
-    @Autowired
+    @Resource
     private UploadService uploadService;
+
+    @Resource
+    private RedisTemplate<String, Object> redisTemplate;
 
     private User getUser(HttpServletRequest request) {
         String account = request.getParameter("username");
         return userService.Login(account);
     }
 
+    public User getRedisUser(HttpServletRequest request) {
+        String token = request.getHeader("token");
+        if (token == null) {
+            return null;
+        }
+        return (User) redisTemplate.opsForValue().get(token);
+    }
 
     @PostMapping("UserLoginController")
-    public Map<String, Object> login(HttpServletRequest req, HttpSession session) {
+    public Map<String, Object> login(HttpServletRequest req) {
         Map<String, Object> map = new HashMap<>();
         User loginUser = getUser(req);
         if (loginUser == null) {
@@ -47,27 +60,23 @@ public class UserController {
             return map;
         }
         String password = req.getParameter("password");
-        String vericode = req.getParameter("vericode");
-        String generatedCode = (String) session.getAttribute("verifyCode");
-        if (!vericode.equals(generatedCode)) {
-            map.put("code", 500);
-            map.put("msg", "验证码错误");
-            return map;
-        }
         if (!password.equals(loginUser.getPassword())) {
             map.put("code", 404);
             map.put("msg", "用户名或者密码错误");
             return map;
         }
         loginUser.setPassword("想看密码？怎么可能给你看😜");
+        //生成token;
+        String token = UUID.randomUUID().toString();
+        redisTemplate.opsForValue().set(token, loginUser);
         map.put("code", 200);
         map.put("data", loginUser);
-        session.setAttribute("user", loginUser);
+        map.put("token", token);
         return map;
     }
 
     @RequestMapping("register")
-    public Map<String, Object> register(HttpServletRequest request, HttpSession session) {
+    public Map<String, Object> register(HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
         User isAlreadyLoginUser = getUser(request);
         if (isAlreadyLoginUser != null) {
@@ -79,13 +88,6 @@ public class UserController {
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirmPassword");
         String email = request.getParameter("email");
-        String vericode = request.getParameter("vericode");
-        String generatedCode = (String) session.getAttribute("emailVerifyCode");
-        if(generatedCode==null){
-            map.put("code", 500);
-            map.put("msg", "无法获取验证码");
-            return map;
-        }
         if (!password.equals(confirmPassword)) {
             map.put("code", 500);
             map.put("msg", "两次输入的密码不一致");
@@ -96,35 +98,38 @@ public class UserController {
             map.put("msg", "邮箱格式不正确");
             return map;
         }
-        if (!vericode.equals(generatedCode)) {
-            map.put("code", 500);
-            map.put("msg", "邮箱验证码错误");
-            return map;
-        }
+        //todo 将session修改成d带token
+//        if (!vericode.equals(generatedCode)) {
+//            map.put("code", 500);
+//            map.put("msg", "邮箱验证码错误");
+//            return map;
+//        }
         //判断发送邮箱的电子邮箱是否是当前填写的邮箱
-        String registerEmail= (String) session.getAttribute("registerEmail");
-        if(!registerEmail.equals(email)){
-            map.put("code",500);
-            map.put("msg","输入的电子邮箱与请求发送的电子邮箱不一致");
-            return map;
-        }
+//        String registerEmail = (String) session.getAttribute("registerEmail");
+//        if (!registerEmail.equals(email)) {
+//            map.put("code", 500);
+//            map.put("msg", "输入的电子邮箱与请求发送的电子邮箱不一致");
+//            return map;
+//        }
         User user = userService.register(account, password, email);
         user.setPassword("想看密码？怎么可能会给你看😜");
         map.put("code", 200);
         map.put("data", user);
-        session.setAttribute("user", user);
+        String token = UUID.randomUUID().toString();
+        redisTemplate.opsForValue().set(token, user);
+        map.put("token", token);
         return map;
     }
 
     //此段代码是用来获取session（保持登录的）
     @GetMapping("UserLoginController")
-    public Map<String, Object> getLoginedUser(HttpSession session) {
+    public Map<String, Object> getLoginUser(HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
-        User user = (User) session.getAttribute("user");
+        User user = getRedisUser(request);
         if (user != null) {
             map.put("code", 200);
             map.put("msg", "已经登录");
-            map.put("data",user);
+            map.put("data", user);
         } else {
             map.put("code", 404);
             map.put("msg", "没有登录");
@@ -135,21 +140,22 @@ public class UserController {
 
 
     @RequestMapping("UserLogoutController")
-    public Map<String, Object> loginOut(HttpSession session) {
+    public Map<String, Object> loginOut(HttpServletRequest request) {
+        String token = request.getHeader("token");
         Map<String, Object> map = new HashMap<>();
-        session.removeAttribute("user");
+        redisTemplate.delete(token);
         map.put("code", 200);
         map.put("msg", "登出成功");
         return map;
     }
 
 
-
     @RequestMapping("userUpdateServlet")
-    public Map<String, Object> updateUser(HttpServletRequest request, HttpSession session) {
+    public Map<String, Object> updateUser(HttpServletRequest request) {
+
         Map<String, Object> map = new HashMap<>();
         //获取登录的user对象，如果没有用会话对象，返回null
-        User sessionUser = (User) session.getAttribute("user");
+        User sessionUser = getRedisUser(request);
         User user = userService.getInfo(sessionUser.getAccount());
         if (user == null) {
             map.put("code", 404);
@@ -196,15 +202,16 @@ public class UserController {
     }
 
     @RequestMapping("updatePassword")
-    public Map<String, Object> modifyPwd(HttpServletRequest request, HttpSession session) {
+    public Map<String, Object> modifyPwd(HttpServletRequest request ){
         Map<String, Object> map = new HashMap<>();
-        User sessionUser = (User) session.getAttribute("user");
-        if (sessionUser == null) {
+        String token = request.getHeader("token");
+        User tokenUser =getRedisUser(request);
+        if (tokenUser == null) {
             map.put("code", 404);
             map.put("msg", "没有登录,请先登录");
             return map;
         }
-        User user = userService.getInfo(sessionUser.getAccount());
+        User user = userService.getInfo(tokenUser.getAccount());
         String username = user.getAccount();
         //previousPassword是当前密码，先验证是否输入正确
         String previousPassword = request.getParameter("previousPassword");
@@ -215,7 +222,7 @@ public class UserController {
             userService.updatePassword(username, modifiedPassword);
             map.put("code", 200);
             map.put("msg", "修改密码成功,请重新登录");
-            session.removeAttribute("user");
+            redisTemplate.delete("token");
         } else {//密码错误时
             map.put("code", 500);
             map.put("msg", "输入的密码错误，请重新输入");
@@ -224,10 +231,11 @@ public class UserController {
     }
 
     @RequestMapping("UserUpdateAvatarController")
-    public Map<String, Object> updateAvatar(@RequestParam MultipartFile avatar, HttpSession session) {
+    public Map<String, Object> updateAvatar(@RequestParam MultipartFile avatar, HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
+        String token = request.getHeader("token");
         try {
-            User sessionUser = (User) session.getAttribute("user");
+            User sessionUser = getRedisUser(request);
             User user = userService.getInfo(sessionUser.getAccount());
             String osName = System.getProperty("os.name");
             String path;
@@ -239,7 +247,7 @@ public class UserController {
             }
             user.setAvatar(path);
             userService.updateInfo(user);
-            session.setAttribute("user", user);
+            redisTemplate.opsForValue().set(token, user);
             map.put("code", 200);
             map.put("data", user);
         } catch (Exception e) {
