@@ -8,8 +8,10 @@
 ## 前端技术栈
 
 HTML、CSS、JavaScript、sass、Less、Layui、Apache Echarts
+
+
 注:前端已经从[提交日志](https://github.com/Spauter/fe-blog-system-cloud/commit/ad6bb7de2a78a2555cdca94ec3edaaf88463453f)分离,
-[分离后的前端项目地址](https://github.com/Spauter/fe-blog-system-cloud)
+[分离后的前端项目地址](https://github.com/Spauter/fe-blog-system-cloud-web)
 ## 后端技术栈
 
 Java11+Maven 3.9.5+Spring Boot 2.7.16+Spring Cloud 3.1.6+MyBatis Plus+Jakarta  Mail+Sentinel+Gateway+git/github+MySQL8+STDOUT_LOGGING(Mybatis日志工具)+Nacos+Redis+Lombok+fastjson+fastDFS
