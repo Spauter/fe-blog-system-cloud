@@ -17,8 +17,12 @@ import java.util.List;
 
 import static com.bloducspauter.bean.utils.DefaultValue.*;
 
+/**
+ *  所有的媒体文件将在{@link   com.bloducspauter.media.service.impl.MediaServiceImpl} 中管理
+ */
 @Service
 @Slf4j
+@Deprecated
 public class MediaServiceImpl implements MediaService {
 
     @Autowired

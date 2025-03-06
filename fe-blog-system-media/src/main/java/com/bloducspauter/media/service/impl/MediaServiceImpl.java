@@ -8,7 +8,9 @@ import com.j256.simplemagic.ContentInfo;
 import com.j256.simplemagic.ContentInfoUtil;
 import io.minio.GetObjectArgs;
 import io.minio.MinioClient;
+import io.minio.RemoveObjectArgs;
 import io.minio.UploadObjectArgs;
+import io.minio.errors.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,13 +22,16 @@ import javax.annotation.Resource;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FilterInputStream;
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Bloduc Spauter
- *
  */
 @Service
 @Slf4j
@@ -49,45 +54,44 @@ public class MediaServiceImpl implements MediaService {
 
     /**
      * 将文件信息添加到文件表
-     *      文件md5值
-     * @param bucket              桶
-     * @param objectName          对象名称
+     * 文件md5值
+     *
+     * @param bucket     桶
+     * @param objectName 对象名称
      */
-    @Transactional
-
-    public MediaFiles addMediaFilesToDb(String bucket, String objectName,long size,String userId,String fileName,String id) {
+    public MediaFiles addMediaFilesToDb(String bucket, String objectName, long size, String userId, String fileName, String id) {
         //将文件信息保存到数据库
         MediaFiles mediaFiles = mapper.selectById(id);
+        boolean flag = mediaFiles == null;
         if (mediaFiles == null) {
             mediaFiles = new MediaFiles();
-            //文件id
-            mediaFiles.setId(id);
-            //桶
-            mediaFiles.setBucket(bucket);
-            //file_path
-            mediaFiles.setFilePath(objectName);
-            mediaFiles.setUserId(userId);
-            mediaFiles.setFileName(fileName);
-            //url
-            mediaFiles.setUrl("/" + bucket + "/" + objectName);
-            //上传时间
-            mediaFiles.setCreateDate(LocalDateTime.now());
-            mediaFiles.setFileSize(size);
-            //插入数据库
-            int insert = mapper.insert(mediaFiles);
-            if (insert <= 0) {
-                log.debug("向数据库保存文件失败,bucket:{},objectName:{}", bucket, objectName);
-                return null;
-            }
-            return mediaFiles;
 
         }
+        mediaFiles.setId(id);
+        //文件id
+        //桶
+        mediaFiles.setBucket(bucket);
+        //file_path
+        mediaFiles.setFilePath(objectName);
+        mediaFiles.setUserId(userId);
+        mediaFiles.setFileName(fileName);
+        //url
+        mediaFiles.setUrl("/" + bucket + "/" + objectName);
+        //上传时间
+        mediaFiles.setCreateDate(LocalDateTime.now());
+        mediaFiles.setUpdate_time(LocalDateTime.now());
+        mediaFiles.setFileSize(size);
+        //插入数据库
+        int i = flag ? mapper.insert(mediaFiles) : mapper.updateById(mediaFiles);
+        if (i == 1) {
+            log.debug("文件信息添加到数据库成功");
+        }
         return mediaFiles;
-
     }
 
     /**
      * 获取文件的类型
+     *
      * @param extension 文件扩展名
      */
     private String getMimeType(String extension) {
@@ -106,11 +110,12 @@ public class MediaServiceImpl implements MediaService {
 
     /**
      * 得到合并后的文件的地址
+     *
      * @param fileMd5 文件id即md5值
      * @param fileExt 文件扩展名
      */
-    private String getFilePathByMd5(String fileMd5,String fileExt){
-        return   fileMd5.charAt(0) + "/" + fileMd5.charAt(1) + "/" + fileMd5 + "/" +fileMd5 +fileExt;
+    private String getFilePathByMd5(String fileMd5, String fileExt) {
+        return fileMd5.charAt(0) + "/" + fileMd5.charAt(1) + "/" + fileMd5 + "/" + fileMd5 + fileExt;
     }
 
     //得到文件的目录
@@ -134,10 +139,10 @@ public class MediaServiceImpl implements MediaService {
                 FilterInputStream inputStream = minioClient.getObject(getObjectArgs);
                 if (inputStream != null) {
                     //文件已经存在
-                  return true;
+                    return true;
                 }
             } catch (Exception e) {
-                log.error("Exception thread in main:{}:{}",e.getClass().getSimpleName(),e.getMessage());
+                log.error("Exception thread in main:{}:{}", e.getClass().getSimpleName(), e.getMessage());
             }
         }
         return false;
@@ -149,19 +154,20 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    public MediaFiles uploadFile(File file,String userId,String originFileName) {
-        String id=getId(file);
-        String filePath=getFileFolderPath(id);
-        String extension =getExtension(originFileName);
-        String minType=getMimeType(extension);
-        String objectName =filePath+ id + "."+extension;
-        long size=file.length();
-        boolean result= addMediaFilesToMinIO(file.getAbsolutePath(),minType,bucketEmojis,objectName);
-        if(!result){
+    public MediaFiles uploadFile(File file, String userId, String originFileName) {
+        String id = getId(file);
+        String filePath = getFileFolderPath(id);
+        String extension = getExtension(originFileName);
+        String minType = getMimeType(extension);
+        String objectName = filePath + id + "." + extension;
+        long size = file.length();
+        boolean result = addMediaFilesToMinIO(file.getAbsolutePath(), minType, bucketEmojis, objectName);
+        if (!result) {
             return null;
         }
-        return addMediaFilesToDb(bucketEmojis,objectName,size,userId,originFileName,id);
+        return addMediaFilesToDb(bucketEmojis, objectName, size, userId, originFileName, id);
     }
+
     public boolean addMediaFilesToMinIO(String localFilePath, String mimeType, String bucket, String objectName) {
         try {
             UploadObjectArgs uploadObjectArgs = UploadObjectArgs.builder()
@@ -184,6 +190,7 @@ public class MediaServiceImpl implements MediaService {
         }
         return false;
     }
+
     private String getExtension(String fileName) {
         if (fileName.split("\\.").length == 1) {
             return null;
@@ -199,6 +206,34 @@ public class MediaServiceImpl implements MediaService {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    @Override
+    public boolean delete(List<String> deleteMedias) {
+        List<MediaFiles> mediaFiles = mapper.selectBatchIds(deleteMedias);
+        boolean deleteDb = mapper.deleteBatchIds(mediaFiles) == 1;
+        boolean deleteMinIO = true;
+        for (MediaFiles m : mediaFiles) {
+            String objectName = m.getFilePath();
+            try {
+                minioClient.removeObject(RemoveObjectArgs.builder().bucket(bucketEmojis).object(objectName).build());
+            } catch (ErrorResponseException | XmlParserException | ServerException | NoSuchAlgorithmException |
+                     IOException | InvalidResponseException | InvalidKeyException | InternalException |
+                     InsufficientDataException e) {
+               log.error(e.getMessage());
+                deleteMinIO = false;
+            }
+        }
+        return deleteDb && deleteMinIO;
+    }
+
+    @Override
+    public List<MediaFiles> selectList(List<String> medias) {
+        if (medias != null && !medias.isEmpty()) {
+            return mapper.selectBatchIds(medias);
+        } else {
+            return mapper.selectList(null);
         }
     }
 }

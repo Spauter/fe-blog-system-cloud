@@ -1,27 +1,25 @@
 package com.bloducspauter.user.controller;
 
 
+import com.bloducspauter.bean.MediaFiles;
 import com.bloducspauter.bean.User;
-import com.bloducspauter.user.service.UploadService;
+import com.bloducspauter.bean.utils.DefaultValue;
+import com.bloducspauter.media.service.MediaService;
 import com.bloducspauter.user.service.UserService;
 import com.bloducspauter.bean.utils.IsValidUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
-import static com.bloducspauter.bean.utils.DefaultValue.UPLOAD_AVATAR_PATH;
 
 @Slf4j
 @RestController
@@ -32,10 +30,10 @@ public class UserController {
     private UserService userService;
 
     @Resource
-    private UploadService uploadService;
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Resource
-    private RedisTemplate<String, Object> redisTemplate;
+    private MediaService mediaService;
 
     private User getUser(HttpServletRequest request) {
         String account = request.getParameter("username");
@@ -98,19 +96,6 @@ public class UserController {
             map.put("msg", "邮箱格式不正确");
             return map;
         }
-        //todo 将session修改成d带token
-//        if (!vericode.equals(generatedCode)) {
-//            map.put("code", 500);
-//            map.put("msg", "邮箱验证码错误");
-//            return map;
-//        }
-        //判断发送邮箱的电子邮箱是否是当前填写的邮箱
-//        String registerEmail = (String) session.getAttribute("registerEmail");
-//        if (!registerEmail.equals(email)) {
-//            map.put("code", 500);
-//            map.put("msg", "输入的电子邮箱与请求发送的电子邮箱不一致");
-//            return map;
-//        }
         User user = userService.register(account, password, email);
         user.setPassword("想看密码？怎么可能会给你看😜");
         map.put("code", 200);
@@ -234,18 +219,17 @@ public class UserController {
     public Map<String, Object> updateAvatar(@RequestParam MultipartFile avatar, HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
         String token = request.getHeader("token");
+        File file = null;
         try {
             User sessionUser = getRedisUser(request);
             User user = userService.getInfo(sessionUser.getAccount());
-            String osName = System.getProperty("os.name");
-            String path;
+            String path= DefaultValue.getUploadTempPath();
+            path += avatar.getOriginalFilename();
+            file = new File(path);
+            avatar.transferTo(file);
             //根据操作系统的类型进行图片上传操作
-            if (osName.startsWith("Windows")) {
-                path = this.uploadService.uploadToWindows(avatar, UPLOAD_AVATAR_PATH, true);
-            } else {
-                path = this.uploadService.uploadToNginx(avatar);
-            }
-            user.setAvatar(path);
+            MediaFiles newFile = mediaService.uploadFile(file, user.getUserId(), avatar.getOriginalFilename());
+            user.setAvatar(newFile.getUrl());
             userService.updateInfo(user);
             redisTemplate.opsForValue().set(token, user);
             map.put("code", 200);
@@ -253,7 +237,11 @@ public class UserController {
         } catch (Exception e) {
             log.error(e.getMessage());
             map.put("code", 500);
-            map.put("msg", e.getCause());
+            map.put("msg", e.getMessage());
+        } finally {
+            if (file != null) {
+                file.delete();
+            }
         }
         return map;
     }

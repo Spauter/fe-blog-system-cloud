@@ -1,6 +1,6 @@
-create database FE_BLOG;
-
-create table blog
+create database if not exists fe_blog;
+use fe_blog;
+create table if not exists blog
 (
     blog_id     int auto_increment comment '博客主键'
         primary key,
@@ -32,7 +32,7 @@ create table blog
 create index fieldID
     on blog (field_id);
 
-INSERT INTO FE_BLOG.blog (title, content, description, type, deleted, create_time, update_time, status, user_id, field_id, media_id, author, clicks, audited, key_words) VALUES ('博客系统更新说明', '<h1 id="h1-fe-blog-system"><a name="fe-blog-system" class="reference-link"></a><span class="header-link octicon octicon-link"></span>fe-blog-system</h1><h2 id="h2--v1-0"><a name="博客系统更说明   -V1.0" class="reference-link"></a><span class="header-link octicon octicon-link"></span>博客系统更说明   -V1.0</h2><p>时间: 2023年12月16日20点32分</p>
+INSERT INTO fe_blog.blog (title, content, description, type, deleted, create_time, update_time, status, user_id, field_id, media_id, author, clicks, audited, key_words) VALUES ('博客系统更新说明', '<h1 id="h1-fe-blog-system"><a name="fe-blog-system" class="reference-link"></a><span class="header-link octicon octicon-link"></span>fe-blog-system</h1><h2 id="h2--v1-0"><a name="博客系统更说明   -V1.0" class="reference-link"></a><span class="header-link octicon octicon-link"></span>博客系统更说明   -V1.0</h2><p>时间: 2023年12月16日20点32分</p>
 <p>为了更好的提升用户体验，对该博客系统进行了一次更新。</p>
 <h3 id="h3--"><a name="后端更改：" class="reference-link"></a><span class="header-link octicon octicon-link"></span>后端更改：</h3><ul>
 <li>利用SpringBoot整合了该项目的后端，解决使用当前项目用Tomcat部署时由于war包命名导致找不到网页的问题</li><li>利用Mybatis Plus简化了该项目后端的部分Mapper层和Services层</li><li>整合了所有控制层代码，并简化了部分控制层代码</li><li>改写了有关控制层代码</li><li>将部分项目配置文件上传至Nacos配置中心统一管理</li><li>将部分Session存进Redis</li><li>此项目不再需要打成war包。</li><li>增加部分控制层异常处理部分</li></ul>
@@ -185,8 +185,8 @@ Apache Jmeter(~~没有流量就自己创造流量~~),Cpolar(内网穿透方便�
 
 
 
-', '这是关于此博客的更新说明 ', '原创', 0, '2023-12-12 16:55:58', '2024-01-17 14:23:18', 0, 11, 61, 64, 'Spauter', 131, '已通过', null);
-INSERT INTO FE_BLOG.blog (title, content, description, type, deleted, create_time, update_time, status, user_id, field_id, media_id, author, clicks, audited, key_words) VALUES ('韬韬博客系统介绍', '<h1 id="h1-fe-blog-system-"><a name="fe-blog-system 博客系统" class="reference-link"></a><span class="header-link octicon octicon-link"></span>fe-blog-system 博客系统</h1><h4 id="h4-u4ECBu7ECD"><a name="介绍" class="reference-link"></a><span class="header-link octicon octicon-link"></span>介绍</h4><p>FE个人博客管理系统，后端结合Mybatis框架，前端结合Layui的一个JavaWeb项目</p>
+', '这是关于此博客的更新说明 ', '原创', 0, '2023-12-12 16:55:58', '2024-01-17 14:23:18', 0, 11, null, 64, 'Spauter', 131, '已通过', null);
+INSERT INTO fe_blog.blog (title, content, description, type, deleted, create_time, update_time, status, user_id, field_id, media_id, author, clicks, audited, key_words) VALUES ('韬韬博客系统介绍', '<h1 id="h1-fe-blog-system-"><a name="fe-blog-system 博客系统" class="reference-link"></a><span class="header-link octicon octicon-link"></span>fe-blog-system 博客系统</h1><h4 id="h4-u4ECBu7ECD"><a name="介绍" class="reference-link"></a><span class="header-link octicon octicon-link"></span>介绍</h4><p>FE个人博客管理系统，后端结合Mybatis框架，前端结合Layui的一个JavaWeb项目</p>
 <h3 id="h3-u8F6Fu4EF6u67B6u6784"><a name="软件架构" class="reference-link"></a><span class="header-link octicon octicon-link"></span>软件架构</h3><p>MVC三层架构</p>
 <h3 id="h3-u524Du7AEFu6280u672Fu6808"><a name="前端技术栈" class="reference-link"></a><span class="header-link octicon octicon-link"></span>前端技术栈</h3><p>HTML、CSS、JavaScript、sass、Less、Layui</p>
 <h3 id="h3-u540Eu7AEFu6280u672Fu6808"><a name="后端技术栈" class="reference-link"></a><span class="header-link octicon octicon-link"></span>后端技术栈</h3><p>Java11+Maven+Tomcat+MyBatis+MySQL8+STDOUT_LOGGING+git/gitee+Lombok+Junit+fastjson</p>
@@ -228,8 +228,8 @@ Java11+Maven+Tomcat+MyBatis+MySQL8+STDOUT_LOGGING+git/gitee+Lombok+Junit+fastjso
 
 
 
-', '韬韬个人博客管理系统，后端结合Mybatis框架，前端结合Layui的一个JavaWeb项目', '原创', 0, '2021-08-14 11:29:17', '2024-01-17 14:23:18', 0, 11, 1, 64, 'Spauter', 333, '已通过', null);
-INSERT INTO FE_BLOG.blog (title, content, description, type, deleted, create_time, update_time, status, user_id, field_id, media_id, author, clicks, audited, key_words) VALUES ('CSS+JS实现打字特效', '<h1 id="h1-u7279u6548u9884u89C8"><a name="特效预览" class="reference-link"></a><span class="header-link octicon octicon-link"></span>特效预览</h1><p><img src="images/media/dztx.gif" alt=""></p>
+', '韬韬个人博客管理系统，后端结合Mybatis框架，前端结合Layui的一个JavaWeb项目', '原创', 0, '2021-08-14 11:29:17', '2024-01-17 14:23:18', 0, 11, 2, 64, 'Spauter', 333, '已通过', null);
+INSERT INTO fe_blog.blog (title, content, description, type, deleted, create_time, update_time, status, user_id, field_id, media_id, author, clicks, audited, key_words) VALUES ('CSS+JS实现打字特效', '<h1 id="h1-u7279u6548u9884u89C8"><a name="特效预览" class="reference-link"></a><span class="header-link octicon octicon-link"></span>特效预览</h1><p><img src="images/media/dztx.gif" alt=""></p>
 <h1 id="h1-u5236u4F5Cu8981u9886"><a name="制作要领" class="reference-link"></a><span class="header-link octicon octicon-link"></span>制作要领</h1><p>（1）光标闪烁动画的制作</p>
 <p>（2）文字不停变换</p>
 <p>（3）循环播放</p>
@@ -507,8 +507,8 @@ for(let i=0;i<=word.length;i++){
 
 
 
-> 引用视频：[『JS特效』15分钟两种方式实现不一样的打字机效果_哔哩哔哩 (゜-゜)つロ 干杯~-bilibili](', '使用css+js制作炫酷的打字特效，涉及到了css3 @keyframe的动画效果，以及js操控文字的显示，并且可支持无限循环，但是由于本人还没有学过async，用自己简陋的思路实现，可能会有未知得到bug', '原创', 0, '2021-08-15 10:09:39', '2024-01-17 14:23:18', 3, 1, 60, 64, 'admin', 46, '已通过', null);
-INSERT INTO FE_BLOG.blog (title, content, description, type, deleted, create_time, update_time, status, user_id, field_id, media_id, author, clicks, audited, key_words) VALUES ('Linux使用Yum安装Java开发环境', '<h1 id="h1-linux-yum-java-"><a name="Linux使用Yum安装Java开发环境" class="reference-link"></a><span class="header-link octicon octicon-link"></span>Linux使用Yum安装Java开发环境</h1><h2 id="h2-u524Du8A00"><a name="前言" class="reference-link"></a><span class="header-link octicon octicon-link"></span>前言</h2><p>linux上安装软件，可以用yum非常方便，不需要下载解压，也不需要配置环境变量,一个指令就能用yum安装java。</p>
+> 引用视频：[『JS特效』15分钟两种方式实现不一样的打字机效果_哔哩哔哩 (゜-゜)つロ 干杯~-bilibili](', '使用css+js制作炫酷的打字特效，涉及到了css3 @keyframe的动画效果，以及js操控文字的显示，并且可支持无限循环，但是由于本人还没有学过async，用自己简陋的思路实现，可能会有未知得到bug', '原创', 0, '2021-08-15 10:09:39', '2024-01-17 14:23:18', 3, 1, null, 64, 'admin', 46, '已通过', null);
+INSERT INTO fe_blog.blog (title, content, description, type, deleted, create_time, update_time, status, user_id, field_id, media_id, author, clicks, audited, key_words) VALUES ('Linux使用Yum安装Java开发环境', '<h1 id="h1-linux-yum-java-"><a name="Linux使用Yum安装Java开发环境" class="reference-link"></a><span class="header-link octicon octicon-link"></span>Linux使用Yum安装Java开发环境</h1><h2 id="h2-u524Du8A00"><a name="前言" class="reference-link"></a><span class="header-link octicon octicon-link"></span>前言</h2><p>linux上安装软件，可以用yum非常方便，不需要下载解压，也不需要配置环境变量,一个指令就能用yum安装java。</p>
 <p>一般项目部署的时候,是一个.jar后缀的文件，此文件是是依赖于java环境的，所以本篇文章来介绍一下如何使用Yum在Linux系统(此文用CentOS7来举例)中安装Java开发环境.</p>
 <h4 id="h4-u8D44u6E90u51C6u5907"><a name="资源准备" class="reference-link"></a><span class="header-link octicon octicon-link"></span>资源准备</h4><pre><code>Linux系统(CentOS7)
 Yum 3.4.3
@@ -656,8 +656,8 @@ OpenJDK 64-Bit Server VM (build 25.191-b12, mixed mode)
 
 
 
-', '在centos下配置Java环境', '原创', 0, '2021-08-16 10:07:44', '2024-01-17 14:23:18', 2, 1, 61, 64, 'admin', 8, '已通过', null);
-INSERT INTO FE_BLOG.blog (title, content, description, type, deleted, create_time, update_time, status, user_id, field_id, media_id, author, clicks, audited, key_words) VALUES ('CSS实现毛玻璃效果', '<h2 id="h2-u6BDBu73BBu7483u6548u679Cu5236u4F5Cu603Bu7ED3"><a name="毛玻璃效果制作总结" class="reference-link"></a><span class="header-link octicon octicon-link"></span>毛玻璃效果制作总结</h2><h4 id="h4-1-"><a name="1.效果展示" class="reference-link"></a><span class="header-link octicon octicon-link"></span>1.效果展示</h4><p><img src="images/media/glass00.jpg" alt=""></p>
+', '在centos下配置Java环境', '原创', 0, '2021-08-16 10:07:44', '2024-01-17 14:23:18', 2, 1, null, 64, 'admin', 8, '已通过', null);
+INSERT INTO fe_blog.blog (title, content, description, type, deleted, create_time, update_time, status, user_id, field_id, media_id, author, clicks, audited, key_words) VALUES ('CSS实现毛玻璃效果', '<h2 id="h2-u6BDBu73BBu7483u6548u679Cu5236u4F5Cu603Bu7ED3"><a name="毛玻璃效果制作总结" class="reference-link"></a><span class="header-link octicon octicon-link"></span>毛玻璃效果制作总结</h2><h4 id="h4-1-"><a name="1.效果展示" class="reference-link"></a><span class="header-link octicon octicon-link"></span>1.效果展示</h4><p><img src="images/media/glass00.jpg" alt=""></p>
 <h4 id="h4-2-"><a name="2.网页结构" class="reference-link"></a><span class="header-link octicon octicon-link"></span>2.网页结构</h4><pre><code class="lang-ht"> &lt;div class=&quot;banner&quot;&gt;
         &lt;div class=&quot;drop-shadow&quot;&gt;
             &lt;div class=&quot;glass&quot;&gt;&lt;/div&gt;
@@ -810,26 +810,26 @@ banner层用来添加总的背景，drop-shadow用来添加毛玻璃的阴影滤
 
 #### 4.总结
 
-之前看到别人制作的毛玻璃效果非常漂亮，因此自己也想学习一下，毛玻璃效果中采用了clip-path裁切与filter滤镜，对我来说还比较陌生，没想到还可以使用滤镜添加阴影效果，以上就是毛玻璃效果的一种实现思路了', '之前看到别人制作的毛玻璃效果非常漂亮，因此自己也想学习一下，毛玻璃效果中采用了clip-path裁切与filter滤镜，对我来说还比较陌生，没想到还可以使用滤镜添加阴影效果！', '原创', 0, '2021-08-16 12:37:03', '2024-01-17 14:23:18', 2, 1, 60, 64, 'admin', 4, '已通过', null);
-INSERT INTO FE_BLOG.blog (title, content, description, type, deleted, create_time, update_time, status, user_id, field_id, media_id, author, clicks, audited, key_words) VALUES ('Java', '<p>Java是一门面向对象的编程语言，不仅吸收了C++语言的各种优点，还摒弃了C++里难以理解的多继承、指针等概念，因此Java语言具有功能强大和简单易用两个特征。Java语言作为静态面向对象编程语言的代表，极好地实现了面向对象理论，允许程序员以优雅的思维方式进行复杂的编程 [1]。<br>Java具有简单性、面向对象、分布式、健壮性、安全性、平台独立与可移植性、多线程、动态性等特点 [2]。Java可以编写桌面应用程序、Web应用程序、分布式系统和嵌入式系统应用程序等 [3]。</p>
+之前看到别人制作的毛玻璃效果非常漂亮，因此自己也想学习一下，毛玻璃效果中采用了clip-path裁切与filter滤镜，对我来说还比较陌生，没想到还可以使用滤镜添加阴影效果，以上就是毛玻璃效果的一种实现思路了', '之前看到别人制作的毛玻璃效果非常漂亮，因此自己也想学习一下，毛玻璃效果中采用了clip-path裁切与filter滤镜，对我来说还比较陌生，没想到还可以使用滤镜添加阴影效果！', '原创', 0, '2021-08-16 12:37:03', '2024-01-17 14:23:18', 2, 1, null, 64, 'admin', 4, '已通过', null);
+INSERT INTO fe_blog.blog (title, content, description, type, deleted, create_time, update_time, status, user_id, field_id, media_id, author, clicks, audited, key_words) VALUES ('Java', '<p>Java是一门面向对象的编程语言，不仅吸收了C++语言的各种优点，还摒弃了C++里难以理解的多继承、指针等概念，因此Java语言具有功能强大和简单易用两个特征。Java语言作为静态面向对象编程语言的代表，极好地实现了面向对象理论，允许程序员以优雅的思维方式进行复杂的编程 [1]。<br>Java具有简单性、面向对象、分布式、健壮性、安全性、平台独立与可移植性、多线程、动态性等特点 [2]。Java可以编写桌面应用程序、Web应用程序、分布式系统和嵌入式系统应用程序等 [3]。</p>
 ￥Java是一门面向对象的编程语言，不仅吸收了C++语言的各种优点，还摒弃了C++里难以理解的多继承、指针等概念，因此Java语言具有功能强大和简单易用两个特征。Java语言作为静态面向对象编程语言的代表，极好地实现了面向对象理论，允许程序员以优雅的思维方式进行复杂的编程 [1]。
-Java具有简单性、面向对象、分布式、健壮性、安全性、平台独立与可移植性、多线程、动态性等特点 [2]。Java可以编写桌面应用程序、Web应用程序、分布式系统和嵌入式系统应用程序等 [3]。', '这是java的介绍', '原创', 0, '2024-01-04 19:34:52', '2024-01-17 14:23:18', null, 11, 61, 64, 'Spauter', 1, '未通过', '语言,面向,编程,java,健壮性,移植性,应用,动态性,简单性,程序员,');
-INSERT INTO FE_BLOG.blog (title, content, description, type, deleted, create_time, update_time, status, user_id, field_id, media_id, author, clicks, audited, key_words) VALUES ('1', '<p>Java是一门面向对象编程语言，不仅吸收了C++语言的各种优点，还摒弃了C++里难以理解的多继承、指针等概念，因此Java语言具有功能强大和简单易用两个特征。</p>
+Java具有简单性、面向对象、分布式、健壮性、安全性、平台独立与可移植性、多线程、动态性等特点 [2]。Java可以编写桌面应用程序、Web应用程序、分布式系统和嵌入式系统应用程序等 [3]。', '这是java的介绍', '原创', 0, '2024-01-04 19:34:52', '2024-01-17 14:23:18', null, 11, 2, 64, 'Spauter', 1, '未通过', '语言,面向,编程,java,健壮性,移植性,应用,动态性,简单性,程序员,');
+INSERT INTO fe_blog.blog (title, content, description, type, deleted, create_time, update_time, status, user_id, field_id, media_id, author, clicks, audited, key_words) VALUES ('1', '<p>Java是一门面向对象编程语言，不仅吸收了C++语言的各种优点，还摒弃了C++里难以理解的多继承、指针等概念，因此Java语言具有功能强大和简单易用两个特征。</p>
 <p>Java语言作为静态面向对象编程语言的代表，极好地实现了面向对象理论，允许程序员以优雅的思维方式进行复杂的编程。</p>
 <p>Java具有简单性、面向对象、分布式、健壮性、安全性、平台独立与可移植性、多线程、动态性等特点 。Java可以编写桌面应用程序、Web应用程序、分布式系统和嵌入式系统应用程序等 。</p>
 ￥Java是一门面向对象编程语言，不仅吸收了C++语言的各种优点，还摒弃了C++里难以理解的多继承、指针等概念，因此Java语言具有功能强大和简单易用两个特征。
 
 Java语言作为静态面向对象编程语言的代表，极好地实现了面向对象理论，允许程序员以优雅的思维方式进行复杂的编程。
 
-Java具有简单性、面向对象、分布式、健壮性、安全性、平台独立与可移植性、多线程、动态性等特点 。Java可以编写桌面应用程序、Web应用程序、分布式系统和嵌入式系统应用程序等 。', '1', '原创', 0, '2024-01-05 14:08:43', '2024-01-17 14:23:18', null, 63, 4, 64, 'Lin', 0, '未通过', '草泥马,编程,应用,泛型,面向,语言,特性,开发,平台,计算机,广泛,语言,编程,面向,java,健壮性,移植性,应用,动态性,简单性,程序员,');
-INSERT INTO FE_BLOG.blog (title, content, description, type, deleted, create_time, update_time, status, user_id, field_id, media_id, author, clicks, audited, key_words) VALUES ('1', '<p>Java是一门面向对象编程语言，不仅吸收了C++语言的各种优点，还摒弃了C++里难以理解的多继承、指针等概念，因此Java语言具有功能强大和简单易用两个特征。</p>
+Java具有简单性、面向对象、分布式、健壮性、安全性、平台独立与可移植性、多线程、动态性等特点 。Java可以编写桌面应用程序、Web应用程序、分布式系统和嵌入式系统应用程序等 。', '1', '原创', 0, '2024-01-05 14:08:43', '2024-01-17 14:23:18', null, 63, null, 64, 'Lin', 0, '未通过', '草泥马,编程,应用,泛型,面向,语言,特性,开发,平台,计算机,广泛,语言,编程,面向,java,健壮性,移植性,应用,动态性,简单性,程序员,');
+INSERT INTO fe_blog.blog (title, content, description, type, deleted, create_time, update_time, status, user_id, field_id, media_id, author, clicks, audited, key_words) VALUES ('1', '<p>Java是一门面向对象编程语言，不仅吸收了C++语言的各种优点，还摒弃了C++里难以理解的多继承、指针等概念，因此Java语言具有功能强大和简单易用两个特征。</p>
 <p>Java语言作为静态面向对象编程语言的代表，极好地实现了面向对象理论，允许程序员以优雅的思维方式进行复杂的编程。</p>
 <p>Java具有简单性、面向对象、分布式、健壮性、安全性、平台独立与可移植性、多线程、动态性等特点 。Java可以编写桌面应用程序、Web应用程序、分布式系统和嵌入式系统应用程序等 。</p>
 ￥Java是一门面向对象编程语言，不仅吸收了C++语言的各种优点，还摒弃了C++里难以理解的多继承、指针等概念，因此Java语言具有功能强大和简单易用两个特征。
 
 Java语言作为静态面向对象编程语言的代表，极好地实现了面向对象理论，允许程序员以优雅的思维方式进行复杂的编程。
 
-Java具有简单性、面向对象、分布式、健壮性、安全性、平台独立与可移植性、多线程、动态性等特点 。Java可以编写桌面应用程序、Web应用程序、分布式系统和嵌入式系统应用程序等 。', '1', '原创', 0, '2024-01-05 15:37:51', '2024-01-17 14:23:18', null, 63, 1, 64, 'Lin', 0, '未通过', '语言,编程,面向,java,健壮性,移植性,应用,动态性,简单性,程序员,');
+Java具有简单性、面向对象、分布式、健壮性、安全性、平台独立与可移植性、多线程、动态性等特点 。Java可以编写桌面应用程序、Web应用程序、分布式系统和嵌入式系统应用程序等 。', '1', '原创', 0, '2024-01-05 15:37:51', '2024-01-17 14:23:18', null, 63, null, 64, 'Lin', 0, '未通过', '语言,编程,面向,java,健壮性,移植性,应用,动态性,简单性,程序员,');
 
 
 create table comment
@@ -845,16 +845,16 @@ create table comment
     collate = utf8mb4_general_ci
     row_format = DYNAMIC;
 
-INSERT INTO FE_BLOG.comment (blog_id, content, create_time, update_time, account) VALUES (44, '登录后的测试评论', '2023-12-18 17:02:16', '2023-12-18 17:02:16', 'Spauter');
-INSERT INTO FE_BLOG.comment (blog_id, content, create_time, update_time, account) VALUES (44, '韬韬无敌', '2023-12-26 16:15:21', '2023-12-26 16:15:00', '123');
-INSERT INTO FE_BLOG.comment (blog_id, content, create_time, update_time, account) VALUES (1, '测试评论', '2023-12-18 18:16:28', '2023-12-18 18:16:28', 'Spauter');
-INSERT INTO FE_BLOG.comment (blog_id, content, create_time, update_time, account) VALUES (44, '韬韬永远爱着主人', '2023-12-19 11:54:44', '2023-12-19 11:54:44', '123');
-INSERT INTO FE_BLOG.comment (blog_id, content, create_time, update_time, account) VALUES (44, '测试评论', '2023-12-19 18:34:33', '2023-12-19 18:34:33', 'Spauter');
-INSERT INTO FE_BLOG.comment (blog_id, content, create_time, update_time, account) VALUES (56, '好酷炫', '2024-01-02 15:13:43', '2024-01-02 15:13:43', 'Bloduc');
-INSERT INTO FE_BLOG.comment (blog_id, content, create_time, update_time, account) VALUES (44, '评论测试zzz', '2024-01-04 15:58:26', '2024-01-04 15:58:26', '123');
-INSERT INTO FE_BLOG.comment (blog_id, content, create_time, update_time, account) VALUES (44, '沙发', '2024-01-05 15:28:25', '2024-01-05 15:28:25', 'admin');
+INSERT INTO fe_blog.comment (blog_id, content, create_time, update_time, account) VALUES (44, '登录后的测试评论', '2023-12-18 17:02:16', '2023-12-18 17:02:16', 'Spauter');
+INSERT INTO fe_blog.comment (blog_id, content, create_time, update_time, account) VALUES (44, '韬韬无敌', '2023-12-26 16:15:21', '2023-12-26 16:15:00', '123');
+INSERT INTO fe_blog.comment (blog_id, content, create_time, update_time, account) VALUES (1, '测试评论', '2023-12-18 18:16:28', '2023-12-18 18:16:28', 'Spauter');
+INSERT INTO fe_blog.comment (blog_id, content, create_time, update_time, account) VALUES (44, '韬韬永远爱着主人', '2023-12-19 11:54:44', '2023-12-19 11:54:44', '123');
+INSERT INTO fe_blog.comment (blog_id, content, create_time, update_time, account) VALUES (44, '测试评论', '2023-12-19 18:34:33', '2023-12-19 18:34:33', 'Spauter');
+INSERT INTO fe_blog.comment (blog_id, content, create_time, update_time, account) VALUES (56, '好酷炫', '2024-01-02 15:13:43', '2024-01-02 15:13:43', 'Bloduc');
+INSERT INTO fe_blog.comment (blog_id, content, create_time, update_time, account) VALUES (44, '评论测试zzz', '2024-01-04 15:58:26', '2024-01-04 15:58:26', '123');
+INSERT INTO fe_blog.comment (blog_id, content, create_time, update_time, account) VALUES (44, '沙发', '2024-01-05 15:28:25', '2024-01-05 15:28:25', 'admin');
 
-create table fe_media
+create table if not exists fe_media
 (
     id          varchar(32) charset utf8mb4  not null comment '文件MD5值'
         primary key,
@@ -871,7 +871,7 @@ create table fe_media
     comment '博客资源数据库' charset = utf8mb3
                              row_format = DYNAMIC;
 
-create table field
+create table if not exists field
 (
     field_id int auto_increment
         primary key,
@@ -882,10 +882,10 @@ create table field
     charset = utf8mb3
     row_format = DYNAMIC;
 
-INSERT INTO FE_BLOG.field (name) VALUES ('其它');
-INSERT INTO FE_BLOG.field (name) VALUES ('javaSE');
-INSERT INTO FE_BLOG.field (name) VALUES ('前端');
-INSERT INTO FE_BLOG.field (name) VALUES ('后端');
+INSERT INTO fe_blog.field (name) VALUES ('其它');
+INSERT INTO fe_blog.field (name) VALUES ('javaSE');
+INSERT INTO fe_blog.field (name) VALUES ('前端');
+INSERT INTO fe_blog.field (name) VALUES ('后端');
 
 create table homepage
 (
@@ -902,7 +902,7 @@ create table homepage
     charset = utf8mb3
     row_format = DYNAMIC;
 
-INSERT INTO FE_BLOG.homepage (homepageid, description, title, welcome, banner, announcement) VALUES (1, '欢迎来到韬韬的个人博客', '韬韬的博客', '欢迎光临！', 'fm8.jpg', '大家好，本博客是由韬韬小组开发的可定制化个人博客系统');
+INSERT INTO fe_blog.homepage (homepageid, description, title, welcome, banner, announcement) VALUES (1, '欢迎来到韬韬的个人博客', '韬韬的博客', '欢迎光临！', 'fm8.jpg', '大家好，本博客是由韬韬小组开发的可定制化个人博客系统');
 
 create table media
 (
@@ -916,21 +916,21 @@ create table media
     collate = utf8mb4_general_ci
     row_format = DYNAMIC;
 
-INSERT INTO FE_BLOG.media (image, music) VALUES ('default-banner.jpg', null);
-INSERT INTO FE_BLOG.media (image, music) VALUES ('fm1.jpg', null);
-INSERT INTO FE_BLOG.media (image, music) VALUES ('fm2.jpg', null);
-INSERT INTO FE_BLOG.media (image, music) VALUES ('fm3.jpg', null);
-INSERT INTO FE_BLOG.media (image, music) VALUES ('fm4.jpg', null);
-INSERT INTO FE_BLOG.media (image, music) VALUES ('fm5.jpg', null);
-INSERT INTO FE_BLOG.media (image, music) VALUES ('fm6.jpg', null);
-INSERT INTO FE_BLOG.media (image, music) VALUES ('fm7.jpg', null);
-INSERT INTO FE_BLOG.media (image, music) VALUES ('fm8.jpg', null);
-INSERT INTO FE_BLOG.media (image, music) VALUES ('fm9.jpg', null);
-INSERT INTO FE_BLOG.media (image, music) VALUES ('fm10.jpg', null);
-INSERT INTO FE_BLOG.media (image, music) VALUES ('fm11.jpg', null);
-INSERT INTO FE_BLOG.media (image, music) VALUES ('HT.jpg', null);
+INSERT INTO fe_blog.media (image, music) VALUES ('default-banner.jpg', null);
+INSERT INTO fe_blog.media (image, music) VALUES ('fm1.jpg', null);
+INSERT INTO fe_blog.media (image, music) VALUES ('fm2.jpg', null);
+INSERT INTO fe_blog.media (image, music) VALUES ('fm3.jpg', null);
+INSERT INTO fe_blog.media (image, music) VALUES ('fm4.jpg', null);
+INSERT INTO fe_blog.media (image, music) VALUES ('fm5.jpg', null);
+INSERT INTO fe_blog.media (image, music) VALUES ('fm6.jpg', null);
+INSERT INTO fe_blog.media (image, music) VALUES ('fm7.jpg', null);
+INSERT INTO fe_blog.media (image, music) VALUES ('fm8.jpg', null);
+INSERT INTO fe_blog.media (image, music) VALUES ('fm9.jpg', null);
+INSERT INTO fe_blog.media (image, music) VALUES ('fm10.jpg', null);
+INSERT INTO fe_blog.media (image, music) VALUES ('fm11.jpg', null);
+INSERT INTO fe_blog.media (image, music) VALUES ('HT.jpg', null);
 
-create table media_relation
+create table if not exists media_relation
 (
     blog_id  int not null,
     media_id int not null,
@@ -964,17 +964,17 @@ create table reply
 create index rc_account
     on reply (account);
 
-INSERT INTO FE_BLOG.reply (id, account, rdate, content) VALUES (68, 'Bloduc', '2024-01-01 14:44:09', '韬韬的大名岂是你能叫的');
-INSERT INTO FE_BLOG.reply (id, account, rdate, content) VALUES (68, '123', '2024-01-01 14:45:11', '韬韬是我儿子，咋不能叫');
-INSERT INTO FE_BLOG.reply (id, account, rdate, content) VALUES (68, 'Spauter', '2024-01-01 14:45:51', '吃瓜');
-INSERT INTO FE_BLOG.reply (id, account, rdate, content) VALUES (68, '123', '2024-01-01 14:46:31', '金韬测试');
-INSERT INTO FE_BLOG.reply (id, account, rdate, content) VALUES (68, '123', '2024-01-01 14:46:43', '沙发');
-INSERT INTO FE_BLOG.reply (id, account, rdate, content) VALUES (67, 'Bloduc', '2024-01-02 07:04:17', '沙发');
-INSERT INTO FE_BLOG.reply (id, account, rdate, content) VALUES (67, 'admin', '2024-01-02 12:51:15', '沙发');
-INSERT INTO FE_BLOG.reply (id, account, rdate, content) VALUES (79, '123', '2024-01-04 08:00:22', '评论测试zzz');
-INSERT INTO FE_BLOG.reply (id, account, rdate, content) VALUES (68, 'Lin', '2024-01-05 06:24:24', '11
+INSERT INTO fe_blog.reply (id, account, rdate, content) VALUES (68, 'Bloduc', '2024-01-01 14:44:09', '韬韬的大名岂是你能叫的');
+INSERT INTO fe_blog.reply (id, account, rdate, content) VALUES (68, '123', '2024-01-01 14:45:11', '韬韬是我儿子，咋不能叫');
+INSERT INTO fe_blog.reply (id, account, rdate, content) VALUES (68, 'Spauter', '2024-01-01 14:45:51', '吃瓜');
+INSERT INTO fe_blog.reply (id, account, rdate, content) VALUES (68, '123', '2024-01-01 14:46:31', '金韬测试');
+INSERT INTO fe_blog.reply (id, account, rdate, content) VALUES (68, '123', '2024-01-01 14:46:43', '沙发');
+INSERT INTO fe_blog.reply (id, account, rdate, content) VALUES (67, 'Bloduc', '2024-01-02 07:04:17', '沙发');
+INSERT INTO fe_blog.reply (id, account, rdate, content) VALUES (67, 'admin', '2024-01-02 12:51:15', '沙发');
+INSERT INTO fe_blog.reply (id, account, rdate, content) VALUES (79, '123', '2024-01-04 08:00:22', '评论测试zzz');
+INSERT INTO fe_blog.reply (id, account, rdate, content) VALUES (68, 'Lin', '2024-01-05 06:24:24', '11
 ');
-INSERT INTO FE_BLOG.reply (id, account, rdate, content) VALUES (68, 'admin', '2024-01-05 07:29:38', '沙发。');
+INSERT INTO fe_blog.reply (id, account, rdate, content) VALUES (68, 'admin', '2024-01-05 07:29:38', '沙发。');
 
 create table tag
 (
@@ -985,11 +985,11 @@ create table tag
     charset = utf8mb3
     row_format = DYNAMIC;
 
-INSERT INTO FE_BLOG.tag (name) VALUES ('javascript');
-INSERT INTO FE_BLOG.tag (name) VALUES ('java');
-INSERT INTO FE_BLOG.tag (name) VALUES ('后端');
-INSERT INTO FE_BLOG.tag (name) VALUES ('css');
-INSERT INTO FE_BLOG.tag (name) VALUES ('html');
+INSERT INTO fe_blog.tag (name) VALUES ('javascript');
+INSERT INTO fe_blog.tag (name) VALUES ('java');
+INSERT INTO fe_blog.tag (name) VALUES ('后端');
+INSERT INTO fe_blog.tag (name) VALUES ('css');
+INSERT INTO fe_blog.tag (name) VALUES ('html');
 
 create table tag_relation
 (
@@ -1005,42 +1005,42 @@ create table tag_relation
 create index id1
     on tag_relation (blog_id);
 
-INSERT INTO FE_BLOG.tag_relation (blog_id, tag_id, deleted) VALUES (58, 24, 0);
-INSERT INTO FE_BLOG.tag_relation (blog_id, tag_id, deleted) VALUES (58, 25, 0);
-INSERT INTO FE_BLOG.tag_relation (blog_id, tag_id, deleted) VALUES (1, 5, 1);
-INSERT INTO FE_BLOG.tag_relation (blog_id, tag_id, deleted) VALUES (1, 5, 1);
-INSERT INTO FE_BLOG.tag_relation (blog_id, tag_id, deleted) VALUES (44, 24, 1);
-INSERT INTO FE_BLOG.tag_relation (blog_id, tag_id, deleted) VALUES (44, 24, 1);
-INSERT INTO FE_BLOG.tag_relation (blog_id, tag_id, deleted) VALUES (44, 24, 1);
-INSERT INTO FE_BLOG.tag_relation (blog_id, tag_id, deleted) VALUES (57, 5, 0);
-INSERT INTO FE_BLOG.tag_relation (blog_id, tag_id, deleted) VALUES (100, 3, 0);
-INSERT INTO FE_BLOG.tag_relation (blog_id, tag_id, deleted) VALUES (102, 1, 1);
-INSERT INTO FE_BLOG.tag_relation (blog_id, tag_id, deleted) VALUES (1, 5, 1);
-INSERT INTO FE_BLOG.tag_relation (blog_id, tag_id, deleted) VALUES (1, 5, 1);
-INSERT INTO FE_BLOG.tag_relation (blog_id, tag_id, deleted) VALUES (1, 3, 0);
-INSERT INTO FE_BLOG.tag_relation (blog_id, tag_id, deleted) VALUES (1, 5, 0);
-INSERT INTO FE_BLOG.tag_relation (blog_id, tag_id, deleted) VALUES (103, 3, 1);
-INSERT INTO FE_BLOG.tag_relation (blog_id, tag_id, deleted) VALUES (103, 3, 1);
-INSERT INTO FE_BLOG.tag_relation (blog_id, tag_id, deleted) VALUES (103, 3, 1);
-INSERT INTO FE_BLOG.tag_relation (blog_id, tag_id, deleted) VALUES (103, 3, 1);
-INSERT INTO FE_BLOG.tag_relation (blog_id, tag_id, deleted) VALUES (103, 3, 1);
-INSERT INTO FE_BLOG.tag_relation (blog_id, tag_id, deleted) VALUES (103, 3, 1);
-INSERT INTO FE_BLOG.tag_relation (blog_id, tag_id, deleted) VALUES (103, 3, 1);
-INSERT INTO FE_BLOG.tag_relation (blog_id, tag_id, deleted) VALUES (104, 3, 0);
-INSERT INTO FE_BLOG.tag_relation (blog_id, tag_id, deleted) VALUES (105, 3, 0);
-INSERT INTO FE_BLOG.tag_relation (blog_id, tag_id, deleted) VALUES (106, 3, 0);
-INSERT INTO FE_BLOG.tag_relation (blog_id, tag_id, deleted) VALUES (107, 3, 0);
-INSERT INTO FE_BLOG.tag_relation (blog_id, tag_id, deleted) VALUES (108, 3, 0);
-INSERT INTO FE_BLOG.tag_relation (blog_id, tag_id, deleted) VALUES (103, 1, 0);
-INSERT INTO FE_BLOG.tag_relation (blog_id, tag_id, deleted) VALUES (103, 3, 0);
-INSERT INTO FE_BLOG.tag_relation (blog_id, tag_id, deleted) VALUES (109, 3, 0);
-INSERT INTO FE_BLOG.tag_relation (blog_id, tag_id, deleted) VALUES (110, 3, 0);
-INSERT INTO FE_BLOG.tag_relation (blog_id, tag_id, deleted) VALUES (111, 3, 0);
-INSERT INTO FE_BLOG.tag_relation (blog_id, tag_id, deleted) VALUES (112, 3, 0);
-INSERT INTO FE_BLOG.tag_relation (blog_id, tag_id, deleted) VALUES (44, 3, 0);
-INSERT INTO FE_BLOG.tag_relation (blog_id, tag_id, deleted) VALUES (44, 5, 0);
-INSERT INTO FE_BLOG.tag_relation (blog_id, tag_id, deleted) VALUES (44, 24, 0);
-INSERT INTO FE_BLOG.tag_relation (blog_id, tag_id, deleted) VALUES (113, 3, 0);
+INSERT INTO fe_blog.tag_relation (blog_id, tag_id, deleted) VALUES (58, 24, 0);
+INSERT INTO fe_blog.tag_relation (blog_id, tag_id, deleted) VALUES (58, 25, 0);
+INSERT INTO fe_blog.tag_relation (blog_id, tag_id, deleted) VALUES (1, 5, 1);
+INSERT INTO fe_blog.tag_relation (blog_id, tag_id, deleted) VALUES (1, 5, 1);
+INSERT INTO fe_blog.tag_relation (blog_id, tag_id, deleted) VALUES (44, 24, 1);
+INSERT INTO fe_blog.tag_relation (blog_id, tag_id, deleted) VALUES (44, 24, 1);
+INSERT INTO fe_blog.tag_relation (blog_id, tag_id, deleted) VALUES (44, 24, 1);
+INSERT INTO fe_blog.tag_relation (blog_id, tag_id, deleted) VALUES (57, 5, 0);
+INSERT INTO fe_blog.tag_relation (blog_id, tag_id, deleted) VALUES (100, 3, 0);
+INSERT INTO fe_blog.tag_relation (blog_id, tag_id, deleted) VALUES (102, 1, 1);
+INSERT INTO fe_blog.tag_relation (blog_id, tag_id, deleted) VALUES (1, 5, 1);
+INSERT INTO fe_blog.tag_relation (blog_id, tag_id, deleted) VALUES (1, 5, 1);
+INSERT INTO fe_blog.tag_relation (blog_id, tag_id, deleted) VALUES (1, 3, 0);
+INSERT INTO fe_blog.tag_relation (blog_id, tag_id, deleted) VALUES (1, 5, 0);
+INSERT INTO fe_blog.tag_relation (blog_id, tag_id, deleted) VALUES (103, 3, 1);
+INSERT INTO fe_blog.tag_relation (blog_id, tag_id, deleted) VALUES (103, 3, 1);
+INSERT INTO fe_blog.tag_relation (blog_id, tag_id, deleted) VALUES (103, 3, 1);
+INSERT INTO fe_blog.tag_relation (blog_id, tag_id, deleted) VALUES (103, 3, 1);
+INSERT INTO fe_blog.tag_relation (blog_id, tag_id, deleted) VALUES (103, 3, 1);
+INSERT INTO fe_blog.tag_relation (blog_id, tag_id, deleted) VALUES (103, 3, 1);
+INSERT INTO fe_blog.tag_relation (blog_id, tag_id, deleted) VALUES (103, 3, 1);
+INSERT INTO fe_blog.tag_relation (blog_id, tag_id, deleted) VALUES (104, 3, 0);
+INSERT INTO fe_blog.tag_relation (blog_id, tag_id, deleted) VALUES (105, 3, 0);
+INSERT INTO fe_blog.tag_relation (blog_id, tag_id, deleted) VALUES (106, 3, 0);
+INSERT INTO fe_blog.tag_relation (blog_id, tag_id, deleted) VALUES (107, 3, 0);
+INSERT INTO fe_blog.tag_relation (blog_id, tag_id, deleted) VALUES (108, 3, 0);
+INSERT INTO fe_blog.tag_relation (blog_id, tag_id, deleted) VALUES (103, 1, 0);
+INSERT INTO fe_blog.tag_relation (blog_id, tag_id, deleted) VALUES (103, 3, 0);
+INSERT INTO fe_blog.tag_relation (blog_id, tag_id, deleted) VALUES (109, 3, 0);
+INSERT INTO fe_blog.tag_relation (blog_id, tag_id, deleted) VALUES (110, 3, 0);
+INSERT INTO fe_blog.tag_relation (blog_id, tag_id, deleted) VALUES (111, 3, 0);
+INSERT INTO fe_blog.tag_relation (blog_id, tag_id, deleted) VALUES (112, 3, 0);
+INSERT INTO fe_blog.tag_relation (blog_id, tag_id, deleted) VALUES (44, 3, 0);
+INSERT INTO fe_blog.tag_relation (blog_id, tag_id, deleted) VALUES (44, 5, 0);
+INSERT INTO fe_blog.tag_relation (blog_id, tag_id, deleted) VALUES (44, 24, 0);
+INSERT INTO fe_blog.tag_relation (blog_id, tag_id, deleted) VALUES (113, 3, 0);
 
 create table user
 (
@@ -1065,11 +1065,11 @@ create table user
 create index account
     on user (account);
 
-INSERT INTO FE_BLOG.user (account, password, email, nick, profile, avatar, deleted, create_time, update_time, sex, birthday, status) VALUES ('admin', 'a', null, 'Fantastic Electricity', '生命不息，编码不止！', '/avatar.png', 0, '2021-08-06 19:19:05', '2023-12-07 15:13:21', '女', '2001-09-19 00:00:00', '超级管理');
-INSERT INTO FE_BLOG.user (account, password, email, nick, profile, avatar, deleted, create_time, update_time, sex, birthday, status) VALUES ('藤树test', '1234567', '', null, null, '/tao.jpg', 0, '2021-08-07 17:01:06', '2021-08-07 17:01:06', null, null, '管理');
-INSERT INTO FE_BLOG.user (account, password, email, nick, profile, avatar, deleted, create_time, update_time, sex, birthday, status) VALUES ('世纪糕Test1', '123321', null, '世纪糕', '111111', '/tao.jpg', 0, '2021-08-09 15:03:59', '2021-08-15 21:36:26', '男', '2001-09-20 00:00:00', '管理');
-INSERT INTO FE_BLOG.user (account, password, email, nick, profile, avatar, deleted, create_time, update_time, sex, birthday, status) VALUES ('123', '123', null, '韬韬无敌', '韬韬永远爱着主人', '/tao.jpg', 0, '2021-08-15 21:51:12', '2021-08-15 21:51:12', '女', '2023-12-01 00:00:00', '管理');
-INSERT INTO FE_BLOG.user (account, password, email, nick, profile, avatar, deleted, create_time, update_time, sex, birthday, status) VALUES ('Spauter', 'Spauter', '3230695439@qq.com', 'Bloduc Spauter', 'Touch fish long live!!!!', '/HT.jpg', 0, '2023-12-13 16:57:34', '2023-12-13 16:57:34', '女', '2013-07-17 00:00:00', '管理');
-INSERT INTO FE_BLOG.user (account, password, email, nick, profile, avatar, deleted, create_time, update_time, sex, birthday, status) VALUES ('Bloduc', 'Bloduc', null, 'Bloduc', 'null', '/tao.jpg', 0, '2023-12-29 15:29:29', '2023-12-29 15:29:29', '男', null, '注册用户');
-INSERT INTO FE_BLOG.user (account, password, email, nick, profile, avatar, deleted, create_time, update_time, sex, birthday, status) VALUES ('OldFu', '1234567', '3230695439@qq.com', 'OldFu', '系统的默认签名，送给每一个小可爱', '/tao.jpg', 0, '2024-01-03 23:08:11', '2024-01-03 23:08:11', null, null, '注册用户');
-INSERT INTO FE_BLOG.user (account, password, email, nick, profile, avatar, deleted, create_time, update_time, sex, birthday, status) VALUES ('Lin', '123', '2209507443@qq.com', 'Lin', '系统的默认签名，送给每一个小可爱', '/tao.jpg', 0, '2024-01-05 14:06:14', '2024-01-05 14:06:14', null, null, '注册用户');
+INSERT INTO fe_blog.user (account, password, email, nick, profile, avatar, deleted, create_time, update_time, sex, birthday, status) VALUES ('admin', 'a', null, 'Fantastic Electricity', '生命不息，编码不止！', '/avatar.png', 0, '2021-08-06 19:19:05', '2023-12-07 15:13:21', '女', '2001-09-19 00:00:00', '超级管理');
+INSERT INTO fe_blog.user (account, password, email, nick, profile, avatar, deleted, create_time, update_time, sex, birthday, status) VALUES ('藤树test', '1234567', '', null, null, '/tao.jpg', 0, '2021-08-07 17:01:06', '2021-08-07 17:01:06', null, null, '管理');
+INSERT INTO fe_blog.user (account, password, email, nick, profile, avatar, deleted, create_time, update_time, sex, birthday, status) VALUES ('世纪糕Test1', '123321', null, '世纪糕', '111111', '/tao.jpg', 0, '2021-08-09 15:03:59', '2021-08-15 21:36:26', '男', '2001-09-20 00:00:00', '管理');
+INSERT INTO fe_blog.user (account, password, email, nick, profile, avatar, deleted, create_time, update_time, sex, birthday, status) VALUES ('123', '123', null, '韬韬无敌', '韬韬永远爱着主人', '/tao.jpg', 0, '2021-08-15 21:51:12', '2021-08-15 21:51:12', '女', '2023-12-01 00:00:00', '管理');
+INSERT INTO fe_blog.user (account, password, email, nick, profile, avatar, deleted, create_time, update_time, sex, birthday, status) VALUES ('Spauter', 'Spauter', '3230695439@qq.com', 'Bloduc Spauter', 'Touch fish long live!!!!', '/HT.jpg', 0, '2023-12-13 16:57:34', '2023-12-13 16:57:34', '女', '2013-07-17 00:00:00', '管理');
+INSERT INTO fe_blog.user (account, password, email, nick, profile, avatar, deleted, create_time, update_time, sex, birthday, status) VALUES ('Bloduc', 'Bloduc', null, 'Bloduc', 'null', '/tao.jpg', 0, '2023-12-29 15:29:29', '2023-12-29 15:29:29', '男', null, '注册用户');
+INSERT INTO fe_blog.user (account, password, email, nick, profile, avatar, deleted, create_time, update_time, sex, birthday, status) VALUES ('OldFu', '1234567', '3230695439@qq.com', 'OldFu', '系统的默认签名，送给每一个小可爱', '/tao.jpg', 0, '2024-01-03 23:08:11', '2024-01-03 23:08:11', null, null, '注册用户');
+INSERT INTO fe_blog.user (account, password, email, nick, profile, avatar, deleted, create_time, update_time, sex, birthday, status) VALUES ('Lin', '123', '2209507443@qq.com', 'Lin', '系统的默认签名，送给每一个小可爱', '/tao.jpg', 0, '2024-01-05 14:06:14', '2024-01-05 14:06:14', null, null, '注册用户');ff

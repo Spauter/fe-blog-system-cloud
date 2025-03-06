@@ -9,13 +9,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
 import static com.bloducspauter.bean.utils.DefaultValue.DEFAULT_AVATAR;
 
 
 @Service
 @Slf4j
 public class UserServiceImpl implements UserService {
-    @Autowired
+    @Resource
     private UserMapper userMapper;
 
     @Override

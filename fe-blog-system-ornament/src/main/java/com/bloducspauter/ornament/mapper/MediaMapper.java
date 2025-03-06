@@ -6,5 +6,6 @@ import com.bloducspauter.bean.media.Media;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
+@Deprecated
 public interface MediaMapper extends BaseMapper<Media> {
 }

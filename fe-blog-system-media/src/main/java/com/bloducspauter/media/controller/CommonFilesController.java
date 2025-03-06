@@ -2,6 +2,7 @@ package com.bloducspauter.media.controller;
 
 import com.bloducspauter.bean.MediaFiles;
 import com.bloducspauter.bean.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,6 +25,7 @@ import java.util.Map;
  *
  * @author Bloduc Spauter
  */
+@Slf4j
 @RestController
 @RequestMapping("fe-media")
 public class CommonFilesController {
@@ -80,10 +83,30 @@ public class CommonFilesController {
                 map.put("msg", "上传失败");
             }
         } catch (IOException e) {
-            e.printStackTrace();
             map.put("code", 500);
             map.put("msg", "上传失败");
             map.put("cause", e.getMessage());
+        }
+        return map;
+    }
+
+    public Map<String,Object>delMedia(HttpServletRequest req, HttpServletResponse resp) throws UnsupportedEncodingException {
+        Map<String,Object> map = new HashMap<>();
+        req.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html;charset=UTF-8");
+        //获取前端传来媒体类型
+        String type = req.getParameter("type");
+        //获取前端传来需要删除的媒体文件名称集合
+        String[] obj = req.getParameterValues("image");
+        if (obj == null) {
+            map.put("code", 404);
+            map.put("msg", "未选择任何图片");
+            return map;
+        }
+        try {
+            List<MediaFiles>files=mediaService.selectALL();
+        } catch (Exception e) {
+            log.error(e.getLocalizedMessage());
         }
         return map;
     }

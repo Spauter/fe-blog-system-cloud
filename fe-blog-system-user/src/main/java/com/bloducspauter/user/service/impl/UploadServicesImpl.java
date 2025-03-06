@@ -37,14 +37,14 @@ public class UploadServicesImpl implements UploadService {
     @Override
     public String uploadToNginx(MultipartFile multipartFile) {
         try (InputStream inputStream = multipartFile.getInputStream()) {
-            log.info("上传的文件名" + multipartFile.getOriginalFilename());
-            log.info("获得的文件后缀名" + FilenameUtils.getExtension(multipartFile.getOriginalFilename()));
+            log.info("上传的文件名{}", multipartFile.getOriginalFilename());
+            log.info("获得的文件后缀名{}", FilenameUtils.getExtension(multipartFile.getOriginalFilename()));
             StorePath storePath = storageClient.uploadFile(IOUtils.toByteArray(inputStream),
                     FilenameUtils.getExtension(multipartFile.getOriginalFilename()));
 
-            log.info("文件上传成功，路径信息:" + storePath);
-            log.info("groupd:" + storePath.getGroup());
-            log.info("path:" + storePath.getPath());
+            log.info("文件上传成功，路径信息:{}", storePath);
+            log.info("groupd:{}", storePath.getGroup());
+            log.info("path:{}", storePath.getPath());
             return  storePath.getFullPath();
         } catch (Exception e) {
             log.error(e.getMessage());

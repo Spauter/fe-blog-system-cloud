@@ -21,6 +21,7 @@ import java.util.*;
 @RestController
 @Slf4j
 @RequestMapping("fe-user")
+@Deprecated
 public class VerificationCodeController {
 
     private String generateWord(HttpServletRequest request) {

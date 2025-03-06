@@ -61,6 +61,7 @@ public class MediaFiles implements Serializable {
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createDate;
 
+    private LocalDateTime update_time;
 
     /**
      * 文件大小

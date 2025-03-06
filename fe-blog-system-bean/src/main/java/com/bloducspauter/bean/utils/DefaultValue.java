@@ -1,4 +1,5 @@
 package com.bloducspauter.bean.utils;
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 public class DefaultValue {
@@ -10,4 +11,22 @@ public class DefaultValue {
             , "fm11.jpg", "HT.jpg");
     public static final String MEDIA_IMAGE_TYPE = "image";
     public static final String MEDIA_AUDIO_TYPE = "music";
+    private static final String UPLOAD_TEMP_PATH;
+
+    static {
+        System.out.println("DefaultValue init");
+        String osName = System.getProperty("os.name");
+        if (osName.startsWith("Windows")) {
+            UPLOAD_TEMP_PATH = "D:/upload/temp/";
+        } else {
+            UPLOAD_TEMP_PATH = "/DevTools/Minio/fe_blog1/";
+        }
+        File f = new File(UPLOAD_TEMP_PATH);
+        if (!f.exists()) {
+            f.mkdirs();
+        }
+    }
+    public static String getUploadTempPath() {
+        return UPLOAD_TEMP_PATH;
+    }
 }

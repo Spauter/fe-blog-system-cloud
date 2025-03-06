@@ -9,7 +9,12 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
-
+/**
+ * 媒体文件实体类<p>
+ * 即将由{@link com.bloducspauter.bean.MediaFiles} 替代
+ * @author Bloduc Spauter
+ *
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
