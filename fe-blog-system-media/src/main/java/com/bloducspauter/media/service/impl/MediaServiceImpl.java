@@ -1,6 +1,7 @@
 package com.bloducspauter.media.service.impl;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bloducspauter.bean.MediaFiles;
 import com.bloducspauter.media.mapper.MediaFilesMapper;
 import com.bloducspauter.media.service.MediaService;
@@ -41,16 +42,7 @@ public class MediaServiceImpl implements MediaService {
 
     @Resource
     private MinioClient minioClient;
-    //存储普通文件
-    @Value("${minio.bucket.files}")
-    private String bucketFiles;
 
-    //存储视频
-    @Value("${minio.bucket.video-files}")
-    private String bucketVideo;
-
-    @Value("${minio.bucket.emojis}")
-    private String bucketEmojis;
 
     /**
      * 将文件信息添加到文件表
@@ -154,18 +146,18 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    public MediaFiles uploadFile(File file, String userId, String originFileName) {
+    public MediaFiles uploadFile(File file, String userId, String originFileName,String bucket) {
         String id = getId(file);
         String filePath = getFileFolderPath(id);
         String extension = getExtension(originFileName);
         String minType = getMimeType(extension);
         String objectName = filePath + id + "." + extension;
         long size = file.length();
-        boolean result = addMediaFilesToMinIO(file.getAbsolutePath(), minType, bucketEmojis, objectName);
+        boolean result = addMediaFilesToMinIO(file.getAbsolutePath(), minType, bucket, objectName);
         if (!result) {
             return null;
         }
-        return addMediaFilesToDb(bucketEmojis, objectName, size, userId, originFileName, id);
+        return addMediaFilesToDb(bucket, objectName, size, userId, originFileName, id);
     }
 
     public boolean addMediaFilesToMinIO(String localFilePath, String mimeType, String bucket, String objectName) {
@@ -210,14 +202,14 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    public boolean delete(List<String> deleteMedias) {
+    public boolean delete(List<String> deleteMedias, String bucket) {
         List<MediaFiles> mediaFiles = mapper.selectBatchIds(deleteMedias);
         boolean deleteDb = mapper.deleteBatchIds(mediaFiles) == 1;
         boolean deleteMinIO = true;
         for (MediaFiles m : mediaFiles) {
             String objectName = m.getFilePath();
             try {
-                minioClient.removeObject(RemoveObjectArgs.builder().bucket(bucketEmojis).object(objectName).build());
+                minioClient.removeObject(RemoveObjectArgs.builder().bucket(bucket).object(objectName).build());
             } catch (ErrorResponseException | XmlParserException | ServerException | NoSuchAlgorithmException |
                      IOException | InvalidResponseException | InvalidKeyException | InternalException |
                      InsufficientDataException e) {
@@ -229,11 +221,13 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    public List<MediaFiles> selectList(List<String> medias) {
+    public List<MediaFiles> selectList(List<String> medias,String bucket) {
         if (medias != null && !medias.isEmpty()) {
             return mapper.selectBatchIds(medias);
         } else {
-            return mapper.selectList(null);
+            QueryWrapper<MediaFiles> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("bucket", bucket);
+            return mapper.selectList(queryWrapper);
         }
     }
 }

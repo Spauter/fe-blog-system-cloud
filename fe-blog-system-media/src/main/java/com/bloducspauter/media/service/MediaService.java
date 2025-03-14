@@ -24,7 +24,7 @@ public interface MediaService {
      *
      * @return 文件是否上传成功
      */
-    MediaFiles uploadFile(File file, String userId, String originFileName);
+    MediaFiles uploadFile(File file, String userId, String originFileName,String bucket);
 
     /**
      * 获取文件的MD5值
@@ -38,8 +38,8 @@ public interface MediaService {
      * 查询所有文件
      * @return 文件集合
      */
-    default List<MediaFiles> selectALL() {
-        return selectList(null);
+    default List<MediaFiles> selectALL(String bucket) {
+        return selectList(null,bucket);
     }
 
     /**
@@ -47,13 +47,13 @@ public interface MediaService {
      * @param deleteMedias 文件的MD5值集合
      * @return 文件是否删除成功
      */
-    boolean delete(List<String> deleteMedias);
+    boolean delete(List<String> deleteMedias, String bucket);
 
     /**
      * 查询文件
      * @param medias 文件的MD5值集合
      * @return 文件集合
      */
-    List<MediaFiles> selectList(List<String> medias);
+    List<MediaFiles> selectList(List<String> medias,String bucket);
 
 }

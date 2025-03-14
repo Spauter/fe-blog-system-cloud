@@ -5,7 +5,6 @@ import com.bloducspauter.bean.media.Media;
 import com.bloducspauter.ornament.service.MediaService;
 import com.bloducspauter.user.service.UploadService;
 import com.bloducspauter.bean.utils.IsValidUtil;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +24,13 @@ import java.util.Map;
 
 import static com.bloducspauter.bean.utils.DefaultValue.*;
 
+/**
+ * 媒体文件管理
+ *
+ * @author Bloduc Spauter
+ * @see com.bloducspauter.media.controller.CommonFilesController
+ * @deprecated 由于要将图片全部放在Minio上，这个服务将会被废弃<P>
+ */
 @RestController
 @Slf4j
 @RequestMapping("fe-ornament")
