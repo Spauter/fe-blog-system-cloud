@@ -5,6 +5,7 @@ import com.bs.util.IsValudEmailAddressUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailException;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -54,7 +55,7 @@ public class AuditNoticeController {
     }
 
     @RequestMapping("notice")
-    public Map<String,Object>sendAuditNotice(HttpServletRequest request){
+    public Map<String,Object>sendAuditNotice(HttpServletRequest request) throws MailException {
         Map<String,Object>map=new HashMap<>();
         String email=request.getParameter("email");
         if (email == null) {
