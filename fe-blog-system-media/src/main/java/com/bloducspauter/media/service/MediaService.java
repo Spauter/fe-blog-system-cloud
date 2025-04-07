@@ -1,5 +1,6 @@
 package com.bloducspauter.media.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bloducspauter.bean.MediaFiles;
 
 import java.io.File;
@@ -18,6 +19,8 @@ public interface MediaService {
      * @return 文件是否存在
      */
     boolean checkFileExists(String id);
+
+    boolean checkFileExists(String fileName,String bucket);
 
     /**
      * 上传文件，适合小文件上传
@@ -47,7 +50,7 @@ public interface MediaService {
      * @param deleteMedias 文件的MD5值集合
      * @return 文件是否删除成功
      */
-    boolean delete(List<String> deleteMedias, String bucket);
+    boolean delete(List<String> deleteMedias, String bucket );
 
     /**
      * 查询文件
@@ -55,5 +58,9 @@ public interface MediaService {
      * @return 文件集合
      */
     List<MediaFiles> selectList(List<String> medias,String bucket);
+
+    MediaFiles findById(String id) ;
+
+    MediaFiles findIdByName(String fileName);
 
 }

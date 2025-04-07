@@ -73,7 +73,6 @@ public class FieldController {
         return map;
     }
 
-
     @RequestMapping("FindAllField")
     public Map<String, Object> findAllFeild() {
         Map<String, Object> map = new HashMap<>();

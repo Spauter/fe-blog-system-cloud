@@ -9,10 +9,11 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
+
 /**
  * @author Bloduc Spauter
- *
  */
 @Service
 @Slf4j
@@ -37,11 +38,12 @@ public class NettyJsonServiceImpl implements NettyJsonService {
         try {
             mongoTemplate.remove(id);
             log.info("delete nettyJson success");
-        }catch (Exception e) {
+        } catch (Exception e) {
             log.error("delete nettyJson failed because {}", e.getMessage());
             e.printStackTrace();
         }
     }
+
 
     @Override
     public List<NettyJson> selectList(String location) {
@@ -60,11 +62,11 @@ public class NettyJsonServiceImpl implements NettyJsonService {
     @Override
     public NettyJson selectOne(String id) {
         try {
-            Query query=new Query();
+            Query query = new Query();
             query.addCriteria(Criteria.where("id").is(id));
             log.info("select a nettyJson success");
             return mongoTemplate.findOne(query, NettyJson.class);
-        }catch (Exception e) {
+        } catch (Exception e) {
             log.error("select a nettyJson failed because {}", e.getMessage());
             e.printStackTrace();
             return null;
@@ -73,7 +75,7 @@ public class NettyJsonServiceImpl implements NettyJsonService {
 
     @Override
     public void update(NettyJson nettyJson) {
-       Update u = new Update();
+        Update u = new Update();
         u.set("location", nettyJson.getLocation());
         try {
             mongoTemplate.updateFirst(new Query(Criteria.where("id").is(nettyJson.getId())), u, NettyJson.class);
@@ -85,11 +87,11 @@ public class NettyJsonServiceImpl implements NettyJsonService {
     }
 
     @Override
-    public List<NettyJson>selectListByPage(String location,int pageNo,int pageSize){
+    public List<NettyJson> selectListByPage(String location, int pageNo, int pageSize) {
         try {
             Query query = new Query();
             query.addCriteria(Criteria.where("location").is(location));
-            query.skip((long) (pageNo - 1) *pageSize);
+            query.skip((long) (pageNo - 1) * pageSize);
             query.limit(pageSize);
             log.info("select  nettyJsons by page success");
             return mongoTemplate.find(query, NettyJson.class);
@@ -103,5 +105,17 @@ public class NettyJsonServiceImpl implements NettyJsonService {
     @Override
     public List<NettyJson> findAll() {
         return mongoTemplate.findAll(NettyJson.class);
+    }
+
+    @Override
+    public NettyJson getCommentUserByCid(String cid) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("contentId").is(cid));
+        try {
+            return mongoTemplate.findOne(query, NettyJson.class);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return null;
+        }
     }
 }

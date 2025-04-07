@@ -1,9 +1,14 @@
 package com.bloducspauter.user.config;
 
+import com.bloducspauter.bean.User;
+import com.bloducspauter.user.mapper.UserMapper;
+import com.bloducspauter.user.service.UserService;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,11 +22,12 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
+@Slf4j
 @Configuration
 public class RedisCacheManagerConfig {
     /**
@@ -90,5 +96,4 @@ public class RedisCacheManagerConfig {
                 .cacheDefaults(config.entryTtl(Duration.ofSeconds(500)))
                 .build();
     }
- 
 }

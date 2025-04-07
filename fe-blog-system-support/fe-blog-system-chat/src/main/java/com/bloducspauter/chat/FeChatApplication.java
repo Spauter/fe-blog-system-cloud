@@ -1,6 +1,10 @@
 package com.bloducspauter.chat;
 
+import com.bloducspauter.chat.entity.AuditChatAPI;
 import com.bloducspauter.chat.netty.NettyWebSocketServer;
+import com.bloducspauter.user.mapper.UserMapper;
+import com.bloducspauter.user.service.UserService;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -8,7 +12,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
-@SpringBootApplication(scanBasePackages = {"com.bloducspauter.chat","com.bloducspauter.bean"})
+@SpringBootApplication(scanBasePackages = {"com.bloducspauter.chat","com.bloducspauter.bean"},scanBasePackageClasses = {UserService.class, AuditChatAPI.class})
+@MapperScan(basePackageClasses = {UserMapper.class})
 @EnableDiscoveryClient
 @EnableFeignClients(basePackages = {"com.bloducspauter.api"})
 public class FeChatApplication implements CommandLineRunner {

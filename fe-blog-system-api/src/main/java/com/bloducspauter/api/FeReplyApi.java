@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 @FeignClient(name = "fe-ornament")
+@Deprecated
 public interface FeReplyApi {
     @RequestMapping("/fe-ornament/findResponseByCommentId")
     Map<String,Object> findResponseByCommentId(HttpServletRequest request);

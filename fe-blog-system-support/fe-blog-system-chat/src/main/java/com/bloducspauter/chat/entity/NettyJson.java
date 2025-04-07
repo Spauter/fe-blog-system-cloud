@@ -20,7 +20,7 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
  * @author Bloduc Spauter
  */
 @Data
-@Document("netty_json")
+@Document("fe_chat")
 public class NettyJson {
     private String id;
     private String blogId;

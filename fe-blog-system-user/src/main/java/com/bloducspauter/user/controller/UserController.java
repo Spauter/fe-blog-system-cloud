@@ -8,18 +8,20 @@ import com.bloducspauter.media.service.MediaService;
 import com.bloducspauter.user.service.UserService;
 import com.bloducspauter.bean.utils.IsValidUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @RestController
@@ -34,6 +36,9 @@ public class UserController {
 
     @Resource
     private MediaService mediaService;
+
+    @Value("${minio.bucket.emojis}")
+    private String bucketEmojis;
 
     private User getUser(HttpServletRequest request) {
         String account = request.getParameter("username");
@@ -58,6 +63,7 @@ public class UserController {
             return map;
         }
         String password = req.getParameter("password");
+        password = DigestUtils.sha256Hex(password);
         if (!password.equals(loginUser.getPassword())) {
             map.put("code", 404);
             map.put("msg", "用户名或者密码错误");
@@ -66,7 +72,7 @@ public class UserController {
         loginUser.setPassword("想看密码？怎么可能给你看😜");
         //生成token;
         String token = UUID.randomUUID().toString();
-        redisTemplate.opsForValue().set(token, loginUser);
+        redisTemplate.opsForValue().set(token, loginUser, 300, TimeUnit.SECONDS);
         map.put("code", 200);
         map.put("data", loginUser);
         map.put("token", token);
@@ -96,12 +102,13 @@ public class UserController {
             map.put("msg", "邮箱格式不正确");
             return map;
         }
+        password = DigestUtils.sha256Hex(password);
         User user = userService.register(account, password, email);
         user.setPassword("想看密码？怎么可能会给你看😜");
         map.put("code", 200);
         map.put("data", user);
         String token = UUID.randomUUID().toString();
-        redisTemplate.opsForValue().set(token, user);
+        redisTemplate.opsForValue().set(token, user, 300, TimeUnit.SECONDS);
         map.put("token", token);
         return map;
     }
@@ -187,10 +194,10 @@ public class UserController {
     }
 
     @RequestMapping("updatePassword")
-    public Map<String, Object> modifyPwd(HttpServletRequest request ){
+    public Map<String, Object> modifyPwd(HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
         String token = request.getHeader("token");
-        User tokenUser =getRedisUser(request);
+        User tokenUser = getRedisUser(request);
         if (tokenUser == null) {
             map.put("code", 404);
             map.put("msg", "没有登录,请先登录");
@@ -215,6 +222,7 @@ public class UserController {
         return map;
     }
 
+    //
     @RequestMapping("UserUpdateAvatarController")
     public Map<String, Object> updateAvatar(@RequestParam MultipartFile avatar, HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
@@ -223,15 +231,15 @@ public class UserController {
         try {
             User sessionUser = getRedisUser(request);
             User user = userService.getInfo(sessionUser.getAccount());
-            String path= DefaultValue.getUploadTempPath();
+            String path =DefaultValue.getUploadTempPath();
             path += avatar.getOriginalFilename();
             file = new File(path);
             avatar.transferTo(file);
             //根据操作系统的类型进行图片上传操作
-            MediaFiles newFile = mediaService.uploadFile(file, user.getUserId(), avatar.getOriginalFilename());
+            MediaFiles newFile = mediaService.uploadFile(file, user.getUserId(), avatar.getOriginalFilename(), bucketEmojis);
             user.setAvatar(newFile.getUrl());
             userService.updateInfo(user);
-            redisTemplate.opsForValue().set(token, user);
+            redisTemplate.opsForValue().set(token, user, 300, TimeUnit.SECONDS);
             map.put("code", 200);
             map.put("data", user);
         } catch (Exception e) {
@@ -246,4 +254,21 @@ public class UserController {
         return map;
     }
 
+    /**
+     * 清空redis缓存
+     */
+    @PostConstruct
+    private void delCache() {
+        log.warn("start removing all keys");
+        Set<String> keys = redisTemplate.keys("*");
+        if (keys.isEmpty()) {
+            log.info("no keys to be removed");
+            return;
+        }
+        for (String key : keys) {
+            log.info("removing key:{}", key);
+            redisTemplate.delete(key);
+        }
+        log.info("removed all keys");
+    }
 }

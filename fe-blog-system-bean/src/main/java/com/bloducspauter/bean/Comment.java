@@ -17,6 +17,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Data
 @TableName
+@Deprecated
 public class Comment implements Serializable {
     @TableId(type = IdType.AUTO)
     private Integer id;

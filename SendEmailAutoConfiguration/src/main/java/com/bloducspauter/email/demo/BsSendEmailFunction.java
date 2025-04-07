@@ -122,4 +122,8 @@ public class BsSendEmailFunction implements SendEmail {
             log.warn("The properties of open_send_email was defined false, so no email will be sent");
         }
     }
+
+    public static void main(String[] args) {
+        System.out.println("Hello");
+    }
 }

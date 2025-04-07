@@ -11,12 +11,12 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.jetty.util.ConcurrentHashSet;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * 自定义处理类
@@ -36,7 +36,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
     @Resource
     NettyJsonService service;
 
-    private static final List<Channel> CHANNELS = new CopyOnWriteArrayList<>();
+    private static final Set<Channel> CHANNELS = new ConcurrentHashSet<>();
 
     /**
      * 通道就绪事件
@@ -93,9 +93,11 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
         try {
             String location = nettyJson.getLocation();
             CHANNELS.forEach(l -> {
-                if (CHANNEL_MAP.get(l).equals(location)) {
-                    String json = JSONArray.toJSONString(nettyJson);
-                    l.writeAndFlush(new TextWebSocketFrame(json));
+                if (CHANNEL_MAP.get(l) != null) {
+                    if (CHANNEL_MAP.get(l).equals(location)) {
+                        String json = JSONArray.toJSONString(nettyJson);
+                        l.writeAndFlush(new TextWebSocketFrame(json));
+                    }
                 }
             });
         } catch (Exception e) {

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 @FeignClient(name = "fe-ornament")
+@Deprecated
 public interface FeBlogCommentApi {
     @RequestMapping("fe-ornament/AddCommentServlet")
     Map<String, Object> addComment(HttpServletRequest request, HttpSession session);

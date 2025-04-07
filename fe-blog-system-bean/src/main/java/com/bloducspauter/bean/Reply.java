@@ -12,6 +12,7 @@ import java.util.Date;
 @Data
 @TableName
 @NoArgsConstructor
+@Deprecated
 public class Reply {
     @TableId(type = IdType.AUTO)
     private Integer rid;

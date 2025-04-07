@@ -32,4 +32,6 @@ public interface NettyJsonService {
     List<NettyJson>selectListByPage(String location, int pageNo, int pageSize);
 
     List<NettyJson>findAll();
+
+    NettyJson  getCommentUserByCid(String cid);
 }

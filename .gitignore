@@ -11,6 +11,7 @@ target/
 *.ipr
 /logs
 *.log
+*.yml
 
 
 ### Eclipse ###

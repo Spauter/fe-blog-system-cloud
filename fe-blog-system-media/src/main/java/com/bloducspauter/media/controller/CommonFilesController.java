@@ -11,17 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 小文件上传控制台
@@ -139,10 +135,14 @@ public class CommonFilesController {
     public Map<String, Object> addTitleImage(HttpServletRequest req, @RequestParam("image") MultipartFile file) throws IOException {
         Map<String, Object> map = new HashMap<>();
         String userId = Objects.requireNonNull(getUser(req)).getUserId();
-        String osName = System.getProperty("os.name");
         String fileName = file.getOriginalFilename();
         File templateFile = File.createTempFile("minio", ".temp");
         file.transferTo(templateFile);
+        if (mediaService.checkFileExists(fileName, bucketTitles)) {
+            map.put("code", 500);
+            map.put("msg", "已经存在同名文件！");
+            return map;
+        }
         try {
             mediaService.uploadFile(templateFile, userId, fileName, bucketTitles);
         } catch (Exception e) {
@@ -154,6 +154,35 @@ public class CommonFilesController {
         }
         map.put("code", 200);
         map.put("msg", "上传成功");
+        return map;
+    }
+
+    @RequestMapping("deleteMedia")
+    public Map<String, Object> deleteMedia(HttpServletRequest req, HttpServletResponse resp) throws UnsupportedEncodingException {
+        Map<String, Object> map = new HashMap<>();
+        req.setCharacterEncoding("UTF-8");
+        String[] obj = req.getParameterValues("image");
+        if(obj == null) {
+            map.put("code", 404);
+            map.put("msg", "未选择任何图片");
+            return map;
+        }
+        List<String>ids=new ArrayList<>();
+        for (String s : obj) {
+            String[] str=s.split("/");
+            String urlname=str[str.length-1];
+            ids.add(urlname.split("\\.")[0]);
+        }
+        try {
+            mediaService.delete(ids, bucketTitles);
+            map.put("code", 200);
+            map.put("msg", "删除成功");
+        }catch (Exception e) {
+            log.error(e.getLocalizedMessage());
+            map.put("code", 500);
+            map.put("msg", "删除失败");
+            map.put("cause", e.getMessage());
+        }
         return map;
     }
 }

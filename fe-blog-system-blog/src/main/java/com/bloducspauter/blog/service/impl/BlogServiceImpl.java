@@ -2,25 +2,24 @@ package com.bloducspauter.blog.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
+import com.bloducspauter.bean.MediaFiles;
 import com.bloducspauter.bean.blog.Blog;
 import com.bloducspauter.bean.blog.BlogTag;
 import com.bloducspauter.bean.category.Tag;
 import com.bloducspauter.bean.category.TagRelation;
-import com.bloducspauter.bean.media.Media;
 import com.bloducspauter.blog.mapper.BlogMapper;
 import com.bloducspauter.blog.service.BlogService;
-
-
-import com.bloducspauter.ornament.mapper.MediaMapper;
+import com.bloducspauter.media.service.MediaService;
 import com.bloducspauter.category.mapper.TagMapper;
 import com.bloducspauter.category.mapper.TagRelationMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
+
+import static com.bloducspauter.bean.utils.DefaultValue.DEFAULT_MEDIA_IMAGE;
 
 
 @Service
@@ -28,23 +27,24 @@ import java.util.List;
 public class BlogServiceImpl implements BlogService {
 
 
-    @Autowired
+    @Resource
     private BlogMapper blogMapper;
 
-    @Autowired
+    @Resource
     private TagMapper tagMapper;
 
-    @Autowired
+    @Resource
     private TagRelationMapper tagRelationMapper;
-
-    @Autowired
-    private MediaMapper mediaMapper;
-
+    @Resource
+    private MediaService mediaService;
     private List<Blog> accesBlogMediaName(List<Blog> blogs) {
         for (Blog b : blogs) {
-            int mediaId = b.getMediaId();
-            Media media = mediaMapper.selectById(mediaId);
-            b.setMediaName(media.getImage());
+            String mediaId = b.getMediaId();
+            if(mediaId==null){
+                mediaId=DEFAULT_MEDIA_IMAGE.get(0);
+            }
+            MediaFiles media = mediaService.findIdByName(mediaId);
+            b.setMediaName(media.getUrl());
         }
         return blogs;
     }

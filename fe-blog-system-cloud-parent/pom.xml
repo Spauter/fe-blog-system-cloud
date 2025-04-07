@@ -18,7 +18,6 @@
     <module>../fe-blog-system-category</module>
     <module>../fe-blog-system-gateway</module>
     <module>../fe-blog-system-media</module>
-    <module>../fe-blog-system-ornament</module>
     <module>../fe-blog-system-user</module>
     <module>../SendEmailAutoConfiguration</module>
   </modules>

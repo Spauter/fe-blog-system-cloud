@@ -8,7 +8,7 @@ import com.bloducspauter.bean.category.Field;
 import com.bloducspauter.bean.category.Tag;
 import com.bloducspauter.blog.service.BlogService;
 import com.bloducspauter.category.service.FieldService;
-import com.bloducspauter.ornament.service.MediaService;
+import com.bloducspauter.media.service.MediaService;
 import com.bloducspauter.email.demo.BsSendEmailFunction;
 import com.bloducspauter.user.service.UserService;
 import com.bloducspauter.bean.utils.GetRequestJson;
@@ -16,10 +16,8 @@ import com.bloducspauter.bean.utils.HttpUtil;
 import com.bloducspauter.bean.utils.IsValidUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,7 +28,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import static com.bloducspauter.bean.utils.DefaultValue.DEFAULT_MEDIA_IMAGE;
-import static com.bloducspauter.bean.utils.DefaultValue.MEDIA_IMAGE_TYPE;
 import static com.bloducspauter.bean.utils.ltp.buildHttpHeader;
 
 @RestController
@@ -52,11 +49,8 @@ public class BlogController {
     @Autowired
     private BsSendEmailFunction bsSendEmailFunction;
 
-    @Autowired
-    private MediaService mediaService;
-
     @Resource
-    private RedisTemplate<String, Object> redisTemplate;
+    private MediaService mediaService;
 
     private JSONObject json = new JSONObject();
     private static final String WEBTTS_URL = "http://ltpapi.xfyun.cn/v1/ke";
@@ -168,7 +162,7 @@ public class BlogController {
         String field = json.getString("field");
         String selectedImage = json.getString("selectedImage");
         selectedImage = selectedImage == null ? DEFAULT_MEDIA_IMAGE.get(0) : selectedImage;
-        int media_id = mediaService.findMedia(selectedImage, MEDIA_IMAGE_TYPE).getMediaId();
+        String media_id = mediaService.findIdByName(selectedImage).getId();
         String audited = json.getString("audited");
         Field field1 = fieldService.selectByField(field);
         int userId = Integer.parseInt(user.getUserId());
@@ -282,7 +276,7 @@ public class BlogController {
         } catch (Exception e) {
             e.printStackTrace();
             map.put("code", 500);
-            map.put("msg", e.getCause());
+            map.put("msg", e.getMessage());
         }
         return map;
     }

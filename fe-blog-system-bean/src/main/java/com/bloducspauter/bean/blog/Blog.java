@@ -53,7 +53,7 @@ public class Blog implements Serializable {
 
     private String keyWords;
 
-    private Integer mediaId;
+    private String mediaId;
 
     @TableField(exist = false)
     private String mediaName;

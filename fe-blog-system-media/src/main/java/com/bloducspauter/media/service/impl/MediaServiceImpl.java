@@ -140,13 +140,22 @@ public class MediaServiceImpl implements MediaService {
         return false;
     }
 
+    @Override
+    public boolean checkFileExists(String fileName, String bucket) {
+        QueryWrapper<MediaFiles> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("file_name", fileName);
+        queryWrapper.eq("bucket", bucket);
+        MediaFiles mediaFiles = mapper.selectOne(queryWrapper);
+        return mediaFiles != null;
+    }
+
     private String getDefaultFolderPath() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return sdf.format(new Date()).replace("-", "/") + "/";
     }
 
     @Override
-    public MediaFiles uploadFile(File file, String userId, String originFileName,String bucket) {
+    public MediaFiles uploadFile(File file, String userId, String originFileName, String bucket) {
         String id = getId(file);
         String filePath = getFileFolderPath(id);
         String extension = getExtension(originFileName);
@@ -204,24 +213,28 @@ public class MediaServiceImpl implements MediaService {
     @Override
     public boolean delete(List<String> deleteMedias, String bucket) {
         List<MediaFiles> mediaFiles = mapper.selectBatchIds(deleteMedias);
-        boolean deleteDb = mapper.deleteBatchIds(mediaFiles) == 1;
+        boolean deleteDb = true;
         boolean deleteMinIO = true;
         for (MediaFiles m : mediaFiles) {
             String objectName = m.getFilePath();
             try {
+                String id = m.getId();
+                QueryWrapper<MediaFiles> queryWrapper = new QueryWrapper<>();
+                queryWrapper.eq("id", id);
+                deleteDb = mapper.delete(queryWrapper) == 1;
                 minioClient.removeObject(RemoveObjectArgs.builder().bucket(bucket).object(objectName).build());
-            } catch (ErrorResponseException | XmlParserException | ServerException | NoSuchAlgorithmException |
-                     IOException | InvalidResponseException | InvalidKeyException | InternalException |
-                     InsufficientDataException e) {
-               log.error(e.getMessage());
+            } catch (Exception e) {
+                log.error(e.getMessage());
                 deleteMinIO = false;
+                deleteDb=false;
+                break;
             }
         }
         return deleteDb && deleteMinIO;
     }
 
     @Override
-    public List<MediaFiles> selectList(List<String> medias,String bucket) {
+    public List<MediaFiles> selectList(List<String> medias, String bucket) {
         if (medias != null && !medias.isEmpty()) {
             return mapper.selectBatchIds(medias);
         } else {
@@ -229,5 +242,17 @@ public class MediaServiceImpl implements MediaService {
             queryWrapper.eq("bucket", bucket);
             return mapper.selectList(queryWrapper);
         }
+    }
+
+    @Override
+    public MediaFiles findById(String id) {
+        return mapper.selectById(id);
+    }
+
+    @Override
+    public MediaFiles findIdByName(String name){
+        QueryWrapper<MediaFiles> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("file_name",name);
+        return mapper.selectOne(queryWrapper);
     }
 }

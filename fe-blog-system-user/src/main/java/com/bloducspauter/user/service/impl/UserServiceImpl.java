@@ -6,6 +6,7 @@ import com.bloducspauter.bean.User;
 import com.bloducspauter.user.mapper.UserMapper;
 import com.bloducspauter.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,8 +55,8 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             return false;
         }
-
-        return user.getPassword().equals(password);
+        String dpassword= DigestUtils.sha256Hex(password);
+        return user.getPassword().equals(dpassword);
     }
 
 
@@ -82,6 +83,10 @@ public class UserServiceImpl implements UserService {
         QueryWrapper<User>queryWrapper=new QueryWrapper<>();
         queryWrapper.eq("account",account);
         try {
+            String password = user.getPassword();
+            if (password != null) {
+                user.setPassword(DigestUtils.sha256Hex(password));
+            }
             userMapper.update(user, queryWrapper);
             return user;
         }catch (Exception e){
@@ -102,14 +107,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public User updatePassword(String account, String password) {
         User user = getInfo(account);
+        password = DigestUtils.sha256Hex(password);
         user.setPassword(password);
         try {
             userMapper.updateById(user);
             return user;
         } catch (Exception e) {
-            e.printStackTrace();
             log.error(e.getMessage());
-            log.error("更新用户信息失败,返回原用户信息");
             return getInfo(account);
         }
     }

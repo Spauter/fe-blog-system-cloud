@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 /**
- * Ã½ÌåÎÄ¼şÊµÌåÀà<p>
- * ¼´½«ÓÉ{@link com.bloducspauter.bean.MediaFiles} Ìæ´ú
+ * åª’ä½“æ–‡ä»¶å®ä½“ç±»<p>
+ * å³å°†ç”±{@link com.bloducspauter.bean.MediaFiles} æ›¿ä»£
  * @author Bloduc Spauter
  *
  */
